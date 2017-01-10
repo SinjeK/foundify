@@ -22,7 +22,7 @@ public class EducationClassifier implements Classifier {
         UNSPECIFIED
     }
 
-    // change this if a new classifier is used - 
+    // change this if a new classifier is used -  lksdjf
     final private static String IDENTIFIER = "ff18c7x157-nlc-2455";
     private NaturalLanguageClassifier classifier;
 
