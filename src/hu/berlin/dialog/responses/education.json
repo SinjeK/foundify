@@ -3,6 +3,17 @@
     "GENERAL" : [
       "Erzähl mir etwas über deine Qualifikationsabschlüsse. Sei es nun eine abgeschlossene Ausbildung, ein Bachelor, Master oder gar eine Promotion",
       "Was hast du so für Abschlüsse? Erzähl mir am besten alles von Ausbildung über Bachelor bis zur Promotion"
-    ]
+    ],
+    "STUDIUM" : [
+      "Ok du hast also studiert. Aber hast du einen Bachelor oder einen Master gemacht?"
+    ],
+    "UNSPECIFIED" : [
+      "Hm ich habe dich nicht ganz verstanden.\nKannst du dich bitte wiederholen?"
+    ],
+    "PHD" : ["PHD"],
+    "BACHELOR" : ["Bachelor ^^"],
+    "MASTER" : ["DU bist ein Master"],
+    "ABITUR" : ["Abitur"],
+    "QUALIFICATION" : ["Ausbildung"]
   }
 }

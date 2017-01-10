@@ -1,12 +1,13 @@
 package hu.berlin.dialog;
 import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.relatedness.Relatedness;
+import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.io.DialogInput;
 import hu.berlin.dialog.io.DialogInput.DialogInputDelegate;
 import hu.berlin.dialog.io.DialogOutput;
+import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 
-import java.io.File;
-import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,9 +28,9 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     private ExecutorService systemService;
     private GermaNet germaNet;
     private Relatedness relatedness;
+    private Profile profile;
 
     final private static String kGermaNetRessources = "gn/ressources/v90XML";
-
     final private static String kWelcomeIdentifier = "welcome";
     final private static String kGuideIdentifier = "guide";
     final private static String kAssistanceProgramsIdentifier = "assistancePrograms";
@@ -37,12 +38,14 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     // Constructor
     public DialogSystem() throws Exception {
         super();
+
         this.systemService = Executors.newSingleThreadExecutor();
         this.input = new DialogInput(this);
         this.input.delegateService = this.systemService;
         this.output = new DialogOutput();
-        this.germaNet = new GermaNet(DialogSystem.getGermaNetRessourcesDirectory());
+        this.germaNet = new GermaNet(FileLoader.loadRessource(kGermaNetRessources));
         this.relatedness = new Relatedness(this.germaNet);
+        this.profile = new UserProfile();
     }
 
     // Getter & Setter
@@ -76,14 +79,14 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         this.currentState = null;
 
         if (state.getIdentifier().equals(kWelcomeIdentifier)) {
-            Guide guideState = new Guide(this, kGuideIdentifier, this.germaNet, this.relatedness);
+            Guide guideState = new Guide(this, kGuideIdentifier, this.profile, this.germaNet, this.relatedness);
             this.enterState(guideState);
         } else if (state.getIdentifier().equals(kGuideIdentifier)) {
             Guide guide = (Guide)state;
 
             switch (guide.getNextState()) {
                 case ASSISTANCEPROGRAMS: {
-                    AssistancePrograms assistanceProgram = new AssistancePrograms(this, kAssistanceProgramsIdentifier);
+                    AssistancePrograms assistanceProgram = new AssistancePrograms(this, kAssistanceProgramsIdentifier, this.profile);
                     this.enterState(assistanceProgram);
                     break;
                 }
@@ -110,7 +113,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         this.systemService.submit(() -> {
             this.input.execute();
 
-            Welcome welcomeState = new Welcome(this, kWelcomeIdentifier);
+            Welcome welcomeState = new Welcome(this, kWelcomeIdentifier, this.profile);
             this.enterState(welcomeState);
         });
     }
@@ -130,21 +133,4 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         state.enter();
     }
 
-    // Helper
-    private static File getGermaNetRessourcesDirectory() {
-        URL location = DialogSystem.class.getClassLoader().getResource(kGermaNetRessources);
-        if (location == null) {
-            System.out.print("Cannot find germanet ressources");
-            return null;
-        }
-
-        String dirPath = location.getFile();
-        File dir = new File(dirPath);
-        if (!dir.exists()) {
-            System.out.print("Directory doesnt exist");
-            return null;
-        }
-
-        return dir;
-    }
 }

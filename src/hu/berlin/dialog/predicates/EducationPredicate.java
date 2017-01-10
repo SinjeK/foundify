@@ -1,8 +1,9 @@
 package hu.berlin.dialog.predicates;
-import hu.berlin.File.FileLoader;
+import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.EducationClassifier;
 import hu.berlin.dialog.languageProcessing.EducationClassifier.EducationCategory;
+import hu.berlin.user.Profile;
 import json.JSONObject;
 
 import java.io.IOException;
@@ -13,8 +14,15 @@ import java.util.List;
  */
 public class EducationPredicate extends Predicate {
 
-    private enum QuestionType {
+    private enum ResponseType {
         GENERAL,
+        STUDIUM,
+        UNSPECIFIED,
+        PHD,
+        BACHELOR,
+        MASTER,
+        ABITUR,
+        QUALIFICATION
     };
 
     private EducationClassifier classifier;
@@ -26,8 +34,8 @@ public class EducationPredicate extends Predicate {
      */
     private boolean running;
 
-    public EducationPredicate(DialogStateController controller, String identifier) {
-        super(controller, identifier);
+    public EducationPredicate(DialogStateController controller, String identifier, Profile profile) {
+        super(controller, identifier, profile);
         this.classifier = new EducationClassifier();
 
         try {
@@ -56,10 +64,16 @@ public class EducationPredicate extends Predicate {
     public void enter() {
         super.enter();
 
-        this.getDialogController().dialogStateWantsToOutput(this, getWelcomeResponse());
-        this.getDialogController().dialogStateWantsToOutput(this, getQuestion(QuestionType.GENERAL));
+        put(getWelcomeResponse());
+        put(getResponse(ResponseType.GENERAL));
     }
 
+    /**
+     * Evaluate the input of user. Tries to recognize user' graduation.
+     * It also manages the transitions.
+     *
+     * @param input Input provided by user
+     */
     @Override
     public void evaluate(String input) {
         super.evaluate(input);
@@ -74,18 +88,25 @@ public class EducationPredicate extends Predicate {
 
         switch (category) {
             case QUALIFICATION:
+                put(getResponse(ResponseType.QUALIFICATION));
                 break;
             case ABITUR:
+                put(getResponse(ResponseType.ABITUR));
                 break;
             case BACHELOR:
+                put(getResponse(ResponseType.BACHELOR));
                 break;
             case MASTER:
+                put(getResponse(ResponseType.MASTER));
                 break;
             case PHD:
+                put(getResponse(ResponseType.PHD));
                 break;
             case STUDIUM:
+                put(getResponse(ResponseType.STUDIUM));
                 break;
             case UNSPECIFIED:
+                put(getResponse(ResponseType.UNSPECIFIED));
                 break;
             default:
                 assert false : "Unhandled case in switch! category: " + category.toString();
@@ -95,24 +116,33 @@ public class EducationPredicate extends Predicate {
     }
 
     // Response generation
-    private List getAllResponses(QuestionType type) {
+    private List getAllResponses(ResponseType type) {
         return this.rootJSON.getJSONObject("data").getJSONArray(type.name()).toList();
     }
-
 
     private String getWelcomeResponse() {
         return "So dann lass uns nach passenden Förderprogrammen schauen";
     }
 
-    private String getQuestion(QuestionType type) {
+    private String getResponse(ResponseType type) {
         List responses = this.getAllResponses(type);
         String question = (String) responses.get((int)(Math.random() * responses.size()));
 
         switch (type) {
             case GENERAL:
                 break;
+            case STUDIUM:
+                break;
+            case UNSPECIFIED:
+                break;
+            case QUALIFICATION:
+            case PHD:
+            case ABITUR:
+            case MASTER:
+            case BACHELOR:
+                break;
             default:
-                assert false : "Unhandled case for " + type.toString() + " in EducationPredicate@getQuestion(Questiontype)";
+                assert false : "Unhandled case for " + type.toString() + " in EducationPredicate@getResponse(Questiontype)";
         }
 
         return question;

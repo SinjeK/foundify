@@ -1,4 +1,4 @@
-package hu.berlin.File;
+package hu.berlin.file;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

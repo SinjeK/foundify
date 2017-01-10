@@ -1,5 +1,6 @@
 package hu.berlin.dialog;
 import hu.berlin.dialog.predicates.EducationPredicate;
+import hu.berlin.user.Profile;
 
 /**
  * Dialog state responsible for finding the right assistance programs.
@@ -8,8 +9,8 @@ public class AssistancePrograms extends DialogState implements DialogStateContro
 
     private DialogState currentState;
 
-    public AssistancePrograms(DialogStateController controller, String identifier) {
-        super(controller, identifier);
+    public AssistancePrograms(DialogStateController controller, String identifier, Profile profile) {
+        super(controller, identifier, profile);
     }
 
     // Dialogstate
@@ -23,7 +24,7 @@ public class AssistancePrograms extends DialogState implements DialogStateContro
 
     @Override
     public void enter() {
-        EducationPredicate education = new EducationPredicate(this, "education");
+        EducationPredicate education = new EducationPredicate(this, "education", this.getProfile());
         this.enterState(education);
     }
 

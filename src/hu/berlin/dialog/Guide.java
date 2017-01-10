@@ -3,6 +3,7 @@ import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.relatedness.Relatedness;
 import hu.berlin.dialog.languageProcessing.YesNoClassifier;
 import hu.berlin.dialog.languageProcessing.YesNoClassifier.YesNoCategory;
+import hu.berlin.user.Profile;
 
 /**
  * This state is responsible for finding the needs of the user
@@ -22,8 +23,8 @@ public class Guide extends DialogState {
     private YesNoClassifier yesNoClassifier;
     private State nextState;
 
-    public Guide(DialogStateController controller, String identifier, GermaNet gn, Relatedness relatedness) {
-        super(controller, identifier);
+    public Guide(DialogStateController controller, String identifier, Profile profile, GermaNet gn, Relatedness relatedness) {
+        super(controller, identifier, profile);
         this.yesNoClassifier = new YesNoClassifier(gn, relatedness);
     }
 

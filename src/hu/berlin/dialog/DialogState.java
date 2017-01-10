@@ -1,5 +1,7 @@
 package hu.berlin.dialog;
 
+import hu.berlin.user.Profile;
+
 /**
  * A state is an independent unit which is responsible for exactly one task. <br>
  * A state is responsible for evaluating the users input and printing an
@@ -23,14 +25,17 @@ public abstract class DialogState {
      */
     private String identifier;
 
+    private Profile profile;
+
 
     //------ CONSTRUCTOR  ------------------------------------//
 
 
-    public DialogState(DialogStateController controller, String identifier) {
+    public DialogState(DialogStateController controller, String identifier, Profile profile) {
         super();
         this.controller = controller;
         this.identifier = identifier;
+        this.profile = profile;
     }
 
     /*
@@ -38,6 +43,14 @@ public abstract class DialogState {
         this(null, "");
     }
     */
+
+    protected Profile getProfile() {
+        return this.profile;
+    }
+
+    private void setProfile(Profile p) {
+        this.profile = p;
+    }
 
     //------ PUBLIC  ------------------------------------//
 
@@ -64,6 +77,7 @@ public abstract class DialogState {
      * @param s String to be printed
      */
     public void put(String s) {
+        assert false : "Dialog State Controller is null in class " + this.getClass().toString() + "@put(String s)";
         this.controller.dialogStateWantsToOutput(this, s);
     }
 
@@ -78,6 +92,7 @@ public abstract class DialogState {
      * Subclass notes: <b>Always call super().</b>
      */
     protected void leave() {
+        assert false : "Dialog State Controller is null in class " + this.getClass().toString() + "@leave()";
         this.controller.dialogStateDidLeave(this);
     }
 

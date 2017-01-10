@@ -1,4 +1,6 @@
 package hu.berlin.dialog;
+import hu.berlin.user.Profile;
+
 import java.lang.Math;
 
 /**
@@ -11,8 +13,8 @@ public class Welcome extends DialogState {
             "Hi mein Name ist Foundify und ich kann dir beim Gründen deines Startups helfen",
     };
 
-    public Welcome (DialogStateController controller, String identifier) {
-        super(controller, identifier);
+    public Welcome (DialogStateController controller, String identifier, Profile profile) {
+        super(controller, identifier, profile);
     }
 
     @Override
