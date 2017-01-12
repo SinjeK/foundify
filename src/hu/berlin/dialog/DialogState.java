@@ -77,7 +77,7 @@ public abstract class DialogState {
      * @param s String to be printed
      */
     public void put(String s) {
-        assert false : "Dialog State Controller is null in class " + this.getClass().toString() + "@put(String s)";
+        assert this.getDialogController() != null : "Dialog State Controller is null in class " + this.getClass().toString() + "@put(String s)";
         this.controller.dialogStateWantsToOutput(this, s);
     }
 
@@ -92,7 +92,7 @@ public abstract class DialogState {
      * Subclass notes: <b>Always call super().</b>
      */
     protected void leave() {
-        assert false : "Dialog State Controller is null in class " + this.getClass().toString() + "@leave()";
+        assert this.getDialogController() != null : "Dialog State Controller is null in class " + this.getClass().toString() + "@leave()";
         this.controller.dialogStateDidLeave(this);
     }
 

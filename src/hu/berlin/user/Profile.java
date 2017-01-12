@@ -11,12 +11,12 @@ public interface Profile {
         }
     }
 
-    void setBooleanForKey(boolean b, String key);
-    boolean getBooleanForKey(String key) throws ProfileException;
+    void setBooleanForKey(boolean b, String key, String identifier);
+    boolean getBooleanForKey(String key, String identifier) throws ProfileException;
 
-    void setStringForKey(String content, String key);
-    String getStringForKey(String key) throws ProfileException;
+    void setStringForKey(String content, String key, String identifier);
+    String getStringForKey(String key, String identifier) throws ProfileException;
 
-    void setIntForKey(int i, String key);
-    int getIntForKey(String key) throws ProfileException;
+    void setIntForKey(int i, String key, String identifier);
+    int getIntForKey(String key, String identifier) throws ProfileException;
 }

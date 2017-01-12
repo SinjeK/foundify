@@ -1,18 +1,17 @@
-package hu.berlin.dialog.predicates;
+package hu.berlin.dialog.clause;
 import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.EducationClassifier;
 import hu.berlin.dialog.languageProcessing.EducationClassifier.EducationCategory;
 import hu.berlin.user.Profile;
-import json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
+import json.JSONObject;
 
 /**
  * Created by Duc on 05.01.17.
  */
-public class EducationPredicate extends Predicate {
+public class EducationClause extends Clause {
 
     private enum ResponseType {
         GENERAL,
@@ -34,7 +33,7 @@ public class EducationPredicate extends Predicate {
      */
     private boolean running;
 
-    public EducationPredicate(DialogStateController controller, String identifier, Profile profile) {
+    public EducationClause(DialogStateController controller, String identifier, Profile profile) {
         super(controller, identifier, profile);
         this.classifier = new EducationClassifier();
 
@@ -142,10 +141,11 @@ public class EducationPredicate extends Predicate {
             case BACHELOR:
                 break;
             default:
-                assert false : "Unhandled case for " + type.toString() + " in EducationPredicate@getResponse(Questiontype)";
+                assert false : "Unhandled case for " + type.toString() + " in EducationClause@getResponse(Questiontype)";
         }
 
         return question;
     }
+
 
 }

@@ -1,5 +1,5 @@
 package hu.berlin.dialog;
-import hu.berlin.dialog.predicates.EducationPredicate;
+import hu.berlin.dialog.clause.EducationClause;
 import hu.berlin.user.Profile;
 
 /**
@@ -24,7 +24,7 @@ public class AssistancePrograms extends DialogState implements DialogStateContro
 
     @Override
     public void enter() {
-        EducationPredicate education = new EducationPredicate(this, "education", this.getProfile());
+        EducationClause education = new EducationClause(this, "education", this.getProfile());
         this.enterState(education);
     }
 
