@@ -1,5 +1,5 @@
 package hu.berlin.dialog;
-import hu.berlin.dialog.predicates.EducationClause;
+import hu.berlin.dialog.clause.EducationClause;
 import hu.berlin.user.Profile;
 
 /**

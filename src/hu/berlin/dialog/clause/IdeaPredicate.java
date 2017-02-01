@@ -1,4 +1,4 @@
-package hu.berlin.dialog.predicates;
+package hu.berlin.dialog.clause;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,7 +8,7 @@ import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
-import hu.berlin.dialog.predicates.EmploymentPredicate.ResponseType;
+//import hu.berlin.dialog.predicates.Clause;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.Profile;
 import json.JSONObject;

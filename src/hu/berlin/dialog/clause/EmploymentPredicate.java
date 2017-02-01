@@ -1,53 +1,52 @@
-package hu.berlin.dialog.predicates;
-import hu.berlin.file.FileLoader;
-import hu.berlin.dialog.DialogStateController;
-import hu.berlin.dialog.languageProcessing.EducationClassifier;
-import hu.berlin.dialog.languageProcessing.EducationClassifier.EducationCategory;
-import hu.berlin.user.Profile;
-import json.JSONObject;
+package hu.berlin.dialog.clause;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by Duc on 05.01.17.
- */
-public class EducationClause extends Clause {
+import hu.berlin.dialog.DialogStateController;
+import hu.berlin.dialog.clause.EmploymentPredicate.ResponseType;
+import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
+import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
+//import hu.berlin.dialog.clause;
+import hu.berlin.file.FileLoader;
+import hu.berlin.user.Profile;
+import json.JSONObject;
 
-    private enum ResponseType {
-        GENERAL,
-        STUDIUM,
-        UNSPECIFIED,
-        PHD,
-        BACHELOR,
-        MASTER,
-        ABITUR,
-        QUALIFICATION
-    };
+public class EmploymentPredicate extends Clause {
 
-    private EducationClassifier classifier;
+	public enum ResponseType {
+			GENERAL,
+			UNEMPLOYED,
+			STUDENT,
+			SCIENTIST,
+			OTHER_EMPLOYMENT,
+			UNSPECIFIED
+	}
+	
+	private EmploymentClassifier classifier;
     private JSONObject rootJSON;
+    
 
     /**
      * True if predicate is currently evaluating a string.
      * Otherwise false.
      */
     private boolean running;
-
-    public EducationClause(DialogStateController controller, String identifier, Profile profile) {
-        super(controller, identifier, profile);
-        this.classifier = new EducationClassifier();
-
-        try {
-            String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/education.json");
+	
+	public EmploymentPredicate(DialogStateController controller, String identifier, Profile profile) {
+		super(controller, identifier, profile);
+		this.classifier = new EmploymentClassifier();
+		
+		try {
+            String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/emplyoment.json");
             this.rootJSON = new JSONObject(JSONContent);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
-    }
-
-    // Setter & Getter
+	}
+	
+	 // Setter & Getter
     private void setRunning(boolean r) {
         this.running = r;
     }
@@ -67,7 +66,7 @@ public class EducationClause extends Clause {
         put(getWelcomeResponse());
         put(getResponse(ResponseType.GENERAL));
     }
-
+    
     /**
      * Evaluate the input of user. Tries to recognize user' graduation.
      * It also manages the transitions.
@@ -79,31 +78,25 @@ public class EducationClause extends Clause {
         super.evaluate(input);
 
         if (this.isRunning()) {
-            this.put("Warte ich schaue gerade nach passenden Förderprogrammen");
+            this.put("Einen Moment bitte! Ich schaue noch nach geeigneten Programmen.");
             return;
         }
 
         this.setRunning(true);
-        EducationCategory category = this.classifier.classify(input);
+        EmploymentCategory category = this.classifier.classify(input);
 
         switch (category) {
-            case QUALIFICATION:
-                put(getResponse(ResponseType.QUALIFICATION));
+            case STUDENT:
+                put(getResponse(ResponseType.STUDENT));
                 break;
-            case ABITUR:
-                put(getResponse(ResponseType.ABITUR));
+            case SCIENTIST:
+                put(getResponse(ResponseType.SCIENTIST));
                 break;
-            case BACHELOR:
-                put(getResponse(ResponseType.BACHELOR));
+            case UNEMPLOYED:
+                put(getResponse(ResponseType.UNEMPLOYED));
                 break;
-            case MASTER:
-                put(getResponse(ResponseType.MASTER));
-                break;
-            case PHD:
-                put(getResponse(ResponseType.PHD));
-                break;
-            case STUDIUM:
-                put(getResponse(ResponseType.STUDIUM));
+            case OTHER_EMPLOYMENT:
+                put(getResponse(ResponseType.OTHER_EMPLOYMENT));
                 break;
             case UNSPECIFIED:
                 put(getResponse(ResponseType.UNSPECIFIED));
@@ -121,7 +114,7 @@ public class EducationClause extends Clause {
     }
 
     private String getWelcomeResponse() {
-        return "So dann lass uns nach passenden Förderprogrammen schauen";
+        return "Super, vielen Dank! Jetzt müsste ich erstmal noch etwas über deine Arbeitserfahrung wissen.";
     }
 
     private String getResponse(ResponseType type) {
@@ -131,18 +124,18 @@ public class EducationClause extends Clause {
         switch (type) {
             case GENERAL:
                 break;
-            case STUDIUM:
+            case STUDENT:
                 break;
             case UNSPECIFIED:
                 break;
-            case QUALIFICATION:
-            case PHD:
-            case ABITUR:
-            case MASTER:
-            case BACHELOR:
+            case SCIENTIST:
+            	break;
+            case OTHER_EMPLOYMENT:
+            	break;
+            case UNEMPLOYED:
                 break;
             default:
-                assert false : "Unhandled case for " + type.toString() + " in EducationPredicate@getResponse(Questiontype)";
+                assert false : "Unhandled case for " + type.toString() + " in EmploymentPredicate@getResponse(Questiontype)";
         }
 
         return question;

@@ -42,6 +42,7 @@ Temporary Items
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/artifacts/
 
 # Gradle:
 .idea/gradle.xml
@@ -150,3 +151,9 @@ local.properties
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/macos,intellij,java,eclipse
+.idea/dictionaries/
+.idea/foundify.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+production/

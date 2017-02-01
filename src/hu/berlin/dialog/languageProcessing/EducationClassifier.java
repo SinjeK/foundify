@@ -1,7 +1,10 @@
 package hu.berlin.dialog.languageProcessing;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
 import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig;
+
+import java.util.List;
 
 
 /**
