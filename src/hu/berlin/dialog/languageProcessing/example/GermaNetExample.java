@@ -56,7 +56,7 @@ public class GermaNetExample {
         }
     }
 
-    private static File getGermaNetRessourcesDirectory() {
+    public static File getGermaNetRessourcesDirectory() {
         URL location = GermaNetExample.class.getClassLoader().getResource(kGermaNetRessources);
         if (location == null) {
             System.out.print("Cannot find germanet ressources");
