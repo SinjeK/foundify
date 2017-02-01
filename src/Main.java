@@ -3,7 +3,7 @@ import hu.berlin.dialog.DialogSystem;
 /**
  * Foundify - Your personal startup bot
  *
- * @author Viet Duc Nguyen, Sinje Kühne
+ * @author Viet Duc Nguyen, Sinje Kühme
  * @version 0.0.1
  */
 public class Main {

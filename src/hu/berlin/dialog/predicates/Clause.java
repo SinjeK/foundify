@@ -6,7 +6,7 @@ import hu.berlin.user.Profile;
 /**
  * A predicate represents a logical formula. As a dialog state
  * it is responsible for assigning values provided by the user
- * to the variables occuring in the logical formula.
+ * to the variables occurring in the logical formula.
  **/
 public abstract class Predicate extends DialogState {
 
