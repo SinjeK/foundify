@@ -32,6 +32,7 @@ Foundify is a chat bot for those interested in founding their own company. It wo
 
 ### API of used libraries
 [IBM Watson Developer Cloud API](http://watson-developer-cloud.github.io/java-sdk/docs/master/)
+
 [GermaNet 9.0 API](http://www.sfs.uni-tuebingen.de/lsd/documents/api/javadoc9.0/index.html)
 
 ### Guide
