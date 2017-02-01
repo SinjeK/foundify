@@ -6,13 +6,9 @@ import hu.berlin.user.Profile;
 /**
  * A predicate represents a logical formula. As a dialog state
  * it is responsible for assigning values provided by the user
- * to the variables occuring in the logical formula.dnjdkcnjdndjncdjcnjdkcnd
+ * to the variables occuring in the logical formula.
  **/
 public abstract class Clause extends DialogState {
-
-    interface Predicate {
-        boolean isTrue(Profile profile, String identifier);
-    }
 
     public Clause(DialogStateController controller, String identifier, Profile profile) {
         super(controller, identifier, profile);

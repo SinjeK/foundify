@@ -52,6 +52,7 @@ public abstract class DialogState {
         this.profile = p;
     }
 
+
     //------ PUBLIC  ------------------------------------//
 
 

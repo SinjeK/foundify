@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="JSON">
+    <output-path>$PROJECT_DIR$/out/artifacts/JSON</output-path>
+    <root id="archive" name="JSON.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/production/json" />
+    </root>
+  </artifact>
+</component>

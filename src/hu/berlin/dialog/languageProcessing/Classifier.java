@@ -14,12 +14,12 @@ package hu.berlin.dialog.languageProcessing;
  *     2. Implement classify
  * </pre>
  */
-interface Classifier {
+public interface Classifier {
 
     /**
      * This interface is intended to use with enums.
      */
-    interface Category {}
+    public interface Category {}
     enum BaseCategory implements Category {
         UNSPECIFIED
     }

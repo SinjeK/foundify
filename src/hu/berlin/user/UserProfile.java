@@ -1,4 +1,5 @@
 package hu.berlin.user;
+import hu.berlin.dialog.clause.predicate.Predicate;
 import hu.berlin.dialog.clause.predicate.Predicate.Instance;
 import java.util.HashMap;
 
@@ -13,7 +14,10 @@ public class UserProfile implements Profile, Instance {
         }
     }
 
+    final private static String kUserProfilePredicateIdentifier = "predicateIdentifier";
+
     private HashMap<String, HashMap<String, Object>> map;
+    private HashMap<String, Boolean> predicateMap;
 
     public UserProfile() {
         super();
@@ -31,10 +35,34 @@ public class UserProfile implements Profile, Instance {
         return serviceMap;
     }
 
+    // Instance implementation
+    private HashMap<String, Boolean> getPredicateMap() {
+        HashMap map = this.serviceMap(kUserProfilePredicateIdentifier);
+        return map;
+    }
+
+    @Override
+    public void setValueForPredicate(Predicate p, boolean val) {
+        this.getPredicateMap().put(p.getIdentifier(), val);
+    }
+
+    @Override
+    public boolean getValueForPredicate(Predicate p) {
+        return this.getPredicateMap().get(p.getIdentifier());
+    }
+
+    @Override
+    public boolean predicateWasSet(Predicate p) {
+        return this.getPredicateMap().get(p.getIdentifier()) != null;
+    }
+
+    // Profile implementation
+    @Override
     public void setBooleanForKey(boolean b, String key, String identifier) {
         this.serviceMap(identifier).put(key, b);
     }
 
+    @Override
     public boolean getBooleanForKey(String key, String identifier) throws UserProfileException {
         Object o = this.serviceMap(identifier).get(key);
         if (o == null) {
@@ -46,10 +74,12 @@ public class UserProfile implements Profile, Instance {
         }
     }
 
+    @Override
     public void setStringForKey(String content, String key, String identifier) {
         this.serviceMap(identifier).put(key, content);
     }
 
+    @Override
     public String getStringForKey(String key, String identifier) throws UserProfileException {
         Object o = this.serviceMap(identifier).get(key);
         if (o == null) {
@@ -61,10 +91,12 @@ public class UserProfile implements Profile, Instance {
         }
     }
 
+    @Override
     public void setIntForKey(int i, String key, String identifier) {
         this.serviceMap(identifier).put(key, i);
     }
 
+    @Override
     public int getIntForKey(String key, String identifier) throws UserProfileException {
         Object o = this.serviceMap(identifier).get(key);
         if (o == null) {

@@ -63,7 +63,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     // ------ DialogInputDelegate -------------------------------------
     @Override
     public void dialogInputReceivedMessage(DialogInput dialogInput, String message) {
-        assert currentState!= null : "Current state is null which is not good. You might have forgotten to use enterState(State)";
+        assert currentState != null : "Current state is null which is not good. You might have forgotten to use enterState(State)";
 
         this.currentState.evaluate(message);
     }
