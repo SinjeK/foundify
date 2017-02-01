@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Duc on 05.01.17.
  */
-public class EducationPredicate extends Predicate {
+public class EducationClause extends Clause {
 
     private enum ResponseType {
         GENERAL,
@@ -34,7 +34,7 @@ public class EducationPredicate extends Predicate {
      */
     private boolean running;
 
-    public EducationPredicate(DialogStateController controller, String identifier, Profile profile) {
+    public EducationClause(DialogStateController controller, String identifier, Profile profile) {
         super(controller, identifier, profile);
         this.classifier = new EducationClassifier();
 

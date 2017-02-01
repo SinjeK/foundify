@@ -13,7 +13,7 @@ import hu.berlin.file.FileLoader;
 import hu.berlin.user.Profile;
 import json.JSONObject;
 
-public class IdeaPredicate extends Predicate {  //extends Predicate
+public class IdeaPredicate extends Clause {  //extends Predicate
 	
 	public enum ResponseType {
 		GENERAL,     //first question

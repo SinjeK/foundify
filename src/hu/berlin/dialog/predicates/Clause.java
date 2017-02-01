@@ -8,9 +8,9 @@ import hu.berlin.user.Profile;
  * it is responsible for assigning values provided by the user
  * to the variables occurring in the logical formula.
  **/
-public abstract class Predicate extends DialogState {
+public abstract class Clause extends DialogState {
 
-    public Predicate(DialogStateController controller, String identifier, Profile profile) {
+    public Clause(DialogStateController controller, String identifier, Profile profile) {
         super(controller, identifier, profile);
     }
 

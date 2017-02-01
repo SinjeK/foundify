@@ -11,7 +11,7 @@ import hu.berlin.file.FileLoader;
 import hu.berlin.user.Profile;
 import json.JSONObject;
 
-public class EmploymentPredicate extends Predicate {
+public class EmploymentPredicate extends Clause {
 
 	public enum ResponseType {
 			GENERAL,
