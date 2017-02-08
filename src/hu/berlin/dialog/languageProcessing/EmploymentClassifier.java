@@ -1,7 +1,10 @@
 package hu.berlin.dialog.languageProcessing;
 
+import java.util.List;
+
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
 
 import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig;
 import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig2;
@@ -31,22 +34,39 @@ public class EmploymentClassifier implements Classifier {
 		EmploymentCategory category;
         Classification result = this.classifier.classify(EmploymentClassifier.IDENTIFIER, input).execute();
        
-        switch (result.getTopClass()) {
-        case "Studium":
-            category = EmploymentCategory.STUDENT;
-            break;
-        case "Qualification":
-            category = EmploymentCategory.SCIENTIST;
-            break;
-        case "Phd":
-            category = EmploymentCategory.OTHER_EMPLOYMENT;
-            break;
-        case "Master":
-            category = EmploymentCategory.UNEMPLOYED;
-            break;
-        default:
-            category = EmploymentCategory.UNSPECIFIED;
-    }
+        List<ClassifiedClass> classes = result.getClasses();
+        double confidence;
+        double topConfidence = 0.0; 
+        ClassifiedClass topClass;
+        for (ClassifiedClass c : classes) {
+        	confidence = c.getConfidence();
+        	if (confidence > topConfidence) {
+        		topConfidence = confidence;
+        		topClass = c;
+        	}
+        }
+        
+        //TODO: welchen Wert nehmen?? 
+        if (topConfidence < 0.5) {
+        	category = EmploymentCategory.UNSPECIFIED;
+        } else {
+	        switch (result.getTopClass()) {
+	        case "Studium":
+	            category = EmploymentCategory.STUDENT;
+	            break;
+	        case "Qualification":
+	            category = EmploymentCategory.SCIENTIST;
+	            break;
+	        case "Phd":
+	            category = EmploymentCategory.OTHER_EMPLOYMENT;
+	            break;
+	        case "Master":
+	            category = EmploymentCategory.UNEMPLOYED;
+	            break;
+	        default:
+	            category = EmploymentCategory.UNSPECIFIED;
+	        }      
+        }
 
     return category;
 }

@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
 
 import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.api.Synset;
@@ -49,31 +50,45 @@ public class IdeaClassifier implements Classifier {
 		InnoCategory category;
         Classification result = this.classifier.classify(IdeaClassifier.IDENTIFIER, input).execute();
        
-        //if (result.getTopClass().getTopConfidence() < 0.5)  -- sollte keine string zurueckgeben..IdeaClassifier.
+        List<ClassifiedClass> classes = result.getClasses();
+        double confidence;
+        double topConfidence = 0.0; 
+        ClassifiedClass topClass;
+        for (ClassifiedClass c : classes) {
+        	confidence = c.getConfidence();
+        	if (confidence > topConfidence) {
+        		topConfidence = confidence;
+        		topClass = c;
+        	}
+        }
         
-        switch (result.getTopClass()) {
-        case "Innovativ":
-            category = InnoCategory.INNOVATIVE;
-            break;
-        case "Technologieorientiert":
-            category = InnoCategory.INNOVATIVE;
-            break;
-        case "Wissensbasiert":
-            category = InnoCategory.INNOVATIVE;
-            break;
-        case "nicht innovativ":
-            category = InnoCategory.NOT_INNOVATIVE;
-            break;
-        case "nicht riskant":
-            category = InnoCategory.NOT_RISKY;
-            break;
-        case "riskant":
-            category = InnoCategory.INNORISKY;
-            break;
-        default:
-            category = InnoCategory.UNSPECIFIED;
-    }
-
+        //TODO: welchen Wert nehmen?? 
+        if (topConfidence < 0.5) {
+        	category = InnoCategory.UNSPECIFIED;
+        } else {        
+	        switch (result.getTopClass()) {
+	        case "Innovativ":
+	            category = InnoCategory.INNOVATIVE;
+	            break;
+	        case "Technologieorientiert":
+	            category = InnoCategory.INNOVATIVE;
+	            break;
+	        case "Wissensbasiert":
+	            category = InnoCategory.INNOVATIVE;
+	            break;
+	        case "nicht innovativ":
+	            category = InnoCategory.NOT_INNOVATIVE;
+	            break;
+	        case "nicht riskant":
+	            category = InnoCategory.NOT_RISKY;
+	            break;
+	        case "riskant":
+	            category = InnoCategory.INNORISKY;
+	            break;
+	        default:
+	            category = InnoCategory.UNSPECIFIED;
+	        }
+        }
     return category;
 }
 

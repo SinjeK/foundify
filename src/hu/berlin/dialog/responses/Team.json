@@ -1,0 +1,33 @@
+{
+"data" : {
+	"GENERAL" : [
+	"Dann stelle doch jetzt bitte dien Team vor und geh' dabei besonders auf eure Erfahrungen im betriebswirtschaftlichen Bereich 
+	sowie eure wissenschaftlichen und technischen Kenntnisse ein, die für die Umsetzung eurer Gründungsidee notwendig sind."
+	],
+	"BUSISCITECH" : [
+	"Ihr seid also gut aufgestellt, euer Projekt in die Tat umzusetzen!"
+	],
+	"BUSISCI" : [
+	"Ok, bei euch fehlt es also noch ein bisschen im Bereich der technischen Expertise."
+	],
+	"BUSITECH" : [
+	"Ihr könntet also noch etwas etwas wissenschaftliche Unterstützung gebrauchen."
+	],
+	"SCITECH" : [
+	"Bei euch fehlt also ein Betriebswirt."
+	],
+	"BUSI" : [
+	"Ok, vielen Dank für die Erklärung. Ihr sucht also noch weitere Teammitglieder, nehme ich an?"
+	],
+	"SCI" : [
+	"Ein bisschen Unterstützung im wirtschaftlichen und technischen Bereich wäre also nicht schlecht."
+	],
+	"TECH" : [
+	"Ok, weitere Teammitglieder mit BWL-Kenntnissen und einem fundierten wissenschaftlichen Hintergrund wären also nicht schlecht."
+	],
+	"UNSPECIFIED" : [
+	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. Könntest du das nochmal wiederholen und genauer auf den Innovationsgehalt eingehen?",
+	"Leider habe ich dich nicht verstanden. Kannst du das noch einmal wiederholen?"
+	]
+	}
+}
