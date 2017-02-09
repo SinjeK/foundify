@@ -61,7 +61,7 @@ public class EmploymentClassifier implements Classifier {
 	        case "Unemployed":
 	            category = EmploymentCategory.UNEMPLOYED;
 	            break;
-	        case "Other_Employment":
+	        case "Other Employment":
 	            category = EmploymentCategory.OTHER_EMPLOYMENT;
 	            break;
 	        default:
