@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
+import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 //import hu.berlin.dialog.clause;
@@ -87,15 +88,23 @@ public class EmploymentClause extends Clause {
         switch (category) {
             case STUDENT:
                 put(getResponse(ResponseType.STUDENT));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.isStudent);
+                this.leave();
                 break;
             case SCIENTIST:
                 put(getResponse(ResponseType.SCIENTIST));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.isScientist);
+                this.leave();
                 break;
             case UNEMPLOYED:
                 put(getResponse(ResponseType.UNEMPLOYED));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.isUnemployed);
+                this.leave();
                 break;
             case OTHER_EMPLOYMENT:
                 put(getResponse(ResponseType.OTHER_EMPLOYMENT));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.isEmployed);
+                this.leave();
                 break;
             case UNSPECIFIED:
                 put(getResponse(ResponseType.UNSPECIFIED));
