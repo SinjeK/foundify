@@ -36,7 +36,6 @@ private boolean running;
 		super(controller, identifier, profile);
 		this.classifier = new IdeaClassifier();
 		
-		//TODO: IdeaClassifier.json schreiben... 
 		try {
             String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/idea.json");
             this.rootJSON = new JSONObject(JSONContent);
