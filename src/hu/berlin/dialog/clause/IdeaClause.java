@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
+import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier;
@@ -82,12 +83,19 @@ private boolean running;
 	        switch (category) {
 	            case INNOVATIVE:
 	                put(getResponse(ResponseType.INNOVATIVE));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.isInnovative);
+	                this.leave();
 	                break;
 	            case INNORISKY:
 	                put(getResponse(ResponseType.INNORISKY));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.isInnovative);
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.failureIsPossible);
+	                this.leave();
 	                break;
 	            case NOT_INNOVATIVE:
 	                put(getResponse(ResponseType.NOT_INNOVATIVE));
+	                this.getProfile().setValueForPredicate(false, PredicateConstants.isInnovative);
+	                this.leave();
 	                break;
 	            case UNSPECIFIED:
 	                put(getResponse(ResponseType.UNSPECIFIED));
@@ -105,8 +113,8 @@ private boolean running;
     }
 
     private String getWelcomeResponse() {
-        return "Super, vielen Dank! Kannst du deine Gründungsidee jetzt einmal genauer beschreiben "
-        		+ "- worum geht es, wie sieht es mit Markt, Mitbewerbern und Innovationsgehalt aus?";
+        return "Dann lass uns jetzt über deine Gründungsidee reden."; //"Super, vielen Dank! Kannst du deine Gründungsidee jetzt einmal genauer beschreiben "
+        	//	+ "- worum geht es, wie sieht es mit Markt, Mitbewerbern und Innovationsgehalt aus?";
     }
 
     private String getResponse(ResponseType type) {

@@ -67,38 +67,50 @@ public class AssistanceProgramsEvaluator {
                 return "https://www3.arbeitsagentur.de/web/content/DE/BuergerinnenUndBuerger/FinanzielleHilfen/Existenzgruendung/index.htm";
             }
         },
-        IBBBerlinInnovation {
+        IBBBerlinInnovation { 
             public String toString() {
-                return "EXIST Gründerstipendium";
+                return "IBB Berlin Innovativ";
             }
 
             public String description() {
-                return "beshcreibung";
+                return "Berlin Innovativ ermöglicht innovativen mittelständischen Unternehmen, Freiberuflern und Startups eine " + 
+"zinsgünstige Finanzierung von Investitionen und Betriebsmitteln. Die Kredite aus Mitteln der Investitionsbank " +
+"Berlin (IBB) werden im Hausbankverfahren mit einer Haftungsfreistellung für die durchleitende Bank " +
+"in Höhe von 70 % vergeben. Die Finanzierung wird von der InnovFin KMU-Kreditgarantiefazilität des Horizon " +
+"2020-Programms der Europäischen Union (Rahmenprogramm für Forschung und Innovation) und " +
+"dem unter der Investitionsoffensive für Europa errichteten Europäischen Fonds für strategische Investitionen " +
+"(„EFSI“) ermöglicht. Zweck des EFSI ist es, die Finanzierung und Durchführung produktiver Investitionen " +
+"in der Europäischen Union zu fördern sowie einen verbesserten Zugang zu Finanzierungen sicherzustellen.";
             }
 
             public String url() {
-                return "";
+                return "https://www.ibb.de/de/foerderprogramme/berlin-innovativ.html";
             }
         },
         IBBBerlinInnovationsAssistent {
             public String toString() {
-                return "EXIST Gründerstipendium";
+                return "IBB Berlin Innovationsassistent";
             }
 
             public String description() {
-                return "beshcreibung";
+                return "Sie sind in der Gründungsphase und wollen sich mit Ihrem Unternehmen erfolgreich "
+                		+ "am Markt positionieren? Oder sind Sie ein etabliertes Unternehmen und wollen "
+                		+ "expandieren? Ein Weg, um geeignete Grundlagen dafür zu schaffen, ist die "
+                		+ "Einstellung von qualifizierten Universitäts- oder "
+                		+ "(Fach)Hochschulabsolventen/-innen. Mit Personalkostenzuschüssen unterstützt "
+                		+ "die IBB im Auftrag der Senatsverwaltung für Wirtschaft, Technologie und "
+                		+ "Forschung die Einstellung von Innovationsassistenten/-innen.";
             }
 
             public String url() {
-                return "";
+                return "https://www.ibb.de/de/foerderprogramme/innovationsassistent-in.html";
             }
         }
     }
 
     public static List<AssistancePrograms> findSuitableAssistancePrograms(UserProfile profile) {
         boolean hasPHD = profile.getValueForPredicate(PredicateConstants.hasPHD);
-        boolean isWimi = profile.getValueForPredicate(PredicateConstants.isWiMi);
-        boolean isProf = profile.getValueForPredicate(PredicateConstants.isProfessor);
+        boolean isScientist = profile.getValueForPredicate(PredicateConstants.isScientist);
         boolean isInno = profile.getValueForPredicate(PredicateConstants.isInnovative);
         boolean isKnowledgeBased = profile.getValueForPredicate(PredicateConstants.isKnowledgeBased);
         boolean isTechno = profile.getValueForPredicate(PredicateConstants.isTechnologyOriented);
@@ -106,18 +118,23 @@ public class AssistanceProgramsEvaluator {
         boolean isStudent = profile.getValueForPredicate(PredicateConstants.isStudent);
         boolean isUnemployed = profile.getValueForPredicate(PredicateConstants.isUnemployed);
         boolean failureIsPossible = profile.getValueForPredicate(PredicateConstants.failureIsPossible);
-
+        boolean threeMembersOrFewer = profile.getValueForPredicate(PredicateConstants.threeMembersOrFewer);
+        boolean four = profile.getValueForPredicate(PredicateConstants.fourMembers);
+        boolean moreThanFourMembers = profile.getValueForPredicate(PredicateConstants.moreThanFourMembers);
+        
         List <AssistancePrograms> suitablePrograms = new ArrayList<>();
 
         if ((isRecentGraduate) &&
                 (isStudent) &&
-                (isInno && (isKnowledgeBased || isTechno)) ) {
+                (isInno /* && (isKnowledgeBased || isTechno)*/ ) && 
+                threeMembersOrFewer) {
             suitablePrograms.add(AssistancePrograms.ExistGruenderstipendium);
         }
 
         if (hasPHD &&
-                (isWimi || isProf) &&
-                (isInno && (isKnowledgeBased || isTechno))) {
+                (isScientist) &&
+                (isInno /*&& (isKnowledgeBased || isTechno)*/) &&
+                (!moreThanFourMembers)) {
             suitablePrograms.add(AssistancePrograms.ExistForschungstransfer);
         }
 
@@ -129,7 +146,7 @@ public class AssistanceProgramsEvaluator {
             suitablePrograms.add(AssistancePrograms.IBBBerlinInnovation);
         }
 
-        if ((isInno)) {
+        if ((isInno)) {   //hier sollte noch & lookingForEmployees hinein, oder? 
             suitablePrograms.add(AssistancePrograms.IBBBerlinInnovationsAssistent);
         }
 

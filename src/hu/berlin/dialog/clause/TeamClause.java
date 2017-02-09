@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
+import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.languageProcessing.TeamClassifier;
 import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
 import hu.berlin.file.FileLoader;
@@ -85,24 +86,43 @@ private boolean running;
 	        switch (category) {
 	            case BUSISCITECH:
 	                put(getResponse(ResponseType.BUSISCITECH));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasBusinessExpertise);
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasScientificExpertise);
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasTechnicalExpertise);
+	                this.leave();
 	                break;
 	            case BUSITECH:
 	                put(getResponse(ResponseType.BUSITECH));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasBusinessExpertise);
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasTechnicalExpertise);
+	                this.leave();
 	                break;
 	            case BUSISCI:
 	                put(getResponse(ResponseType.BUSISCI));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasBusinessExpertise);
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasScientificExpertise);
+	                this.leave();
 	                break;
 	            case SCITECH:
 	                put(getResponse(ResponseType.SCITECH));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasTechnicalExpertise);
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasScientificExpertise);
+	                this.leave();
 	                break;
 	            case BUSI:
 	                put(getResponse(ResponseType.BUSI));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasBusinessExpertise);
+	                this.leave();
 	                break;
 	            case SCI:
 	                put(getResponse(ResponseType.SCI));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasScientificExpertise);
+	                this.leave();
 	                break;
 	            case TECH:
 	                put(getResponse(ResponseType.TECH));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.memberHasTechnicalExpertise);
+	                this.leave();
 	                break;
 	            case UNSPECIFIED:
 	                put(getResponse(ResponseType.UNSPECIFIED));

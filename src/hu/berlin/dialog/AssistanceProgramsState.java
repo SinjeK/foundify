@@ -2,6 +2,8 @@ package hu.berlin.dialog;
 import hu.berlin.dialog.clause.EducationClause;
 import hu.berlin.dialog.clause.EmploymentClause;
 import hu.berlin.dialog.clause.IdeaClause;
+import hu.berlin.dialog.clause.TeamClause;
+import hu.berlin.dialog.clause.TeamSizeClause;
 import hu.berlin.dialog.evaluation.AssistanceProgramsEvaluator;
 import hu.berlin.dialog.evaluation.AssistanceProgramsEvaluator.AssistancePrograms;
 import hu.berlin.user.UserProfile;
@@ -45,6 +47,12 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
         } else if (state.getIdentifier().equals("employment")) {
             IdeaClause idea = new IdeaClause(this, "idea", this.getProfile());
             this.enterState(idea);
+       /* } else if (state.getIdentifier().equals("idea")) {
+        	TeamClause team = new TeamClause(this, "team", this.getProfile());
+            this.enterState(team);
+        } else if (state.getIdentifier().equals("team")) { 
+        	TeamSizeClause size = new TeamSizeClause(this, "size", this.getProfile());
+            this.enterState(size);*/
         } else if (state.getIdentifier().equals("idea")) {
             // implement end
 

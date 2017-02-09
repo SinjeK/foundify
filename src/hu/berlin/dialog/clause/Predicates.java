@@ -21,6 +21,9 @@ public class Predicates {
         isTechnologyOriented,
         failureIsPossible,
         teamSize, // integer
+        threeMembersOrFewer,
+        fourMembers,
+        moreThanFourMembers,
         memberHasBusinessExpertise,
         memberHasScientificExpertise,
         memberHasTechnicalExpertise,

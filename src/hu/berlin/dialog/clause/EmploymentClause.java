@@ -122,7 +122,7 @@ public class EmploymentClause extends Clause {
     }
 
     private String getWelcomeResponse() {
-        return "Super, vielen Dank! Jetzt müsste ich erstmal noch etwas über deine Arbeitserfahrung wissen.";
+        return "Gut, dann geht es jetzt erstmal um deine berufliche Erfahrung.";
     }
 
     private String getResponse(ResponseType type) {

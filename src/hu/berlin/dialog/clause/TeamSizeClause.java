@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
+import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.clause.TeamClause.ResponseType;
 import hu.berlin.dialog.languageProcessing.TeamClassifier;
 import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
@@ -81,16 +82,22 @@ public class TeamSizeClause extends Clause {
 	        switch (category) {
 	            case THREEORFEWER:
 	                put(getResponse(ResponseType.THREEORFEWER));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.threeMembersOrFewer);
+	                this.leave();
 	                break;
 	            case FOUR:
 	                put(getResponse(ResponseType.FOUR));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.fourMembers);
+	                this.leave();
 	                break;
 	            case MORETHANFOUR:
 	                put(getResponse(ResponseType.MORETHANFOUR));
+	                this.getProfile().setValueForPredicate(true, PredicateConstants.moreThanFourMembers);
+	                this.leave();
 	                break;
-	           // case UNSPECIFIED:
-	             //   put(getResponse(ResponseType.UNSPECIFIED));
-	              //  break;
+	            case UNSPECIFIED:
+	                put(getResponse(ResponseType.UNSPECIFIED));
+	                break;
 	            default:
 	                //assert false : "Unhandled case in switch! category: " + category.toString();
 	            	put(getResponse(ResponseType.UNSPECIFIED));

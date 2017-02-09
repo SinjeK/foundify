@@ -45,11 +45,11 @@ public class EmploymentClassifier implements Classifier {
               topClass = c;
            }
         }
-        System.out.println(topClass.toString());
+       // System.out.println(topClass.toString());
         
         if (topConfidence < 0.5) {
            category = EmploymentCategory.UNSPECIFIED;
-           System.out.println(topConfidence);
+          // System.out.println(topConfidence);
         } else {
 	        switch (result.getTopClass()) {
 	        case "Student":
