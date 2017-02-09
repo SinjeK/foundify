@@ -1,32 +1,93 @@
 package hu.berlin.dialog.clause;
+import hu.berlin.dialog.languageProcessing.Classifier.*;
 import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.EducationClassifier;
 import hu.berlin.dialog.languageProcessing.EducationClassifier.EducationCategory;
 import hu.berlin.user.Profile;
-import json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
+import json.JSONObject;
 
 /**
  * Created by Duc on 05.01.17.
+ *
+ * The dialog diagram can be found in the folder /documentation/dialog
  */
 public class EducationClause extends Clause {
 
-    private enum ResponseType {
-        GENERAL,
-        STUDIUM,
-        UNSPECIFIED,
-        PHD,
-        BACHELOR,
-        MASTER,
-        ABITUR,
-        QUALIFICATION
+    private interface StateAction {
+        State handle(Category category);
+    };
+
+    private enum State implements StateAction {
+        START {
+            @Override
+            public State handle(Category category) {
+                EducationCategory educat = (EducationCategory)category;
+                State nextState;
+
+                switch (educat) {
+                    case ABITUR:
+                        nextState = State.END;
+                        break;
+                    case QUALIFICATION:
+                        nextState = State.END;
+                        break;
+                    case MASTER:
+                    case PHD:
+                    case BACHELOR:
+                        nextState = State.RECENT_ACADEMIC_QUALIFICATION;
+                        break;
+                    case UNSPECIFIED:
+                        nextState = State.REPEAT;
+                        break;
+                    case STUDIUM:
+                        nextState = State.ACADEMIC_QUALIFICATION;
+                        break;
+                    default:
+                        assert false : "Unhandled case for " + category.toString() + " in EducationClause@getResponse(Questiontype)";
+                        nextState = State.REPEAT;
+                }
+
+                return nextState;
+            };
+        },
+        ACADEMIC_QUALIFICATION {
+            @Override
+            public State handle(Category category) {
+                // to be implemented
+            }
+        },
+        RECENT_ACADEMIC_QUALIFICATION {
+            @Override
+            public State handle(Category category) {
+                // to be implemented
+            }
+        },
+        REPEAT {
+            @Override
+            public State handle(Category category) {
+                assert false : "State 'REPEAT' is just an empty state. Do not call its methods";
+                return State.REPEAT;
+            };
+        },
+        END {
+            @Override
+            public State handle(Category category) {
+                assert false : "State 'UNSPECIFIED' is just an empty state. Do not call its methods";
+                return State.END;
+            };
+        };
     };
 
     private EducationClassifier classifier;
     private JSONObject rootJSON;
+
+    /**
+     * Tracks the current state
+     */
+    private State currentState;
 
     /**
      * True if predicate is currently evaluating a string.
@@ -59,13 +120,23 @@ public class EducationClause extends Clause {
         return this.running;
     }
 
+    private State getCurrentState() {
+        return this.currentState;
+    }
+
+    private void setCurrentState(State state) {
+        this.currentState = state;
+    }
+
     // Dialog State
     @Override
     public void enter() {
         super.enter();
 
-        put(getWelcomeResponse());
-        put(getResponse(ResponseType.GENERAL));
+        // initialize states
+        this.setCurrentState(State.START);
+        // print response of the starting state
+        put(getResponse(State.START));
     }
 
     /**
@@ -76,75 +147,35 @@ public class EducationClause extends Clause {
      */
     @Override
     public void evaluate(String input) {
-        super.evaluate(input);
 
         if (this.isRunning()) {
             this.put("Warte ich schaue gerade nach passenden Förderprogrammen");
             return;
         }
 
+        // Processing input
         this.setRunning(true);
-        EducationCategory category = this.classifier.classify(input);
 
-        switch (category) {
-            case QUALIFICATION:
-                put(getResponse(ResponseType.QUALIFICATION));
-                break;
-            case ABITUR:
-                put(getResponse(ResponseType.ABITUR));
-                break;
-            case BACHELOR:
-                put(getResponse(ResponseType.BACHELOR));
-                break;
-            case MASTER:
-                put(getResponse(ResponseType.MASTER));
-                break;
-            case PHD:
-                put(getResponse(ResponseType.PHD));
-                break;
-            case STUDIUM:
-                put(getResponse(ResponseType.STUDIUM));
-                break;
-            case UNSPECIFIED:
-                put(getResponse(ResponseType.UNSPECIFIED));
-                break;
-            default:
-                assert false : "Unhandled case in switch! category: " + category.toString();
+        EducationCategory category = this.classifier.classify(input);
+        State nextState = this.getCurrentState().handle(category);
+        this.setCurrentState(nextState);
+
+        if (nextState == State.END) {
+            this.leave();
         }
 
+        // Processing finished
         this.setRunning(false);
     }
 
     // Response generation
-    private List getAllResponses(ResponseType type) {
+    private List getAllResponses(State type) {
         return this.rootJSON.getJSONObject("data").getJSONArray(type.name()).toList();
     }
 
-    private String getWelcomeResponse() {
-        return "So dann lass uns nach passenden Förderprogrammen schauen";
-    }
-
-    private String getResponse(ResponseType type) {
+    private String getResponse(State type) {
         List responses = this.getAllResponses(type);
         String question = (String) responses.get((int)(Math.random() * responses.size()));
-
-        switch (type) {
-            case GENERAL:
-                break;
-            case STUDIUM:
-                break;
-            case UNSPECIFIED:
-                break;
-            case QUALIFICATION:
-            case PHD:
-            case ABITUR:
-            case MASTER:
-            case BACHELOR:
-                break;
-            default:
-                assert false : "Unhandled case for " + type.toString() + " in EducationPredicate@getResponse(Questiontype)";
-        }
-
         return question;
     }
 
