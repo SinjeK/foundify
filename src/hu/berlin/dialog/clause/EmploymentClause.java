@@ -1,11 +1,15 @@
 package hu.berlin.dialog.clause;
+
 import java.io.IOException;
 import java.util.List;
+
 import hu.berlin.dialog.DialogStateController;
+import hu.berlin.dialog.clause.EmploymentClause.ResponseType;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
+//import hu.berlin.dialog.clause;
 import hu.berlin.file.FileLoader;
-import hu.berlin.user.UserProfile;
+import hu.berlin.user.Profile;
 import json.JSONObject;
 
 public class EmploymentClause extends Clause {
@@ -29,10 +33,10 @@ public class EmploymentClause extends Clause {
      */
     private boolean running;
 	
-	public EmploymentClause(DialogStateController controller, String identifier, UserProfile profile) {
+	public EmploymentClause(DialogStateController controller, String identifier, Profile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new EmploymentClassifier();
-
+		
 		try {
             String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/emplyoment.json");
             this.rootJSON = new JSONObject(JSONContent);
@@ -131,7 +135,7 @@ public class EmploymentClause extends Clause {
             case UNEMPLOYED:
                 break;
             default:
-                assert false : "Unhandled case for " + type.toString() + " in EmploymentClause@getResponse(Questiontype)";
+                assert false : "Unhandled case for " + type.toString() + " in EmploymentPredicate@getResponse(Questiontype)";
         }
 
         return question;

@@ -4,49 +4,47 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
-import hu.berlin.dialog.languageProcessing.IdeaClassifier;
-import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
-//import hu.berlin.dialog.predicates.Clause;
+import hu.berlin.dialog.clause.TeamClause.ResponseType;
+import hu.berlin.dialog.languageProcessing.TeamClassifier;
+import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
+import hu.berlin.dialog.languageProcessing.TeamSizeClassifier;
+import hu.berlin.dialog.languageProcessing.TeamSizeClassifier.SizeCategory;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.Profile;
 import json.JSONObject;
 
-public class IdeaClause extends Clause {  //extends Predicate
+public class TeamSizeClause extends Clause {
 	
 	public enum ResponseType {
-		GENERAL,     //first question
-		INNOVATIVE,
-		INNORISKY,
-		NOT_INNOVATIVE,
-		UNSPECIFIED
-}
+		GENERAL,
+		UNSPECIFIED,
+		THREEORFEWER,
+		FOUR,
+		MORETHANFOUR
+	}
 
-private IdeaClassifier classifier;
-private JSONObject rootJSON;
-
-/**
- * True if predicate is currently evaluating a string.
- * Otherwise false.
- */
-private boolean running;
-
-	public IdeaClause(DialogStateController controller, String identifier, Profile profile) {
+	private TeamSizeClassifier classifier;
+	private JSONObject rootJSON;
+	
+	/**
+	 * True if predicate is currently evaluating a string.
+	 * Otherwise false.
+	 */
+	private boolean running;
+	
+	public TeamSizeClause(DialogStateController controller, String identifier, Profile profile) {
 		super(controller, identifier, profile);
-		this.classifier = new IdeaClassifier();
-		
-		//TODO: IdeaClassifier.json schreiben... 
+		this.classifier = new TeamSizeClassifier();
+	
 		try {
-            String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/idea.json");
+            String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/teamsize.json");
             this.rootJSON = new JSONObject(JSONContent);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
 		
-	}
-	
+	}  
 	// Setter & Getter
     private void setRunning(boolean r) {
         this.running = r;
@@ -78,23 +76,25 @@ private boolean running;
 	        }
 
 	        this.setRunning(true);
-	        InnoCategory category = this.classifier.classify(input);
+	        SizeCategory category = this.classifier.classify(input);
 
 	        switch (category) {
-	            case INNOVATIVE:
-	                put(getResponse(ResponseType.INNOVATIVE));
+	            case THREEORFEWER:
+	                put(getResponse(ResponseType.THREEORFEWER));
 	                break;
-	            case INNORISKY:
-	                put(getResponse(ResponseType.INNORISKY));
+	            case FOUR:
+	                put(getResponse(ResponseType.FOUR));
 	                break;
-	            case NOT_INNOVATIVE:
-	                put(getResponse(ResponseType.NOT_INNOVATIVE));
+	            case MORETHANFOUR:
+	                put(getResponse(ResponseType.MORETHANFOUR));
 	                break;
-	            case UNSPECIFIED:
-	                put(getResponse(ResponseType.UNSPECIFIED));
-	                break;
+	           // case UNSPECIFIED:
+	             //   put(getResponse(ResponseType.UNSPECIFIED));
+	              //  break;
 	            default:
-	                assert false : "Unhandled case in switch! category: " + category.toString();
+	                //assert false : "Unhandled case in switch! category: " + category.toString();
+	            	put(getResponse(ResponseType.UNSPECIFIED));
+		            break;
 	        }
 
 	        this.setRunning(false);
@@ -106,8 +106,8 @@ private boolean running;
     }
 
     private String getWelcomeResponse() {
-        return "Super, vielen Dank! Kannst du deine Gründungsidee jetzt einmal genauer beschreiben "
-        		+ "- worum geht es, wie sieht es mit Markt, Mitbewerbern und Innovationsgehalt aus?";
+        return "Super, dann machen wir mit dem nächsten Schritt weiter! Kannst du kurz dein Team vorstellen - wie viele  "
+        		+ " und dabei besonders relevante Erfahrungen in Wirtschaft und Wissenschaft beschreiben?";
     }
 
     private String getResponse(ResponseType type) {
@@ -117,19 +117,17 @@ private boolean running;
         switch (type) {
             case GENERAL:
                 break;
-            case INNOVATIVE:
+            case THREEORFEWER:
                 break;
             case UNSPECIFIED:
                 break;
-            case INNORISKY:
+            case FOUR:
             	break;
-            case NOT_INNOVATIVE:
+            case MORETHANFOUR:
             	break;
             default:
                 assert false : "Unhandled case for " + type.toString() + " in IdeaPredicate@getResponse(Questiontype)";
         }
-
         return question;
     }
-
 }

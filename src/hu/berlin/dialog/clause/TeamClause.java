@@ -4,26 +4,27 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
-import hu.berlin.dialog.languageProcessing.IdeaClassifier;
-import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
-//import hu.berlin.dialog.predicates.Clause;
+import hu.berlin.dialog.languageProcessing.TeamClassifier;
+import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.Profile;
 import json.JSONObject;
 
-public class IdeaClause extends Clause {  //extends Predicate
+public class TeamClause extends Clause {  
 	
 	public enum ResponseType {
-		GENERAL,     //first question
-		INNOVATIVE,
-		INNORISKY,
-		NOT_INNOVATIVE,
-		UNSPECIFIED
+		BUSISCITECH,
+		BUSITECH,
+		BUSISCI,
+		SCITECH,
+		BUSI,
+		SCI,
+		TECH,
+		UNSPECIFIED, 
+		GENERAL
 }
 
-private IdeaClassifier classifier;
+private TeamClassifier classifier;
 private JSONObject rootJSON;
 
 /**
@@ -32,20 +33,19 @@ private JSONObject rootJSON;
  */
 private boolean running;
 
-	public IdeaClause(DialogStateController controller, String identifier, Profile profile) {
+	public TeamClause(DialogStateController controller, String identifier, Profile profile) {
 		super(controller, identifier, profile);
-		this.classifier = new IdeaClassifier();
-		
-		//TODO: IdeaClassifier.json schreiben... 
+		this.classifier = new TeamClassifier();
+	
 		try {
-            String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/idea.json");
+            String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/team.json");
             this.rootJSON = new JSONObject(JSONContent);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
 		
-	}
+	}  
 	
 	// Setter & Getter
     private void setRunning(boolean r) {
@@ -71,6 +71,8 @@ private boolean running;
 
 	public void evaluate(String input) {
 		 super.evaluate(input);
+		 
+		 //TODO: Teamgröße herausfinden und zum Response Type hinzufügen... 
 
 	        if (this.isRunning()) {
 	            this.put("Einen Moment bitte! Ich schaue noch nach geeigneten Programmen.");
@@ -78,17 +80,29 @@ private boolean running;
 	        }
 
 	        this.setRunning(true);
-	        InnoCategory category = this.classifier.classify(input);
+	        TeamCategory category = this.classifier.classify(input);
 
 	        switch (category) {
-	            case INNOVATIVE:
-	                put(getResponse(ResponseType.INNOVATIVE));
+	            case BUSISCITECH:
+	                put(getResponse(ResponseType.BUSISCITECH));
 	                break;
-	            case INNORISKY:
-	                put(getResponse(ResponseType.INNORISKY));
+	            case BUSITECH:
+	                put(getResponse(ResponseType.BUSITECH));
 	                break;
-	            case NOT_INNOVATIVE:
-	                put(getResponse(ResponseType.NOT_INNOVATIVE));
+	            case BUSISCI:
+	                put(getResponse(ResponseType.BUSISCI));
+	                break;
+	            case SCITECH:
+	                put(getResponse(ResponseType.SCITECH));
+	                break;
+	            case BUSI:
+	                put(getResponse(ResponseType.BUSI));
+	                break;
+	            case SCI:
+	                put(getResponse(ResponseType.SCI));
+	                break;
+	            case TECH:
+	                put(getResponse(ResponseType.TECH));
 	                break;
 	            case UNSPECIFIED:
 	                put(getResponse(ResponseType.UNSPECIFIED));
@@ -106,8 +120,8 @@ private boolean running;
     }
 
     private String getWelcomeResponse() {
-        return "Super, vielen Dank! Kannst du deine Gründungsidee jetzt einmal genauer beschreiben "
-        		+ "- worum geht es, wie sieht es mit Markt, Mitbewerbern und Innovationsgehalt aus?";
+        return "Super, dann machen wir mit dem nächsten Schritt weiter! Kannst du kurz dein Team vorstellen "
+        		+ " und dabei besonders relevante Erfahrungen in Wirtschaft und Wissenschaft beschreiben?";
     }
 
     private String getResponse(ResponseType type) {
@@ -117,13 +131,19 @@ private boolean running;
         switch (type) {
             case GENERAL:
                 break;
-            case INNOVATIVE:
+            case BUSISCITECH:
                 break;
             case UNSPECIFIED:
                 break;
-            case INNORISKY:
+            case BUSITECH:
             	break;
-            case NOT_INNOVATIVE:
+            case BUSISCI:
+            	break;
+            case BUSI:
+            	break;
+            case SCI:
+            	break;
+            case TECH:
             	break;
             default:
                 assert false : "Unhandled case for " + type.toString() + " in IdeaPredicate@getResponse(Questiontype)";

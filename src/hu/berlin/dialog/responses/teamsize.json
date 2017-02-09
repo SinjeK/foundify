@@ -1,0 +1,21 @@
+{
+"data" : {
+	"GENERAL" : [
+	"Wie viele Leute sind denn eigentlich in deinem Team?",
+	"Aus wie vielen Leuten besteht denn deine Gründungsteam?"
+	],
+	"THREEORFEWER" : [
+	"Ok, es also in jedem Fall weniger als drei Leute im Team."
+	],
+	"FOUR" : [
+	"Ihr seid also zu viert."
+	],
+	"MORETHANFOUR" : [
+	"Wow, ihr seid aber ein großes Team!"
+	],
+	"UNSPECIFIED" : [
+	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. Kannst du einfach nochmal sagen, mit wie vielen Leuten du dein Gründungsprojekt angehen möchtest?",
+	"Leider habe ich dich nicht verstanden. Wie viele Leute seit ihr im Team?"
+	]
+	}
+}
