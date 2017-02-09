@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
-import hu.berlin.dialog.clause.EmploymentClause.ResponseType;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 //import hu.berlin.dialog.clause;
 import hu.berlin.file.FileLoader;
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
 public class EmploymentClause extends Clause {
@@ -33,7 +32,7 @@ public class EmploymentClause extends Clause {
      */
     private boolean running;
 	
-	public EmploymentClause(DialogStateController controller, String identifier, Profile profile) {
+	public EmploymentClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new EmploymentClassifier();
 		

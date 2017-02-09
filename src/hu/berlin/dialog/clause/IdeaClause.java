@@ -10,7 +10,7 @@ import hu.berlin.dialog.languageProcessing.IdeaClassifier;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
 //import hu.berlin.dialog.predicates.Clause;
 import hu.berlin.file.FileLoader;
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
 public class IdeaClause extends Clause {  //extends Predicate
@@ -32,7 +32,7 @@ private JSONObject rootJSON;
  */
 private boolean running;
 
-	public IdeaClause(DialogStateController controller, String identifier, Profile profile) {
+	public IdeaClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new IdeaClassifier();
 		

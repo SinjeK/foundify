@@ -51,22 +51,22 @@ public class EmploymentClassifier implements Classifier {
            category = EmploymentCategory.UNSPECIFIED;
            System.out.println(topConfidence);
         } else {
-           switch (result.getTopClass()) {
-           case "Student":
-               category = EmploymentCategory.STUDENT;
-               break;
-           case "Scientist":
-               category = EmploymentCategory.SCIENTIST;
-               break;
-           case "Unemployed":
-               category = EmploymentCategory.UNEMPLOYED;
-               break;
-           case "Other Employment":
-               category = EmploymentCategory.OTHER_EMPLOYMENT;
-               break;
-           default:
-               category = EmploymentCategory.UNSPECIFIED;
-           }      
+	        switch (result.getTopClass()) {
+	        case "Student":
+	            category = EmploymentCategory.STUDENT;
+	            break;
+	        case "Scientist":
+	            category = EmploymentCategory.SCIENTIST;
+	            break;
+	        case "Unemployed":
+	            category = EmploymentCategory.UNEMPLOYED;
+	            break;
+	        case "Other Employment":
+	            category = EmploymentCategory.OTHER_EMPLOYMENT;
+	            break;
+	        default:
+	            category = EmploymentCategory.UNSPECIFIED;
+	        }      
         }
 
     return category;

@@ -7,7 +7,7 @@ import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.TeamClassifier;
 import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
 import hu.berlin.file.FileLoader;
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
 public class TeamClause extends Clause {  
@@ -33,7 +33,7 @@ private JSONObject rootJSON;
  */
 private boolean running;
 
-	public TeamClause(DialogStateController controller, String identifier, Profile profile) {
+	public TeamClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new TeamClassifier();
 	

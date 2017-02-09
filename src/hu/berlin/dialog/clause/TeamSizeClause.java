@@ -10,7 +10,7 @@ import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
 import hu.berlin.dialog.languageProcessing.TeamSizeClassifier;
 import hu.berlin.dialog.languageProcessing.TeamSizeClassifier.SizeCategory;
 import hu.berlin.file.FileLoader;
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
 public class TeamSizeClause extends Clause {
@@ -32,7 +32,7 @@ public class TeamSizeClause extends Clause {
 	 */
 	private boolean running;
 	
-	public TeamSizeClause(DialogStateController controller, String identifier, Profile profile) {
+	public TeamSizeClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new TeamSizeClassifier();
 	

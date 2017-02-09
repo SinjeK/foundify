@@ -1,6 +1,5 @@
 package hu.berlin.dialog;
-
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 
 /**
  * A state is an independent unit which is responsible for exactly one task. <br>
@@ -25,13 +24,13 @@ public abstract class DialogState {
      */
     private String identifier;
 
-    private Profile profile;
+    private UserProfile profile;
 
 
     //------ CONSTRUCTOR  ------------------------------------//
 
 
-    public DialogState(DialogStateController controller, String identifier, Profile profile) {
+    public DialogState(DialogStateController controller, String identifier, UserProfile profile) {
         super();
         this.controller = controller;
         this.identifier = identifier;
@@ -44,11 +43,11 @@ public abstract class DialogState {
     }
     */
 
-    protected Profile getProfile() {
+    protected UserProfile getProfile() {
         return this.profile;
     }
 
-    private void setProfile(Profile p) {
+    private void setProfile(UserProfile p) {
         this.profile = p;
     }
 

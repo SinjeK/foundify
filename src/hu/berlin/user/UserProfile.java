@@ -1,14 +1,14 @@
 package hu.berlin.user;
-import hu.berlin.dialog.clause.predicate.Predicate;
-import hu.berlin.dialog.clause.predicate.Predicate.Instance;
+import hu.berlin.dialog.clause.Predicates.PredicateConstants;
+
 import java.util.HashMap;
 
 /**
  * Created by Duc on 10.01.17.
  */
-public class UserProfile implements Profile, Instance {
+public class UserProfile {
 
-    class UserProfileException extends ProfileException {
+    class UserProfileException extends Exception {
         public UserProfileException(String message) {
             super(message);
         }
@@ -24,7 +24,7 @@ public class UserProfile implements Profile, Instance {
         this.map = new HashMap<String, HashMap<String, Object>>();
     }
 
-    private HashMap<String, Object> serviceMap(String identifier) {
+    private HashMap<String, Object> getServiceMap(String identifier) {
         HashMap <String, Object> serviceMap = this.map.get(identifier);
 
         if (serviceMap == null) {
@@ -35,36 +35,36 @@ public class UserProfile implements Profile, Instance {
         return serviceMap;
     }
 
-    // Instance implementation
-    private HashMap<String, Boolean> getPredicateMap() {
-        HashMap map = this.serviceMap(kUserProfilePredicateIdentifier);
-        return map;
+    public void setValueForPredicate(boolean value, PredicateConstants predicate) {
+        this.setBooleanForKey(value, predicate.name(), kUserProfilePredicateIdentifier);
     }
 
-    @Override
-    public void setValueForPredicate(Predicate p, boolean val) {
-        this.getPredicateMap().put(p.getIdentifier(), val);
+    public boolean getValueForPredicate(PredicateConstants predicate) {
+        try {
+            if (this.doesValueAtPredicateExist(predicate)) {
+                return this.getBooleanForKey(predicate.name(), kUserProfilePredicateIdentifier);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+            System.exit(-1);
+            return false;
+        }
     }
 
-    @Override
-    public boolean getValueForPredicate(Predicate p) {
-        return this.getPredicateMap().get(p.getIdentifier());
-    }
-
-    @Override
-    public boolean predicateWasSet(Predicate p) {
-        return this.getPredicateMap().get(p.getIdentifier()) != null;
+    public boolean doesValueAtPredicateExist(PredicateConstants predicate) {
+        Object o = this.getServiceMap(kUserProfilePredicateIdentifier).get(predicate.name());
+        return o!=null;
     }
 
     // Profile implementation
-    @Override
-    public void setBooleanForKey(boolean b, String key, String identifier) {
-        this.serviceMap(identifier).put(key, b);
+    private void setBooleanForKey(boolean b, String key, String identifier) {
+        this.getServiceMap(identifier).put(key, b);
     }
 
-    @Override
-    public boolean getBooleanForKey(String key, String identifier) throws UserProfileException {
-        Object o = this.serviceMap(identifier).get(key);
+    private boolean getBooleanForKey(String key, String identifier) throws UserProfileException {
+        Object o = this.getServiceMap(identifier).get(key);
         if (o == null) {
             throw new UserProfileException("Object at key " + key + " is null!");
         } else if (o instanceof Boolean) {
@@ -74,14 +74,12 @@ public class UserProfile implements Profile, Instance {
         }
     }
 
-    @Override
-    public void setStringForKey(String content, String key, String identifier) {
-        this.serviceMap(identifier).put(key, content);
+    private void setStringForKey(String content, String key, String identifier) {
+        this.getServiceMap(identifier).put(key, content);
     }
 
-    @Override
-    public String getStringForKey(String key, String identifier) throws UserProfileException {
-        Object o = this.serviceMap(identifier).get(key);
+    private String getStringForKey(String key, String identifier) throws UserProfileException {
+        Object o = this.getServiceMap(identifier).get(key);
         if (o == null) {
             throw new UserProfileException("Object at key " + key + " is null!");
         } else if (o instanceof String) {
@@ -91,14 +89,12 @@ public class UserProfile implements Profile, Instance {
         }
     }
 
-    @Override
-    public void setIntForKey(int i, String key, String identifier) {
-        this.serviceMap(identifier).put(key, i);
+    private void setIntForKey(int i, String key, String identifier) {
+        this.getServiceMap(identifier).put(key, i);
     }
 
-    @Override
-    public int getIntForKey(String key, String identifier) throws UserProfileException {
-        Object o = this.serviceMap(identifier).get(key);
+    private int getIntForKey(String key, String identifier) throws UserProfileException {
+        Object o = this.getServiceMap(identifier).get(key);
         if (o == null) {
             throw new UserProfileException("Object at key " + key + " is null!");
         } if (o instanceof Integer) {
