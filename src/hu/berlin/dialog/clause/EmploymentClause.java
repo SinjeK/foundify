@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hu.berlin.dialog.DialogStateController;
-import hu.berlin.dialog.clause.EmploymentPredicate.ResponseType;
+import hu.berlin.dialog.clause.EmploymentClause.ResponseType;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 //import hu.berlin.dialog.clause;
@@ -12,7 +12,7 @@ import hu.berlin.file.FileLoader;
 import hu.berlin.user.Profile;
 import json.JSONObject;
 
-public class EmploymentPredicate extends Clause {
+public class EmploymentClause extends Clause {
 
 	public enum ResponseType {
 			GENERAL,
@@ -33,7 +33,7 @@ public class EmploymentPredicate extends Clause {
      */
     private boolean running;
 	
-	public EmploymentPredicate(DialogStateController controller, String identifier, Profile profile) {
+	public EmploymentClause(DialogStateController controller, String identifier, Profile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new EmploymentClassifier();
 		

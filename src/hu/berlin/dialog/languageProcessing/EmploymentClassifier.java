@@ -19,8 +19,8 @@ public class EmploymentClassifier implements Classifier {
 		OTHER_EMPLOYMENT,
 		UNSPECIFIED
 	}
-	//cedf17x168-nlc-2759 - the joint classifier
-	final private static String IDENTIFIER = "ff1c2bx159-nlc-3934";
+	//cedf17x168-nlc-2759 - the joint classifier ff1c2bx159-nlc-3934
+	final private static String IDENTIFIER = "cedf17x168-nlc-2759";
 	private NaturalLanguageClassifier classifier;
 	
 	public EmploymentClassifier() {
@@ -37,7 +37,7 @@ public class EmploymentClassifier implements Classifier {
         List<ClassifiedClass> classes = result.getClasses();
         double confidence;
         double topConfidence = 0.0; 
-        ClassifiedClass topClass;
+        ClassifiedClass topClass = null;
         for (ClassifiedClass c : classes) {
         	confidence = c.getConfidence();
         	if (confidence > topConfidence) {
@@ -45,23 +45,24 @@ public class EmploymentClassifier implements Classifier {
         		topClass = c;
         	}
         }
+        System.out.println(topClass.toString());
         
-        //TODO: welchen Wert nehmen?? 
         if (topConfidence < 0.5) {
         	category = EmploymentCategory.UNSPECIFIED;
+        	System.out.println(topConfidence);
         } else {
 	        switch (result.getTopClass()) {
-	        case "Studium":
+	        case "Student":
 	            category = EmploymentCategory.STUDENT;
 	            break;
-	        case "Qualification":
+	        case "Scientist":
 	            category = EmploymentCategory.SCIENTIST;
 	            break;
-	        case "Phd":
-	            category = EmploymentCategory.OTHER_EMPLOYMENT;
-	            break;
-	        case "Master":
+	        case "Unemployed":
 	            category = EmploymentCategory.UNEMPLOYED;
+	            break;
+	        case "Other_Employment":
+	            category = EmploymentCategory.OTHER_EMPLOYMENT;
 	            break;
 	        default:
 	            category = EmploymentCategory.UNSPECIFIED;
@@ -71,12 +72,11 @@ public class EmploymentClassifier implements Classifier {
     return category;
 }
 
-	//args[0] die Eingabe? 
 	public static void main(String[] args) {
         System.out.println("Starting testing method for EmploymentClassifier");
 
         EmploymentClassifier classifier = new EmploymentClassifier();
-        EmploymentCategory category = classifier.classify("Ich studiere im Moment Informatik und Informationswissenschaft.");
+        EmploymentCategory category = classifier.classify("Ich studiere Informatik.");
         System.out.println(category);
     }
 	
