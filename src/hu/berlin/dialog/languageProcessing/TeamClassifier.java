@@ -47,7 +47,6 @@ public class TeamClassifier implements Classifier {
         		topClass = c;
         	}
         }
-        //System.out.println(topClass + " " +  topConfidence);
         
         if (topConfidence < 0.5) {
         	category = TeamCategory.UNSPECIFIED;

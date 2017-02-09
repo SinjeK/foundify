@@ -69,7 +69,6 @@ public class TeamSizeClassifier implements Classifier {
 	public static void main(String[] args) {
         System.out.println("Starting testing method for TeamSizeClassifier");
 
-        //TODO: Test-Eingabe ändern!
         TeamSizeClassifier classifier = new TeamSizeClassifier();
         SizeCategory category = classifier.classify("Wir sind zu dritt im Team.");
         System.out.println(category);
