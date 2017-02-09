@@ -1,7 +1,7 @@
 package hu.berlin.dialog.clause;
 import hu.berlin.dialog.DialogState;
 import hu.berlin.dialog.DialogStateController;
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 
 /**
  * A predicate represents a logical formula. As a dialog state
@@ -10,7 +10,7 @@ import hu.berlin.user.Profile;
  **/
 public abstract class Clause extends DialogState {
 
-    public Clause(DialogStateController controller, String identifier, Profile profile) {
+    public Clause(DialogStateController controller, String identifier, UserProfile profile) {
         super(controller, identifier, profile);
     }
 

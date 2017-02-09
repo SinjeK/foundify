@@ -2,18 +2,14 @@ package hu.berlin.dialog.clause;
 
 import java.io.IOException;
 import java.util.List;
-
 import hu.berlin.dialog.DialogStateController;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
-//import hu.berlin.dialog.predicates.Clause;
 import hu.berlin.file.FileLoader;
-import hu.berlin.user.Profile;
+import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
-public class IdeaPredicate extends Clause {  //extends Predicate
+public class IdeaClause extends Clause {  //extends Predicate
 	
 	public enum ResponseType {
 		GENERAL,     //first question
@@ -32,7 +28,7 @@ private JSONObject rootJSON;
  */
 private boolean running;
 
-	public IdeaPredicate(DialogStateController controller, String identifier, Profile profile) {
+	public IdeaClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);
 		this.classifier = new IdeaClassifier();
 		
@@ -126,7 +122,7 @@ private boolean running;
             case NOT_INNOVATIVE:
             	break;
             default:
-                assert false : "Unhandled case for " + type.toString() + " in IdeaPredicate@getResponse(Questiontype)";
+                assert false : "Unhandled case for " + type.toString() + " in IdeaClause@getResponse(Questiontype)";
         }
 
         return question;

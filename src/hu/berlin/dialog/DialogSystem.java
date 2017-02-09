@@ -5,7 +5,6 @@ import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.io.DialogInput;
 import hu.berlin.dialog.io.DialogInput.DialogInputDelegate;
 import hu.berlin.dialog.io.DialogOutput;
-import hu.berlin.user.Profile;
 import hu.berlin.user.UserProfile;
 
 import java.util.concurrent.ExecutorService;
@@ -28,7 +27,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     private ExecutorService systemService;
     private GermaNet germaNet;
     private Relatedness relatedness;
-    private Profile profile;
+    private UserProfile profile;
 
     final private static String kGermaNetRessources = "gn/ressources/v90XML";
     final private static String kWelcomeIdentifier = "welcome";
@@ -86,7 +85,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
 
             switch (guide.getNextState()) {
                 case ASSISTANCEPROGRAMS: {
-                    AssistancePrograms assistanceProgram = new AssistancePrograms(this, kAssistanceProgramsIdentifier, this.profile);
+                    AssistanceProgramsState assistanceProgram = new AssistanceProgramsState(this, kAssistanceProgramsIdentifier, this.profile);
                     this.enterState(assistanceProgram);
                     break;
                 }

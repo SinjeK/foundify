@@ -1,8 +1,9 @@
 {
-  "data" : {
+  "request" : {
     "START" : [
       "Erzähl mir etwas über deine Qualifikationsabschlüsse. Sei es nun eine abgeschlossene Ausbildung, ein Bachelor, Master oder gar eine Promotion",
-      "Was hast du so für Abschlüsse? Erzähl mir am besten alles von Ausbildung über Bachelor bis zur Promotion"
+      "Was hast du so für Abschlüsse? Erzähl mir am besten alles",
+      "von einer Ausbildung über Bachelor bis zur Promotion"
     ],
     "ACADEMIC_QUALIFICATION" : [
       "Ok du hast also studiert. Aber hast du einen Bachelor oder einen Master gemacht?"

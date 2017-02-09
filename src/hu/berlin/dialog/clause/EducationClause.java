@@ -1,12 +1,15 @@
 package hu.berlin.dialog.clause;
-import hu.berlin.dialog.languageProcessing.Classifier.*;
+import hu.berlin.dialog.clause.Predicates.PredicateConstants;
+import hu.berlin.dialog.DialogAtomicState;
 import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.EducationClassifier;
 import hu.berlin.dialog.languageProcessing.EducationClassifier.EducationCategory;
-import hu.berlin.user.Profile;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
 /**
@@ -16,27 +19,35 @@ import json.JSONObject;
  */
 public class EducationClause extends Clause {
 
-    private interface StateAction {
-        State handle(Category category);
-    };
+    static private String kEducationCategoryKey = "educategory";
+    static private String kSinceWhenAcademicQualification = "timeofacademicqualification";
 
-    private enum State implements StateAction {
+    private enum State implements DialogAtomicState {
         START {
             @Override
-            public State handle(Category category) {
-                EducationCategory educat = (EducationCategory)category;
+            public State handle(Map<String, ?> data, UserProfile profile) {
+                EducationCategory educat = (EducationCategory)data.get(kEducationCategoryKey);
                 State nextState;
 
                 switch (educat) {
                     case ABITUR:
+                        profile.setValueForPredicate(true, PredicateConstants.hasAbitur);
                         nextState = State.END;
                         break;
                     case QUALIFICATION:
+                        profile.setValueForPredicate(true, PredicateConstants.hasQualification);
                         nextState = State.END;
                         break;
                     case MASTER:
+                        profile.setValueForPredicate(true, PredicateConstants.hasMaster);
+                        nextState = State.RECENT_ACADEMIC_QUALIFICATION;
+                        break;
                     case PHD:
+                        profile.setValueForPredicate(true, PredicateConstants.hasPHD);
+                        nextState = State.RECENT_ACADEMIC_QUALIFICATION;
+                        break;
                     case BACHELOR:
+                        profile.setValueForPredicate(true, PredicateConstants.hasBachelor);
                         nextState = State.RECENT_ACADEMIC_QUALIFICATION;
                         break;
                     case UNSPECIFIED:
@@ -46,7 +57,7 @@ public class EducationClause extends Clause {
                         nextState = State.ACADEMIC_QUALIFICATION;
                         break;
                     default:
-                        assert false : "Unhandled case for " + category.toString() + " in EducationClause@getResponse(Questiontype)";
+                        assert false : "Unhandled case for " + educat.toString() + " in EducationClause@getRequest(Questiontype)";
                         nextState = State.REPEAT;
                 }
 
@@ -55,33 +66,66 @@ public class EducationClause extends Clause {
         },
         ACADEMIC_QUALIFICATION {
             @Override
-            public State handle(Category category) {
-                // to be implemented
+            public State handle(Map<String, ?> data, UserProfile profile) {
+                EducationCategory category = (EducationCategory)data.get(kEducationCategoryKey);
+                State nextState;
+
+                switch (category) {
+                    case BACHELOR:
+                        profile.setValueForPredicate(true, PredicateConstants.hasBachelor);
+                        nextState = State.RECENT_ACADEMIC_QUALIFICATION;
+                        break;
+                    case MASTER:
+                        profile.setValueForPredicate(true, PredicateConstants.hasMaster);
+                        nextState = State.RECENT_ACADEMIC_QUALIFICATION;
+                        break;
+                    case PHD:
+                        profile.setValueForPredicate(true, PredicateConstants.hasPHD);
+                        nextState = State.RECENT_ACADEMIC_QUALIFICATION;
+                        break;
+                    default:
+                        nextState = State.REPEAT;
+                }
+
+                return nextState;
             }
         },
         RECENT_ACADEMIC_QUALIFICATION {
             @Override
-            public State handle(Category category) {
+            public State handle(Map<String, ?> data, UserProfile profile) {
                 // to be implemented
+                return State.END;
             }
         },
         REPEAT {
             @Override
-            public State handle(Category category) {
+            public State handle(Map<String, ?> data, UserProfile profile) {
                 assert false : "State 'REPEAT' is just an empty state. Do not call its methods";
                 return State.REPEAT;
             };
         },
         END {
             @Override
-            public State handle(Category category) {
+            public State handle(Map<String, ?> data, UserProfile profile) {
                 assert false : "State 'UNSPECIFIED' is just an empty state. Do not call its methods";
                 return State.END;
             };
         };
     };
 
+    /**
+     * The classifier responsible for assigning a string to
+     * a given class. In this case, it recognizes the user's
+     * education.
+     */
     private EducationClassifier classifier;
+
+    /**
+     * This object contains several information. For example
+     * `request` holds strings to be presented when the chat
+     * requests something from the user. `response` holds
+     * strings to be returned when the user has written something.
+     */
     private JSONObject rootJSON;
 
     /**
@@ -95,7 +139,7 @@ public class EducationClause extends Clause {
      */
     private boolean running;
 
-    public EducationClause(DialogStateController controller, String identifier, Profile profile) {
+    public EducationClause(DialogStateController controller, String identifier, UserProfile profile) {
         super(controller, identifier, profile);
         this.classifier = new EducationClassifier();
 
@@ -136,7 +180,7 @@ public class EducationClause extends Clause {
         // initialize states
         this.setCurrentState(State.START);
         // print response of the starting state
-        put(getResponse(State.START));
+        put(getRequest(State.START));
     }
 
     /**
@@ -157,11 +201,20 @@ public class EducationClause extends Clause {
         this.setRunning(true);
 
         EducationCategory category = this.classifier.classify(input);
-        State nextState = this.getCurrentState().handle(category);
-        this.setCurrentState(nextState);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put(kEducationCategoryKey, category);
+        State nextState = (State)this.getCurrentState().handle(data, this.getProfile());
+        this.put(this.getRequest(nextState));
 
-        if (nextState == State.END) {
-            this.leave();
+        switch (nextState) {
+            case END:
+                this.setCurrentState(State.END);
+                this.leave();
+                break;
+            case REPEAT:
+                break;
+            default:
+                this.setCurrentState(nextState);
         }
 
         // Processing finished
@@ -169,14 +222,13 @@ public class EducationClause extends Clause {
     }
 
     // Response generation
-    private List getAllResponses(State type) {
-        return this.rootJSON.getJSONObject("data").getJSONArray(type.name()).toList();
+    private List getAllRequests(State type) {
+        return this.rootJSON.getJSONObject("request").getJSONArray(type.name()).toList();
     }
 
-    private String getResponse(State type) {
-        List responses = this.getAllResponses(type);
-        String question = (String) responses.get((int)(Math.random() * responses.size()));
+    private String getRequest(State type) {
+        List requests = this.getAllRequests(type);
+        String question = (String) requests.get((int)(Math.random() * requests.size()));
         return question;
     }
-
 }

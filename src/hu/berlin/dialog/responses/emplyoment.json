@@ -3,7 +3,7 @@
 	"GENERAL" : [
 	"Wie sieht es denn mit deiner Arbeitserfahrung aus? Was machst du gerade hauptberuflich?",
 	"Was machst du denn zur Zeit beruflich?",
-	"Erzähl mir doch noch etwas mehr über deine Berufserfahrung."
+	"Jetzt müsste ich erstmal noch etwas über deine Arbeitserfahrung wissen."
 	],
 	"STUDENT" : [
 	"Ok, du bist also hauptsächlich mit deinem Studium beschäftigt."
@@ -12,15 +12,13 @@
 	"Du arbeitest also als Wissenschaftler an einer Universität."
 	],
 	"UNEMPLOYED" : [
-	"Ok, im Moment bist du also arbeitslos. Dann gehe ich davon aus, dass du auch 
-	ALG 1 bekommst oder bekommen könntest, richtig?"
+	"Ok, im Moment bist du also arbeitslos. Dann gehe ich davon aus, dass du auch ALG 1 bekommst oder bekommen könntest, richtig?"
 	],
 	"OTHER_EMPLOYMENT" : [
 	"Du arbeitest also, bist aber nicht an einer Universität beschäftigt."
 	],
 	"UNSPECIFIED" : [
-	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. 
-	Könntest du das noch einmal anders formulieren?"
+	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. Könntest du das noch einmal anders formulieren?"
 	]
 	}
 }
