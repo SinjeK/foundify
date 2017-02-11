@@ -69,7 +69,14 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     public void dialogInputReceivedMessage(DialogInput dialogInput, String message) {
         assert currentState != null : "Current state is null which is not good. You might have forgotten to use enterState(State)";
 
-        this.currentState.evaluate(message);
+        // type ::restart to restart the chat dialog without the need to reload the
+        // language processing modules, thus saving a lot of time
+        if (message.equals("::restart")) {
+            Welcome welcomeState = new Welcome(this, kWelcomeIdentifier, this.profile);
+            this.enterState(welcomeState);
+        } else {
+            this.currentState.evaluate(message);
+        }
     }
 
     // ----------------------------------------------------------------
@@ -136,7 +143,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
      * @param state State which is about to be entered
      */
     private void enterState(DialogState state) {
-        this.currentState = state;
+        this.setCurrentState(state);
         state.enter();
     }
 
