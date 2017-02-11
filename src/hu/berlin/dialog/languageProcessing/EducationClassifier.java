@@ -41,6 +41,18 @@ public class EducationClassifier implements Classifier {
         EducationCategory category;
         Classification result = this.classifier.classify(IDENTIFIER, input).execute();
 
+        List<ClassifiedClass> classes = result.getClasses();
+        double topConfidence = 0.0;
+        for (ClassifiedClass c : classes) {
+            if (c.getConfidence() > topConfidence) {
+                topConfidence = c.getConfidence();
+            }
+        }
+
+        if (topConfidence < 0.7) {
+            return EducationCategory.UNSPECIFIED;
+        }
+
         switch (result.getTopClass()) {
             case "Studium":
                 category = EducationCategory.STUDIUM;
