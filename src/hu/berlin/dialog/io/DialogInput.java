@@ -81,21 +81,27 @@ public class DialogInput implements Runnable {
         try {
             while (this.isRunning()) {
                 input = this.reader.readLine();
-                if (this.delegate != null) {
-                    if (this.delegateService != null) {
-                        final String finalInput = input;
-                        this.delegateService.submit(() -> {
-                            this.delegate.dialogInputReceivedMessage(this, finalInput);
-                        });
-                    } else {
-                        this.delegate.dialogInputReceivedMessage(this, input);
+
+                if (input == null) {
+                    System.out.println("Hard shut down");
+                   System.exit(0);
+                } else {
+                    if (this.delegate != null) {
+                        if (this.delegateService != null) {
+                            final String finalInput = input;
+                            this.delegateService.submit(() -> {
+                                this.delegate.dialogInputReceivedMessage(this, finalInput);
+                            });
+                        } else {
+                            this.delegate.dialogInputReceivedMessage(this, input);
+                        }
                     }
                 }
             }
         } catch (ClosedByInterruptException ioe) {
-            System.out.print(ioe.getMessage());
+            // System.out.print(ioe.getMessage());
         } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
+            // System.out.println(ioe.getMessage());
         } /*finally {
             this.inputService.shutdownNow();
         }*/

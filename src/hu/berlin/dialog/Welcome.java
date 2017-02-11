@@ -9,8 +9,8 @@ import java.lang.Math;
 public class Welcome extends DialogState {
 
     private static String[] welcomeResponses = {
-            "Hey, ich bin Foundify - dein persönlicher Gründungsbot",
-            "Hi mein Name ist Foundify und ich kann dir beim Gründen deines Startups helfen",
+            "Hey, ich bin Foundify - dein persönlicher Finanzierungsbot für Startups",
+            "Hi mein Name ist Foundify und ich kann dir beim Finden von Finanzierungsprogrammen für deinen Startups helfen",
     };
 
     public Welcome (DialogStateController controller, String identifier, UserProfile profile) {
@@ -22,7 +22,7 @@ public class Welcome extends DialogState {
 
     @Override
     public void enter() {
-        this.put("\n\n");
+        this.put("\n\n\n\n");
         this.put(this.createResponse());
         this.leave();
     }

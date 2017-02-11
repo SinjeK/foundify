@@ -48,7 +48,7 @@ public class TeamClassifier implements Classifier {
         	}
         }
         
-        if (topConfidence < 0.5) {
+        if (topConfidence < 0.3) {
         	category = TeamCategory.UNSPECIFIED;
         } else {
 	        switch (result.getTopClass()) {
@@ -74,7 +74,7 @@ public class TeamClassifier implements Classifier {
 	            category = TeamCategory.TECH;
 	            break;
 	        default:
-	            category = TeamCategory.UNSPECIFIED;
+				category = TeamCategory.UNSPECIFIED;
 	        }
         }
 
@@ -85,7 +85,7 @@ public class TeamClassifier implements Classifier {
         System.out.println("Starting testing method for TeamClassifier");
 
         TeamClassifier classifier = new TeamClassifier();
-        TeamCategory category = classifier.classify("Ich habe als Wissenschaftler an der Uni gearbeitet und außerdem Erfahrungen im Management.");
+        TeamCategory category = classifier.classify("meine freundin hat informatik studiert und die andere hat BWL studiert \n");
         System.out.println(category);
     }
 	

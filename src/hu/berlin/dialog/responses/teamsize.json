@@ -5,7 +5,7 @@
 	"Aus wie vielen Leuten besteht denn deine Gründungsteam?"
 	],
 	"THREEORFEWER" : [
-	"Ok, es also in jedem Fall weniger als drei Leute im Team."
+	"Ok, es also in jedem Fall weniger als vier Leute im Team."
 	],
 	"FOUR" : [
 	"Ihr seid also zu viert."
@@ -15,7 +15,7 @@
 	],
 	"UNSPECIFIED" : [
 	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. Kannst du einfach nochmal sagen, mit wie vielen Leuten du dein Gründungsprojekt angehen möchtest?",
-	"Leider habe ich dich nicht verstanden. Wie viele Leute seit ihr im Team?"
+	"Leider habe ich dich nicht verstanden. Wie viele Leute seid ihr im Team?"
 	]
 	}
 }

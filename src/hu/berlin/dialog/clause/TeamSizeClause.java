@@ -1,13 +1,10 @@
 package hu.berlin.dialog.clause;
-
 import java.io.IOException;
 import java.util.List;
-
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
-import hu.berlin.dialog.clause.TeamClause.ResponseType;
-import hu.berlin.dialog.languageProcessing.TeamClassifier;
-import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
+import hu.berlin.dialog.languageProcessing.PersonCounter;
 import hu.berlin.dialog.languageProcessing.TeamSizeClassifier;
 import hu.berlin.dialog.languageProcessing.TeamSizeClassifier.SizeCategory;
 import hu.berlin.file.FileLoader;
@@ -24,6 +21,8 @@ public class TeamSizeClause extends Clause {
 		MORETHANFOUR
 	}
 
+	private PersonCounter personCounter;
+	private StanfordCoreNLP coreNLP;
 	private TeamSizeClassifier classifier;
 	private JSONObject rootJSON;
 	
@@ -33,9 +32,10 @@ public class TeamSizeClause extends Clause {
 	 */
 	private boolean running;
 	
-	public TeamSizeClause(DialogStateController controller, String identifier, UserProfile profile) {
+	public TeamSizeClause(DialogStateController controller, String identifier, UserProfile profile, StanfordCoreNLP coreNLP) {
 		super(controller, identifier, profile);
-		this.classifier = new TeamSizeClassifier();
+		this.coreNLP = coreNLP;
+		this.personCounter = new PersonCounter(coreNLP);
 	
 		try {
             String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/teamsize.json");
@@ -63,45 +63,54 @@ public class TeamSizeClause extends Clause {
     public void enter() {
         super.enter();
 
-        put(getWelcomeResponse());
         put(getResponse(ResponseType.GENERAL));
     }
     
 
 	public void evaluate(String input) {
-		 super.evaluate(input);
+        super.evaluate(input);
 
-	        if (this.isRunning()) {
-	            this.put("Einen Moment bitte! Ich schaue noch nach geeigneten Programmen.");
-	            return;
-	        }
+        if (this.isRunning()) {
+            this.put("Warte bitte");
+            return;
+        }
 
-	        this.setRunning(true);
-	        SizeCategory category = this.classifier.classify(input);
+        this.setRunning(true);
 
-	        switch (category) {
-	            case THREEORFEWER:
-	                put(getResponse(ResponseType.THREEORFEWER));
-	                this.getProfile().setValueForPredicate(true, PredicateConstants.threeMembersOrFewer);
-	                this.leave();
-	                break;
-	            case FOUR:
-	                put(getResponse(ResponseType.FOUR));
-	                this.getProfile().setValueForPredicate(true, PredicateConstants.fourMembers);
-	                this.leave();
-	                break;
-	            case MORETHANFOUR:
-	                put(getResponse(ResponseType.MORETHANFOUR));
-	                this.getProfile().setValueForPredicate(true, PredicateConstants.moreThanFourMembers);
-	                this.leave();
-	                break;
-	            case UNSPECIFIED:
-	                put(getResponse(ResponseType.UNSPECIFIED));
-	                break;
-	            default:
-	                //assert false : "Unhandled case in switch! category: " + category.toString();
-	            	put(getResponse(ResponseType.UNSPECIFIED));
-		            break;
+        SizeCategory category;
+        int size = this.personCounter.countPersons(input);
+
+        if (size > 0 && size <= 3) {
+            category = SizeCategory.THREEORFEWER;
+        } else if (size == 4) {
+            category = SizeCategory.FOUR;
+        } else {
+            category = SizeCategory.MORETHANFOUR;
+        }
+
+        switch (category) {
+            case THREEORFEWER:
+                put(getResponse(ResponseType.THREEORFEWER));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.threeMembersOrFewer);
+                this.leave();
+                break;
+            case FOUR:
+                put(getResponse(ResponseType.FOUR));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.fourMembers);
+                this.leave();
+                break;
+            case MORETHANFOUR:
+                put(getResponse(ResponseType.MORETHANFOUR));
+                this.getProfile().setValueForPredicate(true, PredicateConstants.moreThanFourMembers);
+                this.leave();
+                break;
+            case UNSPECIFIED:
+                put(getResponse(ResponseType.UNSPECIFIED));
+                break;
+            default:
+                assert false : "Unhandled case in switch! category: " + category.toString();
+                put(getResponse(ResponseType.UNSPECIFIED));
+                break;
 	        }
 
 	        this.setRunning(false);
@@ -110,11 +119,6 @@ public class TeamSizeClause extends Clause {
 	// Response generation
     private List getAllResponses(ResponseType type) {
         return this.rootJSON.getJSONObject("data").getJSONArray(type.name()).toList();
-    }
-
-    private String getWelcomeResponse() {
-        return "Super, dann machen wir mit dem nächsten Schritt weiter! Kannst du kurz dein Team vorstellen - wie viele  "
-        		+ " und dabei besonders relevante Erfahrungen in Wirtschaft und Wissenschaft beschreiben?";
     }
 
     private String getResponse(ResponseType type) {

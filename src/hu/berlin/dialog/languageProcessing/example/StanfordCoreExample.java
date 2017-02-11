@@ -7,11 +7,7 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
-import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
-import hu.berlin.file.FileLoader;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +17,7 @@ import java.util.Properties;
 /**
  * Created by Duc on 08.02.17.
  *
- * http://nlp.stanford.edu/nlp/javadoc/j
+ * http://nlp.stanford.edu/nlp/javadoc/javanlp/
  *
  * POS means Part of Speech Tagger. It classifies if the word is
  * a noun, verb, etc... Possible POS Tags can be found here:

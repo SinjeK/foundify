@@ -20,6 +20,7 @@ public class EmploymentClause extends Clause {
 			STUDENT,
 			SCIENTIST,
 			OTHER_EMPLOYMENT,
+            PUPIL,
 			UNSPECIFIED
 	}
 	
@@ -106,6 +107,10 @@ public class EmploymentClause extends Clause {
                 this.getProfile().setValueForPredicate(true, PredicateConstants.isEmployed);
                 this.leave();
                 break;
+            case PUPIL:
+                put(getResponse(ResponseType.PUPIL));
+                this.leave();
+                break;
             case UNSPECIFIED:
                 put(getResponse(ResponseType.UNSPECIFIED));
                 break;
@@ -128,24 +133,6 @@ public class EmploymentClause extends Clause {
     private String getResponse(ResponseType type) {
         List responses = this.getAllResponses(type);
         String question = (String) responses.get((int)(Math.random() * responses.size()));
-
-        switch (type) {
-            case GENERAL:
-                break;
-            case STUDENT:
-                break;
-            case UNSPECIFIED:
-                break;
-            case SCIENTIST:
-            	break;
-            case OTHER_EMPLOYMENT:
-            	break;
-            case UNEMPLOYED:
-                break;
-            default:
-                assert false : "Unhandled case for " + type.toString() + " in EmploymentPredicate@getResponse(Questiontype)";
-        }
-
         return question;
     }
 

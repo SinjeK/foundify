@@ -1,12 +1,13 @@
 package hu.berlin.dialog;
 import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.relatedness.Relatedness;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.io.DialogInput;
 import hu.berlin.dialog.io.DialogInput.DialogInputDelegate;
 import hu.berlin.dialog.io.DialogOutput;
 import hu.berlin.user.UserProfile;
-
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,12 +22,14 @@ import java.util.concurrent.Executors;
  * A dialogsystem runs on its own threadpool.<br>
  */
 public class DialogSystem implements DialogInputDelegate, DialogStateController {
+
     private DialogInput input;
     private DialogOutput output;
     private DialogState currentState;
     private ExecutorService systemService;
-    private GermaNet germaNet;
+    private StanfordCoreNLP stanfordCoreNLP;
     private Relatedness relatedness;
+    private GermaNet germaNet;
     private UserProfile profile;
 
     final private static String kGermaNetRessources = "gn/ressources/v90XML";
@@ -42,9 +45,11 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         this.input = new DialogInput(this);
         this.input.delegateService = this.systemService;
         this.output = new DialogOutput();
+        this.profile = new UserProfile();
+
         this.germaNet = new GermaNet(FileLoader.loadRessource(kGermaNetRessources));
         this.relatedness = new Relatedness(this.germaNet);
-        this.profile = new UserProfile();
+        this.stanfordCoreNLP = this.createStanfordCoreNLP();
     }
 
     // Getter & Setter
@@ -85,7 +90,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
 
             switch (guide.getNextState()) {
                 case ASSISTANCEPROGRAMS: {
-                    AssistanceProgramsState assistanceProgram = new AssistanceProgramsState(this, kAssistanceProgramsIdentifier, this.profile);
+                    AssistanceProgramsState assistanceProgram = new AssistanceProgramsState(this, kAssistanceProgramsIdentifier, this.profile, this.stanfordCoreNLP);
                     this.enterState(assistanceProgram);
                     break;
                 }
@@ -96,6 +101,9 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
                     assert false : "Unhandled switch case in DialogSystem@dialogStateDidLeave()";
                 }
             }
+        } else if (state.getIdentifier().equals(kAssistanceProgramsIdentifier)) {
+            this.output.put("Das war's dann. Bis zum nächsten Mal ^_^");
+            this.quit();
         }
     }
 
@@ -130,6 +138,23 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     private void enterState(DialogState state) {
         this.currentState = state;
         state.enter();
+    }
+
+    /**
+     * Helper method to create the stanford core nlp
+     */
+    private StanfordCoreNLP createStanfordCoreNLP() {
+        Properties props = new Properties();
+        props.setProperty("annotators", "tokenize, ssplit, pos, ner, parse, depparse");
+        props.setProperty("tokenize.language", "de");
+        props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger");
+        props.setProperty("ner.applyNumericClassifiers", "false");
+        props.setProperty("ner.model", "edu/stanford/nlp/models/ner/german.conll.hgc_175m_600.crf.ser.gz");
+        props.setProperty("ner.useSUTime", "false");
+        props.setProperty("parse.model", "edu/stanford/nlp/models/lexparser/germanFactored.ser.gz");
+        props.setProperty("depparse.model", "edu/stanford/nlp/models/parser/nndep/UD_German.gz");
+        props.setProperty("depparse.language", "german");
+        return new StanfordCoreNLP(props);
     }
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 public class EducationClassifier implements Classifier {
 
     public enum EducationCategory implements Category {
+        NOEDUCATION,
         STUDIUM,
         PHD,
         MASTER,
@@ -58,6 +59,9 @@ public class EducationClassifier implements Classifier {
                 break;
             case "Abitur":
                 category = EducationCategory.ABITUR;
+                break;
+            case "NoEducation":
+                category = EducationCategory.NOEDUCATION;
                 break;
             default:
                 category = EducationCategory.UNSPECIFIED;

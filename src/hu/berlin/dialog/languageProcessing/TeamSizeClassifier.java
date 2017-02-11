@@ -1,13 +1,9 @@
 package hu.berlin.dialog.languageProcessing;
-
 import java.util.List;
-
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
-
 import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig3;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 
 public class TeamSizeClassifier implements Classifier {
 
@@ -35,12 +31,10 @@ public class TeamSizeClassifier implements Classifier {
         List<ClassifiedClass> classes = result.getClasses();
         double confidence;
         double topConfidence = 0.0; 
-        ClassifiedClass topClass;
         for (ClassifiedClass c : classes) {
         	confidence = c.getConfidence();
         	if (confidence > topConfidence) {
         		topConfidence = confidence;
-        		topClass = c;
         	}
         }
         

@@ -3,7 +3,7 @@
 	"GENERAL" : [
 	"Wie sieht es denn mit deiner Arbeitserfahrung aus? Was machst du gerade hauptberuflich?",
 	"Was machst du denn zur Zeit beruflich?",
-	"Jetzt müsste ich erstmal noch etwas über deine Arbeitserfahrung wissen."
+	"Jetzt müsste ich erstmal noch etwas über deine derzeitige Arbeit wissen, wenn du eine hast"
 	],
 	"STUDENT" : [
 	"Ok, du bist also hauptsächlich mit deinem Studium beschäftigt."
@@ -19,6 +19,9 @@
 	],
 	"UNSPECIFIED" : [
 	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. Könntest du das noch einmal anders formulieren?"
+	],
+	"PUPIL" : [
+		"Bleib in der Schule."
 	]
 	}
 }

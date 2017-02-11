@@ -20,7 +20,6 @@ import json.JSONObject;
 public class EducationClause extends Clause {
 
     static private String kEducationCategoryKey = "educategory";
-    static private String kSinceWhenAcademicQualification = "timeofacademicqualification";
 
     private enum State implements DialogAtomicState {
         START {
@@ -55,6 +54,9 @@ public class EducationClause extends Clause {
                         break;
                     case STUDIUM:
                         nextState = State.ACADEMIC_QUALIFICATION;
+                        break;
+                    case NOEDUCATION:
+                        nextState = State.END;
                         break;
                     default:
                         assert false : "Unhandled case for " + educat.toString() + " in EducationClause@getRequest(Questiontype)";

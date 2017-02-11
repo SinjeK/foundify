@@ -1,4 +1,5 @@
 package hu.berlin.dialog;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import hu.berlin.dialog.clause.EducationClause;
 import hu.berlin.dialog.clause.EmploymentClause;
 import hu.berlin.dialog.clause.IdeaClause;
@@ -15,9 +16,11 @@ import java.util.List;
 public class AssistanceProgramsState extends DialogState implements DialogStateController {
 
     private DialogState currentState;
+    private StanfordCoreNLP coreNLP;
 
-    public AssistanceProgramsState(DialogStateController controller, String identifier, UserProfile profile) {
+    public AssistanceProgramsState(DialogStateController controller, String identifier, UserProfile profile, StanfordCoreNLP coreNLP) {
         super(controller, identifier, profile);
+        this.coreNLP = coreNLP;
     }
 
     // Dialogstate
@@ -47,14 +50,10 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
         } else if (state.getIdentifier().equals("employment")) {
             IdeaClause idea = new IdeaClause(this, "idea", this.getProfile());
             this.enterState(idea);
-       /* } else if (state.getIdentifier().equals("idea")) {
-        	TeamClause team = new TeamClause(this, "team", this.getProfile());
-            this.enterState(team);
-        } else if (state.getIdentifier().equals("team")) { 
-        	TeamSizeClause size = new TeamSizeClause(this, "size", this.getProfile());
-            this.enterState(size);*/
         } else if (state.getIdentifier().equals("idea")) {
-            // implement end
+        	TeamClause team = new TeamClause(this, "team", this.getProfile(), this.coreNLP);
+            this.enterState(team);
+        } else if (state.getIdentifier().equals("team")) {
 
             List<AssistancePrograms> suitablePrograms = AssistanceProgramsEvaluator.findSuitableAssistancePrograms(this.getProfile());
 
@@ -63,10 +62,13 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
                 this.put(p.toString());
             }
 
-            this.put("Hier noch Informationen zu den Förderprogrammen");
+            this.put("\n\nHier noch Informationen zu den Förderprogrammen:");
             for (AssistancePrograms p : suitablePrograms) {
-                this.put(p.description());
+                this.put(p.toString() + " " + p.description());
+                this.put("");
                 this.put(p.url());
+
+                this.put("\n\n");
             }
 
             this.put("Ich hoffe, ich konnte dir bei der Suche nach passenden Förderprogrammen helfen.");
