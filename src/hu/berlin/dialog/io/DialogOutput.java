@@ -7,6 +7,7 @@ public class DialogOutput {
     }
 
     public void put(String output) {
+
         System.out.println(output);
     }
 }

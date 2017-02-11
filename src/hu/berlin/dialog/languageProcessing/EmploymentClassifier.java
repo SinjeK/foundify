@@ -27,7 +27,7 @@ public class EmploymentClassifier implements Classifier {
    @Override
    public EmploymentCategory classify(String input) {
       EmploymentCategory category;
-        Classification result = this.classifier.classify(EmploymentClassifier.IDENTIFIER, input).execute();
+        Classification result = this.classifier.classify(IDENTIFIER, input).execute();
        
         List<ClassifiedClass> classes = result.getClasses();
         double confidence;
@@ -62,7 +62,8 @@ public class EmploymentClassifier implements Classifier {
 	                category = EmploymentCategory.OTHER_EMPLOYMENT;
 	                break;
 	            default:
-	                category = EmploymentCategory.UNSPECIFIED;
+                    assert false : "Returned unknown category in classifier: EmploymentClassifier - category: " + result.getTopClass();
+                    category = EmploymentCategory.UNSPECIFIED;
 	        }      
         }
 

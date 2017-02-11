@@ -1,13 +1,9 @@
 package hu.berlin.dialog.languageProcessing;
-
 import java.util.List;
-
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
-
 import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig3;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 
 public class TeamClassifier implements Classifier {
 
@@ -39,12 +35,10 @@ public class TeamClassifier implements Classifier {
         List<ClassifiedClass> classes = result.getClasses();
         double confidence;
         double topConfidence = 0.0; 
-        ClassifiedClass topClass = null;
         for (ClassifiedClass c : classes) {
         	confidence = c.getConfidence();
         	if (confidence > topConfidence) {
         		topConfidence = confidence;
-        		topClass = c;
         	}
         }
         
@@ -74,6 +68,7 @@ public class TeamClassifier implements Classifier {
 	            category = TeamCategory.TECH;
 	            break;
 	        default:
+				assert false : "Returned unknown category in classifier: TeamClassifier - category: " + result.getTopClass();
 				category = TeamCategory.UNSPECIFIED;
 	        }
         }

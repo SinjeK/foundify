@@ -1,13 +1,10 @@
 package hu.berlin.dialog.clause;
-
 import java.io.IOException;
 import java.util.List;
-
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
 import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
-//import hu.berlin.dialog.clause;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.UserProfile;
 import json.JSONObject;

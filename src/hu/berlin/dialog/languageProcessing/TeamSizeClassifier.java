@@ -5,6 +5,12 @@ import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Class
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
 import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig3;
 
+/**
+ * This classifier is never used. Instead PersonCounter is used to retrieve
+ * the size of a team.
+ */
+
+/*
 public class TeamSizeClassifier implements Classifier {
 
 	public enum SizeCategory implements Category {
@@ -26,7 +32,7 @@ public class TeamSizeClassifier implements Classifier {
 	@Override
 	public SizeCategory classify(String input) {
 		SizeCategory category;
-        Classification result = this.classifier.classify(TeamSizeClassifier.IDENTIFIER, input).execute();
+        Classification result = this.classifier.classify(IDENTIFIER, input).execute();
        
         List<ClassifiedClass> classes = result.getClasses();
         double confidence;
@@ -53,7 +59,8 @@ public class TeamSizeClassifier implements Classifier {
 	            category = SizeCategory.MORETHANFOUR;
 	            break;
 	        default:
-	            category = SizeCategory.UNSPECIFIED;
+				assert false : "Returned unknown category in classifier: TeamSizeClassifier - category: " + result.getTopClass();
+				category = SizeCategory.UNSPECIFIED;
 	        }
         }
 
@@ -67,5 +74,7 @@ public class TeamSizeClassifier implements Classifier {
         SizeCategory category = classifier.classify("Wir sind zu dritt im Team.");
         System.out.println(category);
     }
-	
+
+
 }
+*/

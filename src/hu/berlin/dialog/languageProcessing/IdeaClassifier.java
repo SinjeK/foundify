@@ -86,7 +86,8 @@ public class IdeaClassifier implements Classifier {
 	            category = InnoCategory.INNORISKY;
 	            break;
 	        default:
-	            category = InnoCategory.UNSPECIFIED;
+				assert false : "Returned unknown category in classifier: IdeaClassifier - category: " + result.getTopClass();
+				category = InnoCategory.UNSPECIFIED;
 	        }
         }
     return category;

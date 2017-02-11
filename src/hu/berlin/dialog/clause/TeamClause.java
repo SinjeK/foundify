@@ -12,7 +12,6 @@ import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.languageProcessing.TeamClassifier;
 import hu.berlin.dialog.languageProcessing.TeamClassifier.TeamCategory;
-import hu.berlin.dialog.languageProcessing.TeamSizeClassifier;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.UserProfile;
 import json.JSONObject;
@@ -83,6 +82,7 @@ public class TeamClause extends Clause implements DialogStateController {
     
 
 	public void evaluate(String input) {
+    	super.evaluate(input);
 
 		if (this.currentState.getIdentifier().equals("teamSize")) {
 			this.currentState.evaluate(input);
@@ -163,28 +163,6 @@ public class TeamClause extends Clause implements DialogStateController {
     private String getResponse(ResponseType type) {
         List responses = this.getAllResponses(type);
         String question = (String) responses.get((int)(Math.random() * responses.size()));
-
-        switch (type) {
-            case GENERAL:
-                break;
-            case BUSISCITECH:
-                break;
-            case UNSPECIFIED:
-                break;
-            case BUSITECH:
-            	break;
-            case BUSISCI:
-            	break;
-            case BUSI:
-            	break;
-            case SCI:
-            	break;
-            case TECH:
-            	break;
-            default:
-                assert false : "Unhandled case for " + type.toString() + " in IdeaPredicate@getResponse(Questiontype)";
-        }
-
         return question;
     }
 

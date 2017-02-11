@@ -59,7 +59,7 @@ public class EducationClause extends Clause {
                         nextState = State.END;
                         break;
                     default:
-                        assert false : "Unhandled case for " + educat.toString() + " in EducationClause@getRequest(Questiontype)";
+                        assert false : "Unhandled case for " + educat.toString() + " in EducationClause@getQuestion(Questiontype)";
                         nextState = State.REPEAT;
                 }
 
@@ -182,7 +182,7 @@ public class EducationClause extends Clause {
         // initialize states
         this.setCurrentState(State.START);
         // print response of the starting state
-        put(getRequest(State.START));
+        this.put(getQuestion(State.START));
     }
 
     /**
@@ -193,6 +193,7 @@ public class EducationClause extends Clause {
      */
     @Override
     public void evaluate(String input) {
+        super.evaluate(input);
 
         if (this.isRunning()) {
             this.put("Warte ich schaue gerade nach passenden Förderprogrammen");
@@ -203,20 +204,44 @@ public class EducationClause extends Clause {
         this.setRunning(true);
 
         EducationCategory category = this.classifier.classify(input);
+        String feedback = this.getFeedback(category);
+        if (feedback != null) {
+            this.put(feedback);
+        }
+
         HashMap<String, Object> data = new HashMap<>();
         data.put(kEducationCategoryKey, category);
         State nextState = (State)this.getCurrentState().handle(data, this.getProfile());
-        this.put(this.getRequest(nextState));
 
         switch (nextState) {
             case END:
-                this.setCurrentState(State.END);
+                this.enterState(State.END);
                 this.leave();
                 break;
             case REPEAT:
                 break;
-            default:
+            case RECENT_ACADEMIC_QUALIFICATION:
                 this.setCurrentState(nextState);
+                String question = this.getQuestion(nextState);
+                String academicTitle = "akademischen Titel";
+
+                switch (category) {
+                    case PHD:
+                        academicTitle = "Doktorgrad";
+                        break;
+                    case MASTER:
+                        academicTitle = "Master";
+                        break;
+                    case BACHELOR:
+                        academicTitle = "Bachelor";
+                        break;
+                }
+
+                question = question.replace("#ACADEMICTITLE#", academicTitle);
+                this.put(question);
+                break;
+            default:
+                assert false : "Unhandled switch case in EducationClause. State: " + nextState.toString();
         }
 
         // Processing finished
@@ -224,13 +249,40 @@ public class EducationClause extends Clause {
     }
 
     // Response generation
-    private List getAllRequests(State type) {
-        return this.rootJSON.getJSONObject("request").getJSONArray(type.name()).toList();
+    private List getAllQuestions(State type) {
+        return this.rootJSON.getJSONObject("question").getJSONArray(type.name()).toList();
     }
 
-    private String getRequest(State type) {
-        List requests = this.getAllRequests(type);
+    private List getAllFeedbacks(EducationCategory category) {
+        return this.rootJSON.getJSONObject("feedback").getJSONArray(category.name()).toList();
+    }
+
+    private String getQuestion(State type) {
+        List requests = this.getAllQuestions(type);
+
+        assert requests != null : "Could not find question array in json. Maybe key was spelled wrong?";
+
         String question = (String) requests.get((int)(Math.random() * requests.size()));
         return question;
     }
+
+    private String getFeedback(EducationCategory category) {
+        List requests = this.getAllFeedbacks(category);
+
+        assert requests != null : "Could not find feedback array in json. Maybe key was spelled wrong?";
+
+        String question = (String) requests.get((int)(Math.random() * requests.size()));
+        return question;
+    }
+
+    // Enter state
+    private void enterState(State state) {
+        this.setCurrentState(state);
+        String question = this.getQuestion(state);
+
+        if (question != null) {
+            this.put(question);
+        }
+    }
+
 }

@@ -27,7 +27,7 @@ public class EducationClassifier implements Classifier {
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5b432x172-nlc-2044";
+    final private static String IDENTIFIER = "f5bbc5x176-nlc-3238";
     private NaturalLanguageClassifier classifier;
 
     public EducationClassifier() {
@@ -39,7 +39,7 @@ public class EducationClassifier implements Classifier {
     @Override
     public EducationCategory classify(String input) {
         EducationCategory category;
-        Classification result = this.classifier.classify(EducationClassifier.IDENTIFIER, input).execute();
+        Classification result = this.classifier.classify(IDENTIFIER, input).execute();
 
         switch (result.getTopClass()) {
             case "Studium":

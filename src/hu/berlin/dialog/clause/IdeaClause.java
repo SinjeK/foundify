@@ -120,22 +120,6 @@ private boolean running;
     private String getResponse(ResponseType type) {
         List responses = this.getAllResponses(type);
         String question = (String) responses.get((int)(Math.random() * responses.size()));
-
-        switch (type) {
-            case GENERAL:
-                break;
-            case INNOVATIVE:
-                break;
-            case UNSPECIFIED:
-                break;
-            case INNORISKY:
-            	break;
-            case NOT_INNOVATIVE:
-            	break;
-            default:
-                assert false : "Unhandled case for " + type.toString() + " in IdeaPredicate@getResponse(Questiontype)";
-        }
-
         return question;
     }
 

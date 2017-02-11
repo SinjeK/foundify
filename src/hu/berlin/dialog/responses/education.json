@@ -1,16 +1,46 @@
 {
-  "request" : {
+  "question" : {
     "START" : [
       "Erzähl mir etwas über deine Abschlüsse. Sei es nun eine abgeschlossene Ausbildung, ein Bachelor, Master oder gar ein Doktortitel",
-      "Was hast du so für Abschlüsse? Erzähl mir am besten alles von einer Ausbildung über Bachelortitel bis zur Promotion"
+      "Was hast du so für Abschlüsse? Erzähle mir am besten alles von einer abgeschlossenen Ausbildung über Bachelortitel bis zur Promotion"
     ],
     "ACADEMIC_QUALIFICATION" : [
-      "Ok du hast also studiert. Aber hast du einen Bachelor oder einen Master gemacht?"
+      "Noch eine Frage: Hast du auf Bachelor oder Master studiert?"
     ],
     "REPEAT" : [
-      "Hm ich habe dich nicht ganz verstanden.\nKannst du dich bitte wiederholen?"
+      "Kannst du dich bitte wiederholen?"
     ],
-    "RECENT_ACADEMIC_QUALIFICATION" : ["Wie lange besitzt du schon diesen akademischen Titel?"],
-    "END" : ["Das war's dann :)"]
+    "RECENT_ACADEMIC_QUALIFICATION" : [
+      "Wichtig für mich wäre noch zu wissen, wie lange schon du den #ACADEMICTITLE# besitzt?"
+    ],
+    "END" : [
+      "Vielen Dank für die super Antworten!\nDas reicht erstmal für den Überblick"
+    ]
+  },
+  "feedback" : {
+    "ABITUR" : [
+      "Mutig von dir. Habe bisher nur sehr wenige betreut, die direkt mit einem Abi ein Startup gründen wollten, aber es gab immer passende Förderprogramme.\nAlso keine Sorge"
+    ],
+    "QUALIFICATION" : [
+      "Also vom Staat gibt es einige Förderprogramme, die Leute mit einer abgeschlossenen Ausbildung oder Lehre bei ihrer Selbstständigkeit helfen.\nMal sehen, ob die für dich in Frage kommen. Aber machen wir erstmal weiter"
+    ],
+    "MASTER" : [
+      "Für den Master gibt es dutzende Förderprogramme :)"
+    ],
+    "PHD" : [
+      "Sehr gut! Da gibt es super attraktive Förderprogramme vom Staat"
+    ],
+    "BACHELOR" : [
+      "Super, der Bachelor ist eine der Grundvoraussetzungen für viele Förderprogramme"
+    ],
+    "STUDIUM" : [
+      "Sehr schön. das macht mir das Leben einfacher, da ein Studium schon mal eine gute Voraussetzung für viele Förderprogramme ist\n"
+    ],
+    "NOEDUCATION" : [
+      "Hmm damit wird es schwierig, aber vielleicht finde ich ja noch etwas"
+    ],
+    "UNSPECIFIED" : [
+      "Ich habe das nicht ganz verstanden"
+    ]
   }
 }
