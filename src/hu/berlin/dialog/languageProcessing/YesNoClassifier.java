@@ -40,26 +40,24 @@ public class YesNoClassifier implements Classifier{
 
     @Override
     public YesNoCategory classify(String input) {
-        float score = 0;
+        // \s = whitespace, newline, tabs
         String[] components = input.trim().split("\\s+");
 
         for (String s : components) {
-            if (this.yesList.contains(s.toLowerCase())) {
-                score += 1;
+            for (Object o : this.yesList) {
+                String n = (String)o;
+                if (EditDistance.computeLevenshteinDistance(s,n)<=1 && !this.noList.contains(s) && s.length() > 1) {
+                    return YesNoCategory.YES;
+                }
             }
 
-            if (this.noList.contains(s.toLowerCase())) {
-                score -= 1;
+            if (this.noList.contains(s.toLowerCase()) && s.length() > 1) {
+                return YesNoCategory.NO;
             }
         }
 
-        if (score > 0) {
-            return YesNoCategory.YES;
-        } else if (score < 0) {
-            return YesNoCategory.NO;
-        } else {
-            return YesNoCategory.UNSPECIFIED;
-        }
+
+        return YesNoCategory.UNSPECIFIED;
     }
 
     // helper methods

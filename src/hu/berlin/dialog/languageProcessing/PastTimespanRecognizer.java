@@ -21,7 +21,7 @@ public class PastTimespanRecognizer {
         keywords.add("vor");
     }
 
-    private static final Map<String, Integer> timeunits = new HashMap<>();
+    public static final Map<String, Integer> timeunits = new HashMap<>();
     static {
         timeunits.put("jahr", 60*60*24*365);
         timeunits.put("jahre", 60*60*24*365);

@@ -3,8 +3,6 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import hu.berlin.dialog.DialogState;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.DialogAtomicState;
-import hu.berlin.dialog.languageProcessing.PastTimespanRecognizer;
-import hu.berlin.dialog.languageProcessing.PastTimespanRecognizerException;
 import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.EducationClassifier;
@@ -14,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import hu.berlin.user.UserProfile;
+import hu.berlin.util.Random;
 import json.JSONObject;
 
 /**
@@ -24,10 +23,27 @@ import json.JSONObject;
 public class EducationClause extends Clause implements DialogStateController {
 
     static private String kEducationCategoryKey = "educategory";
-    static private String kTimespanCategoryKey = "timespan";
 
     private enum State implements DialogAtomicState {
         START {
+            @Override
+            public String[] getQuestions() {
+                return new String[] {
+                        "Erzähl mir etwas über deine Abschlüsse. Sei es nun eine abgeschlossene Ausbildung, " +
+                                "ein Bachelor, Master oder gar ein Doktortitel",
+                        "Was hast du so für Abschlüsse? Erzähle mir am besten alles von einer abgeschlossenen " +
+                                "Ausbildung über Bachelortitel bis zur Promotion"
+                };
+            }
+
+            @Override
+            public String[] getRepeatStrings() {
+                return new String[]{
+                        "Entschuldigung ich habe dich nicht verstehen können\n" +
+                                "Wäre lieb von dir, wenn du dich anders ausdrücken könntest?"
+                };
+            }
+
             @Override
             public State handle(Map<String, ?> data, UserProfile profile) {
                 EducationCategory educat = (EducationCategory)data.get(kEducationCategoryKey);
@@ -73,6 +89,21 @@ public class EducationClause extends Clause implements DialogStateController {
         },
         ACADEMIC_QUALIFICATION {
             @Override
+            public String[] getQuestions() {
+                return new String[] {
+                        "Noch eine Frage: Hast du auf Bachelor oder Master studiert?"
+                };
+            }
+
+            @Override
+            public String[] getRepeatStrings() {
+                return new String[]{
+                        "Ich bin mir nicht sicher, wie ich das interpretieren soll." +
+                                "Könntest du dich daher bitte anders formulieren?\n"
+                };
+            }
+
+            @Override
             public State handle(Map<String, ?> data, UserProfile profile) {
                 EducationCategory category = (EducationCategory)data.get(kEducationCategoryKey);
                 State nextState;
@@ -99,12 +130,23 @@ public class EducationClause extends Clause implements DialogStateController {
         },
         RECENT_ACADEMIC_QUALIFICATION {
             @Override
+            public String[] getQuestions() { return new String[] {}; }
+
+            @Override
+            public String[] getRepeatStrings() { return new String[]{}; }
+
+            @Override
             public State handle(Map<String, ?> data, UserProfile profile) {
-                // to be implemented
                 return State.END;
             }
         },
         REPEAT {
+            @Override
+            public String[] getQuestions() { return new String[] {}; }
+
+            @Override
+            public String[] getRepeatStrings() { return new String[]{}; }
+
             @Override
             public State handle(Map<String, ?> data, UserProfile profile) {
                 assert false : "State 'REPEAT' is just an empty state. Do not call its methods";
@@ -112,6 +154,17 @@ public class EducationClause extends Clause implements DialogStateController {
             };
         },
         END {
+            @Override
+            public String[] getQuestions() {
+                return new String[] {
+                        "Vielen Dank für die super Antworten!",
+                        "Super, das sollte fürs erste ausreichen"
+                };
+            }
+
+            @Override
+            public String[] getRepeatStrings() { return new String[]{}; }
+
             @Override
             public State handle(Map<String, ?> data, UserProfile profile) {
                 assert false : "State 'UNSPECIFIED' is just an empty state. Do not call its methods";
@@ -189,9 +242,7 @@ public class EducationClause extends Clause implements DialogStateController {
         super.enter();
 
         // initialize states
-        this.setCurrentState(State.START);
-        // print response of the starting state
-        this.put(getQuestion(State.START));
+        this.enterState(State.START);
     }
 
     /**
@@ -265,22 +316,8 @@ public class EducationClause extends Clause implements DialogStateController {
         this.setRunning(false);
     }
 
-    // Response generation
-    private List getAllQuestions(State type) {
-        return this.rootJSON.getJSONObject("question").getJSONArray(type.name()).toList();
-    }
-
     private List getAllFeedbacks(EducationCategory category) {
         return this.rootJSON.getJSONObject("feedback").getJSONArray(category.name()).toList();
-    }
-
-    private String getQuestion(State type) {
-        List requests = this.getAllQuestions(type);
-
-        assert requests != null : "Could not find question array in json. Maybe key was spelled wrong?";
-
-        String question = (String) requests.get((int)(Math.random() * requests.size()));
-        return question;
     }
 
     private String getFeedback(EducationCategory category) {
@@ -295,11 +332,8 @@ public class EducationClause extends Clause implements DialogStateController {
     // Enter state
     private void enterState(State state) {
         this.setCurrentState(state);
-        String question = this.getQuestion(state);
-
-        if (question != null) {
-            this.put(question);
-        }
+        String question = Random.randomElement(state.getQuestions());
+        if (question != null) this.put(question);
     }
 
     // Dialog state controller
