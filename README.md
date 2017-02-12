@@ -35,6 +35,8 @@ Foundify is a chat bot for those interested in founding their own company. It wo
 
 [GermaNet 9.0 API](http://www.sfs.uni-tuebingen.de/lsd/documents/api/javadoc9.0/index.html)
 
+[Stanford CoreNLP](http://stanfordnlp.github.io/CoreNLP/)
+
 ### Guide
 Follow these instructions to setup, execute, modify or extend the project.
 
