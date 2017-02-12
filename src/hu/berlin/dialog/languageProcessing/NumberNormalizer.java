@@ -63,11 +63,12 @@ public class NumberNormalizer {
     /**
      * Parses a string to a normalized number.
      *
-     * @param input The string to be parsed.
+     * @param in The string to be parsed.
      * @return A valid number or null if it could not be
      * parsed or no number was found
      */
-    public static Number normalizeStringToNumber(String input) {
+    public static Number normalizeStringToNumber(String in) {
+        String input = in.toLowerCase();
         try {
             int i = Integer.parseInt(input);
             return i;

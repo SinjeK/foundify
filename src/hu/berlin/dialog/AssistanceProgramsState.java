@@ -34,7 +34,7 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
 
     @Override
     public void enter() {
-        EducationClause education = new EducationClause(this, "education", this.getProfile());
+        EducationClause education = new EducationClause(this, "education", this.getProfile(), this.coreNLP);
         this.enterState(education);
     }
 

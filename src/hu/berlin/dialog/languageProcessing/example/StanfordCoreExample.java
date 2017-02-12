@@ -53,7 +53,6 @@ public class StanfordCoreExample {
 
             while ((input = reader.readLine()) != null) {
                 Annotation document = new Annotation(input);
-                core.annotate(document);
 
                 // these are all the sentences in this document
                 // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types

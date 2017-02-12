@@ -14,7 +14,8 @@
       "Wichtig für mich wäre noch zu wissen, wie lange schon du den #ACADEMICTITLE# besitzt?"
     ],
     "END" : [
-      "Vielen Dank für die super Antworten!\nDas reicht erstmal für den Überblick"
+      "Vielen Dank für die super Antworten!",
+      "Super, das sollte fürs erste ausreichen"
     ]
   },
   "feedback" : {
@@ -34,7 +35,7 @@
       "Super, der Bachelor ist eine der Grundvoraussetzungen für viele Förderprogramme"
     ],
     "STUDIUM" : [
-      "Sehr schön. das macht mir das Leben einfacher, da ein Studium schon mal eine gute Voraussetzung für viele Förderprogramme ist\n"
+      "Sehr schön. das macht mir das Leben einfacher, da ein Studium schon mal eine gute Voraussetzung für viele Förderprogramme ist"
     ],
     "NOEDUCATION" : [
       "Hmm damit wird es schwierig, aber vielleicht finde ich ja noch etwas"

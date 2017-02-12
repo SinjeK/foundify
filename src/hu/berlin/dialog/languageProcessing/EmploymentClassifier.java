@@ -41,7 +41,7 @@ public class EmploymentClassifier implements Classifier {
 
        // System.out.println(topClass.toString());
         
-        if (topConfidence < 0.5) {
+        if (topConfidence < 0.6) {
            category = EmploymentCategory.UNSPECIFIED;
           // System.out.println(topConfidence);
         } else {

@@ -1,6 +1,10 @@
 package hu.berlin.dialog.clause;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import hu.berlin.dialog.DialogState;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.DialogAtomicState;
+import hu.berlin.dialog.languageProcessing.PastTimespanRecognizer;
+import hu.berlin.dialog.languageProcessing.PastTimespanRecognizerException;
 import hu.berlin.file.FileLoader;
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.languageProcessing.EducationClassifier;
@@ -17,9 +21,10 @@ import json.JSONObject;
  *
  * The dialog diagram can be found in the folder /documentation/dialog
  */
-public class EducationClause extends Clause {
+public class EducationClause extends Clause implements DialogStateController {
 
     static private String kEducationCategoryKey = "educategory";
+    static private String kTimespanCategoryKey = "timespan";
 
     private enum State implements DialogAtomicState {
         START {
@@ -135,15 +140,19 @@ public class EducationClause extends Clause {
      */
     private State currentState;
 
+    private StanfordCoreNLP coreNLP;
+    private RecentAcademicQualificationClause recentAcademicQualificationClause;
+
     /**
      * True if predicate is currently evaluating a string.
      * Otherwise false.
      */
     private boolean running;
 
-    public EducationClause(DialogStateController controller, String identifier, UserProfile profile) {
+    public EducationClause(DialogStateController controller, String identifier, UserProfile profile, StanfordCoreNLP coreNLP) {
         super(controller, identifier, profile);
         this.classifier = new EducationClassifier();
+        this.coreNLP = coreNLP;
 
         try {
             String JSONContent = FileLoader.loadContentOfFile("hu/berlin/dialog/responses/education.json");
@@ -200,6 +209,11 @@ public class EducationClause extends Clause {
             return;
         }
 
+        if (this.getCurrentState() == State.RECENT_ACADEMIC_QUALIFICATION) {
+            this.recentAcademicQualificationClause.evaluate(input);
+            return;
+        }
+
         // Processing input
         this.setRunning(true);
 
@@ -218,11 +232,12 @@ public class EducationClause extends Clause {
                 this.enterState(State.END);
                 this.leave();
                 break;
+            case ACADEMIC_QUALIFICATION:
+                this.enterState(nextState);
+                break;
             case REPEAT:
                 break;
             case RECENT_ACADEMIC_QUALIFICATION:
-                this.setCurrentState(nextState);
-                String question = this.getQuestion(nextState);
                 String academicTitle = "akademischen Titel";
 
                 switch (category) {
@@ -237,8 +252,10 @@ public class EducationClause extends Clause {
                         break;
                 }
 
-                question = question.replace("#ACADEMICTITLE#", academicTitle);
-                this.put(question);
+                this.recentAcademicQualificationClause = new RecentAcademicQualificationClause(this, "recent", this.getProfile(),
+                        this.coreNLP, academicTitle);
+                this.recentAcademicQualificationClause.enter();
+                this.setCurrentState(nextState);
                 break;
             default:
                 assert false : "Unhandled switch case in EducationClause. State: " + nextState.toString();
@@ -282,6 +299,20 @@ public class EducationClause extends Clause {
 
         if (question != null) {
             this.put(question);
+        }
+    }
+
+    // Dialog state controller
+    @Override
+    public void dialogStateWantsToOutput(DialogState state, String output) {
+        this.put(output);
+    }
+
+    @Override
+    public void dialogStateDidLeave(DialogState state) {
+        if (state.getIdentifier().equals("recent")) {
+            this.enterState(State.END);
+            this.leave();
         }
     }
 
