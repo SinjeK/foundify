@@ -2,7 +2,6 @@ package hu.berlin.dialog.languageProcessing;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
-import hu.berlin.dialog.configuration.WatsonLanguageClassifierConfig;
 import java.util.List;
 
 
@@ -32,7 +31,7 @@ public class EducationClassifier implements Classifier {
     public EducationClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword(WatsonLanguageClassifierConfig.USERNAME, WatsonLanguageClassifierConfig.PASSWORD);
+        this.classifier.setUsernameAndPassword("84c6b852-4d9d-4e3d-9625-ceff7d379dba", "xFu6osAbLYot");
     }
 
     @Override
