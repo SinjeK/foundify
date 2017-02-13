@@ -57,8 +57,10 @@ public class RecentAcademicQualificationClause extends Clause {
                 this.sec = PastTimespanRecognizer.getNormalizedTimespan(input, this.coreNLP);
                 int year = sec / (3600 * 24 * 365);
                 this.getProfile().setValueForPredicate(year <= 3, PredicateConstants.isRecentGraduate);
-                this.put("das passt doch wunderbar!\nfür manche förderprogramme muss man nämlich einen " +
-                        "abschluss in den letzten drei jahren gemacht haben");
+                if (year <= 3) {
+                    this.put("das passt doch wunderbar!\nfür manche förderprogramme muss man nämlich einen " +
+                            "abschluss in den letzten drei jahren gemacht haben");
+                }
                 this.leave();
             } catch (PastTimespanRecognizerMissingTimeUnitException e) {
                 this.put("Minuten, Stunden, Monate oder Jahre? was meinst du?");

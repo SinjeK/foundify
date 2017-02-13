@@ -1,20 +1,15 @@
 package hu.berlin.dialog.clause;
-
 import java.io.IOException;
 import java.util.List;
-
 import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier;
-import hu.berlin.dialog.languageProcessing.EmploymentClassifier.EmploymentCategory;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
-//import hu.berlin.dialog.predicates.Clause;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
-public class IdeaClause extends Clause {  //extends Predicate
+public class IdeaClause extends Clause {
 	
 	public enum ResponseType {
 		GENERAL,     //first question
@@ -22,16 +17,16 @@ public class IdeaClause extends Clause {  //extends Predicate
 		INNORISKY,
 		NOT_INNOVATIVE,
 		UNSPECIFIED
-}
+	}
 
-private IdeaClassifier classifier;
-private JSONObject rootJSON;
+	private IdeaClassifier classifier;
+	private JSONObject rootJSON;
 
-/**
- * True if predicate is currently evaluating a string.
- * Otherwise false.
- */
-private boolean running;
+	/**
+	 * True if predicate is currently evaluating a string.
+	 * Otherwise false.
+	 */
+	private boolean running;
 
 	public IdeaClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);

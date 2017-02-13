@@ -1,13 +1,11 @@
 package hu.berlin.dialog.languageProcessing;
-import de.tuebingen.uni.sfs.germanet.api.GermaNet;
-import de.tuebingen.uni.sfs.germanet.relatedness.Relatedness;
 import json.JSONObject;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class YesNoClassifier implements Classifier{
@@ -18,15 +16,60 @@ public class YesNoClassifier implements Classifier{
         UNSPECIFIED
     }
 
-    private GermaNet germaNet;
-    private Relatedness relatedness;
+    // private GermaNet germaNet;
+    // private Relatedness relatedness;
+
+    /**
+     * If a string contains words in this list, it is
+     * classified as YES
+     */
     private List yesList;
+
+    /**
+     * If a string contains words in this list, it is
+     * classified as NO.
+     */
     private List noList;
 
-    public YesNoClassifier(GermaNet germaNet, Relatedness relatedness) {
+    /**
+     * If a string contains words in this list, it is
+     * classified as YES.
+     */
+    private List<String> keywordsYes;
+
+    public List<String> getKeywordsYes() {
+        return keywordsYes;
+    }
+
+    public void setKeywordsYes(List<String> keywordsYes) {
+        this.keywordsYes = keywordsYes;
+    }
+
+    /**
+     * If a string contains words in this list, it is
+     * classified as NO.
+     */
+    private List<String> keywordsNo;
+
+    public List<String> getKeywordsNo() {
+        return keywordsNo;
+    }
+
+    public void setKeywordsNo(List<String> keywordsNo) {
+        this.keywordsNo = keywordsNo;
+    }
+
+
+    /**
+     * Designated constructor
+     */
+    public YesNoClassifier() {
         super();
-        this.germaNet = germaNet;
-        this.relatedness = relatedness;
+        //this.germaNet = germaNet;
+        //this.relatedness = relatedness;
+
+        this.keywordsNo = new ArrayList<>();
+        this.keywordsYes = new ArrayList<>();
 
         try {
             JSONObject yesJSON = new JSONObject(getJSON("yes.json"));
@@ -43,16 +86,33 @@ public class YesNoClassifier implements Classifier{
         // \s = whitespace, newline, tabs
         String[] components = input.trim().split("\\s+");
 
-        for (String s : components) {
+        for (String d : components) {
+            String s = d.toLowerCase();
             for (Object o : this.yesList) {
                 String n = (String)o;
-                if (EditDistance.computeLevenshteinDistance(s,n)<=1 && !this.noList.contains(s) && s.length() > 1) {
+                if (EditDistance.computeLevenshteinDistance(s,n)<=1 && !this.noList.contains(s)
+                        && s.length() > 1 && (this.keywordsNo == null || !this.keywordsNo.contains(s))) {
                     return YesNoCategory.YES;
                 }
             }
 
+            if (this.keywordsYes != null) {
+                for (String n : this.keywordsYes) {
+                    if (EditDistance.computeLevenshteinDistance(s,n)<=1 && !this.noList.contains(s) && s.length() > 1) {
+                        return YesNoCategory.YES;
+                    }
+                }
+            }
+
+
             if (this.noList.contains(s.toLowerCase()) && s.length() > 1) {
                 return YesNoCategory.NO;
+            }
+
+            if (this.keywordsNo != null) {
+                if (this.keywordsNo.contains(s.toLowerCase())) {
+                    return YesNoCategory.NO;
+                }
             }
         }
 

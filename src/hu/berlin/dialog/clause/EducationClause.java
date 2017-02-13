@@ -39,8 +39,7 @@ public class EducationClause extends Clause implements DialogStateController {
             @Override
             public String[] getRepeatStrings() {
                 return new String[]{
-                        "Entschuldigung ich habe dich nicht verstehen können\n" +
-                                "Wäre lieb von dir, wenn du dich anders ausdrücken könntest?"
+                        "Wäre lieb von dir, wenn du dich anders ausdrücken könntest"
                 };
             }
 
@@ -196,12 +195,6 @@ public class EducationClause extends Clause implements DialogStateController {
     private StanfordCoreNLP coreNLP;
     private RecentAcademicQualificationClause recentAcademicQualificationClause;
 
-    /**
-     * True if predicate is currently evaluating a string.
-     * Otherwise false.
-     */
-    private boolean running;
-
     public EducationClause(DialogStateController controller, String identifier, UserProfile profile, StanfordCoreNLP coreNLP) {
         super(controller, identifier, profile);
         this.classifier = new EducationClassifier();
@@ -214,18 +207,6 @@ public class EducationClause extends Clause implements DialogStateController {
             e.printStackTrace();
             System.exit(-1);
         }
-    }
-
-    // Setter & Getter
-    private void setRunning(boolean r) {
-        this.running = r;
-    }
-
-    /**
-     * @return true if predicate is currently evaluating, otherwise false
-     */
-    public boolean isRunning() {
-        return this.running;
     }
 
     private State getCurrentState() {
@@ -255,18 +236,10 @@ public class EducationClause extends Clause implements DialogStateController {
     public void evaluate(String input) {
         super.evaluate(input);
 
-        if (this.isRunning()) {
-            this.put("Warte ich schaue gerade nach passenden Förderprogrammen");
-            return;
-        }
-
         if (this.getCurrentState() == State.RECENT_ACADEMIC_QUALIFICATION) {
             this.recentAcademicQualificationClause.evaluate(input);
             return;
         }
-
-        // Processing input
-        this.setRunning(true);
 
         EducationCategory category = this.classifier.classify(input);
         String feedback = this.getFeedback(category);
@@ -277,43 +250,27 @@ public class EducationClause extends Clause implements DialogStateController {
         HashMap<String, Object> data = new HashMap<>();
         data.put(kEducationCategoryKey, category);
         State nextState = (State)this.getCurrentState().handle(data, this.getProfile());
+        this.enterState(nextState);
 
-        switch (nextState) {
-            case END:
-                this.enterState(State.END);
-                this.leave();
-                break;
-            case ACADEMIC_QUALIFICATION:
-                this.enterState(nextState);
-                break;
-            case REPEAT:
-                break;
-            case RECENT_ACADEMIC_QUALIFICATION:
-                String academicTitle = "akademischen Titel";
+        if (nextState == State.RECENT_ACADEMIC_QUALIFICATION) {
+            String academicTitle = "akademischen Titel";
 
-                switch (category) {
-                    case PHD:
-                        academicTitle = "Doktorgrad";
-                        break;
-                    case MASTER:
-                        academicTitle = "Master";
-                        break;
-                    case BACHELOR:
-                        academicTitle = "Bachelor";
-                        break;
-                }
+            switch (category) {
+                case PHD:
+                    academicTitle = "Doktorgrad";
+                    break;
+                case MASTER:
+                    academicTitle = "Master";
+                    break;
+                case BACHELOR:
+                    academicTitle = "Bachelor";
+                    break;
+            }
 
-                this.recentAcademicQualificationClause = new RecentAcademicQualificationClause(this, "recent", this.getProfile(),
-                        this.coreNLP, academicTitle);
-                this.recentAcademicQualificationClause.enter();
-                this.setCurrentState(nextState);
-                break;
-            default:
-                assert false : "Unhandled switch case in EducationClause. State: " + nextState.toString();
+            this.recentAcademicQualificationClause = new RecentAcademicQualificationClause(this, "recent", this.getProfile(),
+                    this.coreNLP, academicTitle);
+            this.recentAcademicQualificationClause.enter();
         }
-
-        // Processing finished
-        this.setRunning(false);
     }
 
     private List getAllFeedbacks(EducationCategory category) {
@@ -331,9 +288,18 @@ public class EducationClause extends Clause implements DialogStateController {
 
     // Enter state
     private void enterState(State state) {
-        this.setCurrentState(state);
-        String question = Random.randomElement(state.getQuestions());
-        if (question != null) this.put(question);
+        if (state != State.REPEAT) {
+            this.setCurrentState(state);
+
+            String question = Random.randomElement(state.getQuestions());
+            if (question != null) this.put(question);
+
+            if (state == State.END) {
+                this.leave();
+            }
+        } else {
+            this.put(Random.randomElement(this.getCurrentState().getRepeatStrings()));
+        }
     }
 
     // Dialog state controller
@@ -346,7 +312,6 @@ public class EducationClause extends Clause implements DialogStateController {
     public void dialogStateDidLeave(DialogState state) {
         if (state.getIdentifier().equals("recent")) {
             this.enterState(State.END);
-            this.leave();
         }
     }
 

@@ -22,7 +22,10 @@ public class Welcome extends DialogState {
 
     @Override
     public void enter() {
-        this.put("\n\n\n\n");
+        for (int i=0; i<4; i++) {
+            this.put("");
+        }
+
         this.put(this.createResponse());
         this.leave();
     }

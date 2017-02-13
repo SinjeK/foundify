@@ -1,10 +1,6 @@
 package hu.berlin.dialog;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import hu.berlin.dialog.clause.EducationClause;
-import hu.berlin.dialog.clause.EmploymentClause;
-import hu.berlin.dialog.clause.IdeaClause;
-import hu.berlin.dialog.clause.TeamClause;
-import hu.berlin.dialog.clause.TeamSizeClause;
+import hu.berlin.dialog.clause.*;
 import hu.berlin.dialog.evaluation.AssistanceProgramsEvaluator;
 import hu.berlin.dialog.evaluation.AssistanceProgramsEvaluator.AssistancePrograms;
 import hu.berlin.user.UserProfile;
@@ -53,7 +49,10 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
         } else if (state.getIdentifier().equals("idea")) {
         	TeamClause team = new TeamClause(this, "team", this.getProfile(), this.coreNLP);
             this.enterState(team);
-        } else if (state.getIdentifier().equals("team")) {
+        } else if(state.getIdentifier().equals("team")) {
+            CompanyClause company = new CompanyClause(this, "company", this.getProfile(), this.coreNLP);
+            this.enterState(company);
+        } else if (state.getIdentifier().equals("company")) {
 
             List<AssistancePrograms> suitablePrograms = AssistanceProgramsEvaluator.findSuitableAssistancePrograms(this.getProfile());
 

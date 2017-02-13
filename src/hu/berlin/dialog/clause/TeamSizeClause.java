@@ -79,19 +79,23 @@ public class TeamSizeClause extends Clause {
 
         if (size > 0 && size <= 3) {
             put(getResponse(ResponseType.THREEORFEWER));
-            this.getProfile().setValueForPredicate(true, PredicateConstants.threeMembersOrFewer);
+            this.getProfile().setIntForPredicate(size, PredicateConstants.teamSize);
+            //this.getProfile().setValueForPredicate(true, PredicateConstants.threeMembersOrFewer);
             this.leave();
         } else if (size == 4) {
             put(getResponse(ResponseType.FOUR));
-            this.getProfile().setValueForPredicate(true, PredicateConstants.fourMembers);
+            this.getProfile().setIntForPredicate(size, PredicateConstants.teamSize);
+            //this.getProfile().setValueForPredicate(true, PredicateConstants.fourMembers);
             this.leave();
         } else if (size > 4) {
             put(getResponse(ResponseType.MORETHANFOUR));
-            this.getProfile().setValueForPredicate(true, PredicateConstants.moreThanFourMembers);
+            this.getProfile().setIntForPredicate(size, PredicateConstants.teamSize);
+            //this.getProfile().setValueForPredicate(true, PredicateConstants.moreThanFourMembers);
             this.leave();
         } else {
-            put(getResponse(ResponseType.UNSPECIFIED));
+            this.put("sorry ich konnte dich nicht verstehen");
         }
+
 
         this.setRunning(false);
 	}

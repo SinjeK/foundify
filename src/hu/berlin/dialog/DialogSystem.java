@@ -7,9 +7,9 @@ import hu.berlin.dialog.io.DialogInput;
 import hu.berlin.dialog.io.DialogInput.DialogInputDelegate;
 import hu.berlin.dialog.io.DialogOutput;
 import hu.berlin.user.UserProfile;
+import hu.berlin.util.Console;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * A dialog system manages all dialog states of the chat bot. It is
@@ -28,8 +28,8 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     private DialogState currentState;
     private ExecutorService systemService;
     private StanfordCoreNLP stanfordCoreNLP;
-    private Relatedness relatedness;
-    private GermaNet germaNet;
+    // private Relatedness relatedness;
+    // private GermaNet germaNet;
     private UserProfile profile;
 
     final private static String kGermaNetRessources = "gn/ressources/v90XML";
@@ -47,9 +47,27 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         this.output = new DialogOutput();
         this.profile = new UserProfile();
 
-        this.germaNet = new GermaNet(FileLoader.loadRessource(kGermaNetRessources));
-        this.relatedness = new Relatedness(this.germaNet);
+        // this.germaNet = new GermaNet(FileLoader.loadRessource(kGermaNetRessources), true);
+        // this.relatedness = new Relatedness(this.germaNet);
+        Console.enableErrorStream(false);
+        //this.output.put("Starte foundify",false);
+
+        this.output.put("");
+        this.output.put("███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ ██╗███████╗██╗   ██╗\n" +
+                "██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗██║██╔════╝╚██╗ ██╔╝\n" +
+                "█████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║██║█████╗   ╚████╔╝ \n" +
+                "██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║██║██╔══╝    ╚██╔╝  \n" +
+                "██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝██║██║        ██║   \n" +
+                "╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝╚═╝        ╚═╝   ");
+        this.output.put("");
+
+        ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
+        ScheduledFuture future = schedule.scheduleWithFixedDelay(()->{
+            this.output.putOnSameLine(".");
+        },0,500, TimeUnit.MILLISECONDS);
+
         this.stanfordCoreNLP = this.createStanfordCoreNLP();
+        future.cancel(true);
     }
 
     // Getter & Setter
@@ -90,7 +108,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         this.currentState = null;
 
         if (state.getIdentifier().equals(kWelcomeIdentifier)) {
-            Guide guideState = new Guide(this, kGuideIdentifier, this.profile, this.germaNet, this.relatedness);
+            Guide guideState = new Guide(this, kGuideIdentifier, this.profile);
             this.enterState(guideState);
         } else if (state.getIdentifier().equals(kGuideIdentifier)) {
             Guide guide = (Guide)state;

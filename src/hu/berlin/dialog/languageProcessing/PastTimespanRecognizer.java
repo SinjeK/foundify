@@ -13,6 +13,7 @@ import java.util.*;
  */
 public class PastTimespanRecognizer {
 
+    // not used
     private static final List<String> keywords = new ArrayList<>();
     static {
         keywords.add("seit");
@@ -64,33 +65,37 @@ public class PastTimespanRecognizer {
 
         List<CoreLabel> tokens = document.get(CoreAnnotations.TokensAnnotation.class);
 
+        /*
         if (PastTimespanRecognizer.containsKeywords(document)) {
-            int unitsec = -1;
-            int value = -1;
-            for(CoreLabel token : tokens) {
-                String word = token.get(CoreAnnotations.TextAnnotation.class);
 
-                Number num = NumberNormalizer.normalizeStringToNumber(word);
-                if (num != null) {
-                    value = num.intValue();
-                } else if (timevalue.containsKey(word.toLowerCase())) {
-                    return timevalue.get(word.toLowerCase());
-                } else if (timeunits.containsKey(word.toLowerCase())) {
-                    unitsec = timeunits.get(word.toLowerCase());
-                }
-            }
-
-            if (unitsec == -1 && value == -1)
-                throw new PastTimespanRecognizerMissingTimeUnitAndValueException();
-            if (unitsec == -1)
-                throw new PastTimespanRecognizerMissingTimeUnitException();
-            if (value == -1)
-                throw new PastTimespanRecognizerMissingTimeValueException();
-
-            return value * unitsec;
         } else {
             throw new PastTimespanRecognizerNoTimeException();
         }
+        */
+
+        int unitsec = -1;
+        int value = -1;
+        for(CoreLabel token : tokens) {
+            String word = token.get(CoreAnnotations.TextAnnotation.class);
+
+            Number num = NumberNormalizer.normalizeStringToNumber(word);
+            if (num != null) {
+                value = num.intValue();
+            } else if (timevalue.containsKey(word.toLowerCase())) {
+                return timevalue.get(word.toLowerCase());
+            } else if (timeunits.containsKey(word.toLowerCase())) {
+                unitsec = timeunits.get(word.toLowerCase());
+            }
+        }
+
+        if (unitsec == -1 && value == -1)
+            throw new PastTimespanRecognizerMissingTimeUnitAndValueException();
+        if (unitsec == -1)
+            throw new PastTimespanRecognizerMissingTimeUnitException();
+        if (value == -1)
+            throw new PastTimespanRecognizerMissingTimeValueException();
+
+        return value * unitsec;
     }
 
     private static boolean containsKeywords(Annotation document) {

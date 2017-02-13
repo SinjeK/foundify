@@ -26,9 +26,9 @@ public class Guide extends DialogState {
     private State nextState;
     private int state = 0;
 
-    public Guide(DialogStateController controller, String identifier, UserProfile profile, GermaNet gn, Relatedness relatedness) {
+    public Guide(DialogStateController controller, String identifier, UserProfile profile) {
         super(controller, identifier, profile);
-        this.yesNoClassifier = new YesNoClassifier(gn, relatedness);
+        this.yesNoClassifier = new YesNoClassifier();
     }
 
     public State getNextState() {
@@ -42,14 +42,12 @@ public class Guide extends DialogState {
 
     @Override
     public void evaluate(String input) {
-        State nextState;
         YesNoCategory category = this.yesNoClassifier.classify(input);
 
         if (state == 0) {
             switch (category) {
                 case YES:
-                    nextState = State.ASSISTANCEPROGRAMS;
-                    this.nextState = nextState;
+                    this.nextState = State.ASSISTANCEPROGRAMS;
                     this.leave();
                     break;
                 case NO:
@@ -67,8 +65,7 @@ public class Guide extends DialogState {
         } else if (state == 1) {
             switch (category) {
                 case YES:
-                    nextState = State.ASSISTANCEPROGRAMS;
-                    this.nextState = nextState;
+                    this.nextState = State.ASSISTANCEPROGRAMS;
                     this.leave();
                     break;
                 case NO:

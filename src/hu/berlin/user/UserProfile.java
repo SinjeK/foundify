@@ -1,6 +1,5 @@
 package hu.berlin.user;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
-
 import java.util.HashMap;
 
 /**
@@ -33,6 +32,20 @@ public class UserProfile {
         }
 
         return serviceMap;
+    }
+
+    public void setIntForPredicate(int i, PredicateConstants predicate) {
+        this.setIntForKey(i, predicate.name(), kUserProfilePredicateIdentifier);
+    }
+
+    public int getIntForPredicate(PredicateConstants predicate) {
+        try {
+            return this.getIntForKey(predicate.name(), kUserProfilePredicateIdentifier);
+        } catch (UserProfileException e) {
+            e.printStackTrace();
+            System.exit(-1);
+            return 0;
+        }
     }
 
     public void setValueForPredicate(boolean value, PredicateConstants predicate) {

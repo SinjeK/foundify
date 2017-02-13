@@ -112,42 +112,57 @@ public class AssistanceProgramsEvaluator {
         boolean hasPHD = profile.getValueForPredicate(PredicateConstants.hasPHD);
         boolean isScientist = profile.getValueForPredicate(PredicateConstants.isScientist);
         boolean isInno = profile.getValueForPredicate(PredicateConstants.isInnovative);
-        boolean isKnowledgeBased = profile.getValueForPredicate(PredicateConstants.isKnowledgeBased);
-        boolean isTechno = profile.getValueForPredicate(PredicateConstants.isTechnologyOriented);
-        boolean isRecentGraduate = true; // to be implemented
-        //boolean isRecentGraduate = profile.getValueForPredicate(PredicateConstants.isRecentGraduate);
+        //boolean isKnowledgeBased = profile.getValueForPredicate(PredicateConstants.isKnowledgeBased);
+        //boolean isTechno = profile.getValueForPredicate(PredicateConstants.isTechnologyOriented);
+        boolean isRecentGraduate = profile.getValueForPredicate(PredicateConstants.isRecentGraduate);
         boolean isStudent = profile.getValueForPredicate(PredicateConstants.isStudent);
         boolean isUnemployed = profile.getValueForPredicate(PredicateConstants.isUnemployed);
         boolean failureIsPossible = profile.getValueForPredicate(PredicateConstants.failureIsPossible);
-        boolean threeMembersOrFewer = profile.getValueForPredicate(PredicateConstants.threeMembersOrFewer);
-        boolean four = profile.getValueForPredicate(PredicateConstants.fourMembers);
-        boolean moreThanFourMembers = profile.getValueForPredicate(PredicateConstants.moreThanFourMembers);
-        
+        boolean wasFounded = profile.getValueForPredicate(PredicateConstants.companyHasBeenFounded);
+        //boolean threeMembersOrFewer = profile.getValueForPredicate(PredicateConstants.threeMembersOrFewer);
+        //boolean four = profile.getValueForPredicate(PredicateConstants.fourMembers);
+        //boolean moreThanFourMembers = profile.getValueForPredicate(PredicateConstants.moreThanFourMembers);
+        boolean lookingForMoney = profile.getValueForPredicate(PredicateConstants.lookingForMoney);
+        boolean lookingForEmployees = profile.getValueForPredicate(PredicateConstants.lookingForEmployees);
+        boolean fastGrowth = profile.getValueForPredicate(PredicateConstants.fastGrowth);
+        boolean companyIsYoungerThan12Years = profile.getValueForPredicate(PredicateConstants.companyIsYoungerOrEqualThan12Years);
+        boolean costs5pc = profile.getValueForPredicate(PredicateConstants.costsAtLeast5PercentOnceInLast3Years);
+        boolean wonInnoPrize = profile.getValueForPredicate(PredicateConstants.wonInnovationPrize);
+        boolean claimsPatent = profile.getValueForPredicate(PredicateConstants.claimsPatent);
+
+        int teamsize = 0;
+        boolean teamSizeExists = profile.doesValueAtPredicateExist(PredicateConstants.teamSize);
+        if (teamSizeExists) teamsize = profile.getIntForPredicate(PredicateConstants.teamSize);
+
         List <AssistancePrograms> suitablePrograms = new ArrayList<>();
 
         if ((isRecentGraduate) &&
                 (isStudent) &&
-                (isInno /* && (isKnowledgeBased || isTechno)*/ ) && 
-                threeMembersOrFewer) {
+                (isInno /* && (isKnowledgeBased || isTechno)*/ ) &&
+                (teamSizeExists && teamsize <= 3) &&
+                (!wasFounded)) {
             suitablePrograms.add(AssistancePrograms.ExistGruenderstipendium);
         }
 
         if (hasPHD &&
                 (isScientist) &&
                 (isInno /*&& (isKnowledgeBased || isTechno)*/) &&
-                (!moreThanFourMembers)) {
+                (teamSizeExists && teamsize < 5) &&
+                (!wasFounded)) {
             suitablePrograms.add(AssistancePrograms.ExistForschungstransfer);
         }
 
-        if ((isUnemployed)) {
+        if ((isUnemployed) &&
+                (lookingForMoney)) {
             suitablePrograms.add(AssistancePrograms.Gruendungszuschussformel);
         }
 
-        if ((failureIsPossible && isInno)) {
+        if ((failureIsPossible && isInno) &&
+                (fastGrowth || companyIsYoungerThan12Years || costs5pc || claimsPatent || wonInnoPrize)) {
             suitablePrograms.add(AssistancePrograms.IBBBerlinInnovation);
         }
 
-        if ((isInno)) {   //hier sollte noch & lookingForEmployees hinein, oder? 
+        if ((isInno && lookingForEmployees)) {
             suitablePrograms.add(AssistancePrograms.IBBBerlinInnovationsAssistent);
         }
 

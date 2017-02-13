@@ -25,7 +25,7 @@ public class EducationClassifier implements Classifier {
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5bbc5x176-nlc-3238";
+    final private static String IDENTIFIER = "f5b42ex171-nlc-3504";
     private NaturalLanguageClassifier classifier;
 
     public EducationClassifier() {

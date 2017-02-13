@@ -156,8 +156,8 @@ public class TeamClause extends Clause implements DialogStateController {
     }
 
     private String getWelcomeResponse() {
-        return "Super, dann machen wir mit dem nächsten Schritt weiter! Kannst du kurz dein Team vorstellen "
-        		+ " und dabei besonders relevante Erfahrungen in Wirtschaft und Wissenschaft beschreiben?";
+        return "Super, dann machen wir mit dem nächsten Schritt weiter!\nKannst du kurz dein Team vorstellen "
+        		+ "und dabei besonders relevante Erfahrungen in Wirtschaft und Wissenschaft beschreiben?";
     }
 
     private String getResponse(ResponseType type) {

@@ -8,10 +8,6 @@ import hu.berlin.dialog.DialogSystem;
  */
 public class Main {
     public static void main(String[] args) {
-
-        System.out.println("\n\n\nAuthors: Viet-Duc & Sinje");
-        System.out.println("Version 0.0.1\n\n\n");
-
         try {
             DialogSystem system = new DialogSystem();
             system.run();

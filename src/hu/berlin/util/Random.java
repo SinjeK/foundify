@@ -13,12 +13,22 @@ public class Random {
     }
 
     public static Object randomElement(List list) {
-        return list.get(Random.randomNumber(0,list.size()-1));
+        if (list == null) return null;
+        if (list.size()==1) return list.get(0);
+        if (list.size() > 1) return list.get(Random.randomNumber(0,list.size()-1));
+
+        return null;
     }
 
     public static String randomElement(String[] array) {
-        if (array.length > 0) {
-            return array[randomNumber(0, array.length)];
+
+        if (array == null)
+            return null;
+
+        if (array.length == 1) {
+            return array[0];
+        } else if (array.length > 1) {
+            return array[randomNumber(0, array.length-1)];
         } else {
             return null;
         }
