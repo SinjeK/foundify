@@ -87,6 +87,10 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     public void dialogInputReceivedMessage(DialogInput dialogInput, String message) {
         assert currentState != null : "Current state is null which is not good. You might have forgotten to use enterState(State)";
 
+        this.output.putOnSameLine(String.format("\033[%dA",1)); // Move up
+        this.output.putOnSameLine("\033[2K"); // Erase line content
+        this.output.put(Console.ANSI_BOLD + Console.ANSI_BLUE + "Du: " + Console.ANSI_RESET + message);
+
         // type ::restart to restart the chat dialog without the need to reload the
         // language processing modules, thus saving a lot of time
         if (message.equals("::restart")) {
@@ -127,14 +131,24 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
                 }
             }
         } else if (state.getIdentifier().equals(kAssistanceProgramsIdentifier)) {
-            this.output.put("Das war's dann. Bis zum nächsten Mal ^_^");
+            String out = Console.ANSI_BOLD + Console.ANSI_RED + "Foundify: " + Console.ANSI_RESET + "Tschüss!";
             this.quit();
         }
     }
 
     @Override
     public void dialogStateWantsToOutput(DialogState state, String output) {
-        this.output.put(output);
+        assert output != null : "Output is null in DialogSystem@dialogStateWantsToOutput State: " + state.toString();
+
+        if (output == "") {
+            this.output.put("");
+        } else {
+            String[] lines = output.split("\\n");
+            for (String s : lines) {
+                String out = Console.ANSI_BOLD + Console.ANSI_RED + "Foundify: " + Console.ANSI_RESET + s;
+                this.output.put(out);
+            }
+        }
     }
 
 
@@ -153,6 +167,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     public void quit() {
         this.input.stop();
         this.systemService.shutdownNow();
+        System.exit(0);
     }
 
 

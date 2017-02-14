@@ -10,7 +10,7 @@ public class Welcome extends DialogState {
 
     private static String[] welcomeResponses = {
             "Hey, ich bin Foundify - dein persönlicher Finanzierungsbot für Startups",
-            "Hi mein Name ist Foundify und ich kann dir beim Finden von Finanzierungsprogrammen für deinen Startups helfen",
+            "Hi mein Name ist Foundify und ich kann dir beim Finden von Finanzierungsprogrammen für deinen Startup helfen",
     };
 
     public Welcome (DialogStateController controller, String identifier, UserProfile profile) {

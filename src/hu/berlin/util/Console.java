@@ -18,6 +18,7 @@ public class Console {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_BOLD = "\u001b[1m";
 
     private static final PrintStream originalStream = System.out;
     private static final PrintStream errorStream = System.err;

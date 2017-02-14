@@ -1,13 +1,12 @@
 package hu.berlin.dialog.io;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import hu.berlin.util.Console;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class DialogOutput {
 
+    final private static String prefix = "Foundify:";
     private ScheduledExecutorService queue;
 
     public DialogOutput() {
@@ -27,7 +26,7 @@ public class DialogOutput {
             return;
         }
 
-        if (delayflag) {
+        if (false) {
             if (output.equals("")) {
                 System.out.println();
                 return;

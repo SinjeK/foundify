@@ -32,7 +32,7 @@ public class CompanyClause extends Clause {
                 String[] yesFeedback = new String[]{"sehr gut, denn für einige Förderprogramme ist es notwendig, " +
                         "dass das Unternehmen bereits existiert"};
                 String[] noFeedback = new String[]{"also kommen für dich nur Förderprogramme in Frage, die euch bei" +
-                        "der Existenzgründung unterstützen"};
+                        " der Existenzgründung unterstützen"};
 
                 switch ((YesNoCategory)category) {
                     case YES:
@@ -222,7 +222,7 @@ public class CompanyClause extends Clause {
                         return null;
                     case MONEY:
                         return new String[]{
-                                "die meisten Förderprogramme bieten finanzielle Unterstützung, also wird sich sicherlich etwas für" +
+                                "die meisten Förderprogramme bieten finanzielle Unterstützung, also wird sich sicherlich etwas für " +
                                         "dich finden"
                         };
                     case EMPLOYEES:

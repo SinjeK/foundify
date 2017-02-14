@@ -58,16 +58,9 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
 
             this.put("Ich konnte folgende für dich passende Förderprogramme finden:");
             for (AssistancePrograms p : suitablePrograms) {
-                this.put(p.toString());
-            }
-
-            this.put("\n\nHier noch Informationen zu den Förderprogrammen:");
-            for (AssistancePrograms p : suitablePrograms) {
-                this.put(p.toString() + " " + p.description());
-                this.put("");
+                this.put(p.toString().toUpperCase());
+                this.put(p.description());
                 this.put(p.url());
-
-                this.put("\n\n");
             }
 
             this.put("Ich hoffe, ich konnte dir bei der Suche nach passenden Förderprogrammen helfen.");

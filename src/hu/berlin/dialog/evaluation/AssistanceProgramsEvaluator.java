@@ -23,11 +23,11 @@ public class AssistanceProgramsEvaluator {
           }
 
           public String description() {
-              return "Das EXIST Gründerstipendium ist eines der größten und bekanntesten Förderprogramme in Deutschland.\n" +
-                      "Es unterstützt Studierende, Absolventinnen und Absolventen sowie Wissenschaftlerinnen und Wissenschaftler \n" +
-                      "aus Hochschulen und außeruniversitären Forschungseinrichtungen, die ihre Gründungsidee realisieren und \n" +
-                      "in einen Businessplan umsetzen möchten. Bei den Gründungsvorhaben sollte es sich um innovative \n" +
-                      "technologieorientierte oder wissensbasierte Projekte mit signifikanten Alleinstellungsmerkmalen \n" +
+              return "Das EXIST Gründerstipendium ist eines der größten und bekanntesten Förderprogramme in Deutschland." +
+                      "Es unterstützt Studierende, Absolventinnen und Absolventen sowie Wissenschaftlerinnen und Wissenschaftler" +
+                      "aus Hochschulen und außeruniversitären Forschungseinrichtungen, die ihre Gründungsidee realisieren und" +
+                      "in einen Businessplan umsetzen möchten. Bei den Gründungsvorhaben sollte es sich um innovative" +
+                      "technologieorientierte oder wissensbasierte Projekte mit signifikanten Alleinstellungsmerkmalen" +
                       "und guten wirtschaftlichen Erfolgsaussichten handeln.";
           }
 
