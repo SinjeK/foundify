@@ -26,7 +26,7 @@ public class EmploymentClassifier implements Classifier {
    
    @Override
    public EmploymentCategory classify(String input) {
-      EmploymentCategory category;
+       EmploymentCategory category;
         Classification result = this.classifier.classify(IDENTIFIER, input).execute();
        
         List<ClassifiedClass> classes = result.getClasses();

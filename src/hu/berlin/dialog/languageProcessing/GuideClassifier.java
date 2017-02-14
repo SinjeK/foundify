@@ -1,18 +1,26 @@
 package hu.berlin.dialog.languageProcessing;
 
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
+import java.util.List;
 
-/**
- * Created by Duc on 09.02.17.
- */
+
 public class GuideClassifier implements Classifier {
 
     public enum GuideCategory implements Category {
+        ASSISTPROGRAMS,
+        IDEA,
+        LAW,
+        PERSONS,
+        STEPS,
+        EVENTS,
+        FUNCTIONS,
         UNSPECIFIED
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5b432x172-nlc-2044";
+    final private static String IDENTIFIER = "f5b42fx173-nlc-3988";
     private NaturalLanguageClassifier classifier;
 
     public GuideClassifier() {
@@ -22,7 +30,52 @@ public class GuideClassifier implements Classifier {
     }
 
     public GuideCategory classify(String input) {
-        return GuideCategory.UNSPECIFIED;
+        GuideCategory category;
+        Classification result = this.classifier.classify(IDENTIFIER, input).execute();
+
+        List<ClassifiedClass> classes = result.getClasses();
+        double topConfidence = 0.0;
+        for (ClassifiedClass c : classes) {
+            if (c.getConfidence() > topConfidence) {
+                topConfidence = c.getConfidence();
+            }
+        }
+
+        if (topConfidence < 0.7) {
+            return GuideCategory.UNSPECIFIED;
+        }
+
+        switch (result.getTopClass()) {
+            case "AssistPrograms":
+                category = GuideCategory.ASSISTPROGRAMS;
+                break;
+            case "Idea":
+                category = GuideCategory.IDEA;
+                break;
+            case "Unspecified":
+                category = GuideCategory.UNSPECIFIED;
+                break;
+            case "Jura":
+                category = GuideCategory.LAW;
+                break;
+            case "Kontaktpersonen":
+                category = GuideCategory.PERSONS;
+                break;
+            case "Steps":
+                category = GuideCategory.STEPS;
+                break;
+            case "Events":
+                category = GuideCategory.EVENTS;
+                break;
+            case "Help":
+                category = GuideCategory.FUNCTIONS;
+                break;
+            default:
+                category = GuideCategory.UNSPECIFIED;
+                break;
+        }
+
+        return category;
     }
 
 }
