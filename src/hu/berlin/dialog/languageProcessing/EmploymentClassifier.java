@@ -15,7 +15,7 @@ public class EmploymentClassifier implements Classifier {
        UNSPECIFIED
    }
 
-   final private static String IDENTIFIER = "f5b42fx173-nlc-3619";
+   final private static String IDENTIFIER = "f5b42fx173-nlc-3986";
    private NaturalLanguageClassifier classifier;
    
    public EmploymentClassifier() {
