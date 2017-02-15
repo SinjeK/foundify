@@ -5,28 +5,35 @@ import hu.berlin.dialog.DialogStateController;
 import hu.berlin.dialog.clause.Predicates.PredicateConstants;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier;
 import hu.berlin.dialog.languageProcessing.IdeaClassifier.InnoCategory;
+import hu.berlin.dialog.languageProcessing.NumberNormalizer;
+import hu.berlin.dialog.languageProcessing.NumberTagger;
+import hu.berlin.dialog.languageProcessing.YesNoClassifier;
+import hu.berlin.dialog.languageProcessing.YesNoClassifier.YesNoCategory;
 import hu.berlin.file.FileLoader;
 import hu.berlin.user.UserProfile;
 import json.JSONObject;
 
 public class IdeaClause extends Clause {
-	
-	public enum ResponseType {
+
+	/*
+	private enum ResponseType {
 		GENERAL,     //first question
 		INNOVATIVE,
 		INNORISKY,
 		NOT_INNOVATIVE,
 		UNSPECIFIED
 	}
+	*/
 
+	private enum State {
+		START,
+		ISINNO,
+		ISRISKY
+	}
+
+	private State currentState;
 	private IdeaClassifier classifier;
 	private JSONObject rootJSON;
-
-	/**
-	 * True if predicate is currently evaluating a string.
-	 * Otherwise false.
-	 */
-	private boolean running;
 
 	public IdeaClause(DialogStateController controller, String identifier, UserProfile profile) {
 		super(controller, identifier, profile);
@@ -41,79 +48,70 @@ public class IdeaClause extends Clause {
         }
 		
 	}
-	
-	// Setter & Getter
-    private void setRunning(boolean r) {
-        this.running = r;
-    }
-
-    /**
-     * @return true if predicate is currently evaluating, otherwise false
-     */
-    public boolean isRunning() {
-        return this.running;
-    }
 
     // Dialog State
     @Override
     public void enter() {
         super.enter();
 
-        put(getWelcomeResponse());
-        put(getResponse(ResponseType.GENERAL));
+        this.currentState = State.START;
+        put(getResponse(State.START));
     }
     
 
 	public void evaluate(String input) {
 		 super.evaluate(input);
 
-	        if (this.isRunning()) {
-	            this.put("Einen Moment bitte! Ich schaue noch nach geeigneten Programmen.");
-	            return;
-	        }
+		 switch (currentState) {
+			 case START:
+			 	// feedback
+			 	this.currentState = State.ISINNO;
+			 	this.put(this.getResponse(State.ISINNO));
+			 	break;
+			 case ISINNO:
+				 try {
+					 Number i = NumberNormalizer.normalizeStringToNumber(input);
+					 if (i.intValue() >= 11) {
+					 	this.put("Da ist jemand wohl sehr überzeugt von seiner Idee");
+						 this.getProfile().setValueForPredicate(true, PredicateConstants.isInnovative);
+					 } else if (i.intValue() >= 7) {
+						 this.put("Also du schätzt die Idee schon als innnovativ ein");
+						 this.getProfile().setValueForPredicate(true, PredicateConstants.isInnovative);
+					 } else {
+						 this.put("Ok danke für die Antwort. Dies dient hauptsächlich der Selbstreflexion");
+						 this.getProfile().setValueForPredicate(false, PredicateConstants.isInnovative);
+					 }
+					 this.currentState = State.ISRISKY;
+					 this.put(this.getResponse(State.ISRISKY));
+				 } catch (Exception e) {
+					 this.put("Ich konnte das leider nicht interpretieren");
+				 }
+				 break;
+			 case ISRISKY:
+				 YesNoClassifier yesNoClassifier = new YesNoClassifier();
+				 YesNoCategory yesNoCategory = yesNoClassifier.classify(input);
 
-	        this.setRunning(true);
-	        InnoCategory category = this.classifier.classify(input);
-
-	        switch (category) {
-	            case INNOVATIVE:
-	                put(getResponse(ResponseType.INNOVATIVE));
-	                this.getProfile().setValueForPredicate(true, PredicateConstants.isInnovative);
-	                this.leave();
-	                break;
-	            case INNORISKY:
-	                put(getResponse(ResponseType.INNORISKY));
-	                this.getProfile().setValueForPredicate(true, PredicateConstants.isInnovative);
-	                this.getProfile().setValueForPredicate(true, PredicateConstants.failureIsPossible);
-	                this.leave();
-	                break;
-	            case NOT_INNOVATIVE:
-	                put(getResponse(ResponseType.NOT_INNOVATIVE));
-	                this.getProfile().setValueForPredicate(false, PredicateConstants.isInnovative);
-	                this.leave();
-	                break;
-	            case UNSPECIFIED:
-	                put(getResponse(ResponseType.UNSPECIFIED));
-	                break;
-	            default:
-	                assert false : "Unhandled case in switch! category: " + category.toString();
-	        }
-
-	        this.setRunning(false);
+				 switch (yesNoCategory) {
+					 case UNSPECIFIED:
+						 this.put("Wie bitte?");
+						 break;
+					 case YES:
+					 case NO:
+						 this.getProfile().setValueForPredicate(yesNoCategory == YesNoCategory.YES, PredicateConstants.failureIsPossible);
+						 this.leave();
+						 break;
+				 }
+				 break;
+		 }
 	}
 	
 	// Response generation
-    private List getAllResponses(ResponseType type) {
-        return this.rootJSON.getJSONObject("data").getJSONArray(type.name()).toList();
+    private List getAllResponses(State state) {
+        return this.rootJSON.getJSONObject("data").getJSONArray(state.name()).toList();
     }
 
-    private String getWelcomeResponse() {
-        return "Dann lass uns jetzt über deine Gründungsidee reden."; //"Super, vielen Dank! Kannst du deine Gründungsidee jetzt einmal genauer beschreiben "
-        	//	+ "- worum geht es, wie sieht es mit Markt, Mitbewerbern und Innovationsgehalt aus?";
-    }
-
-    private String getResponse(ResponseType type) {
-        List responses = this.getAllResponses(type);
+    private String getResponse(State state) {
+        List responses = this.getAllResponses(state);
         String question = (String) responses.get((int)(Math.random() * responses.size()));
         return question;
     }

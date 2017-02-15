@@ -56,14 +56,28 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
 
             List<AssistancePrograms> suitablePrograms = AssistanceProgramsEvaluator.findSuitableAssistancePrograms(this.getProfile());
 
-            this.put("Ich konnte folgende für dich passende Förderprogramme finden:");
-            for (AssistancePrograms p : suitablePrograms) {
-                this.put(p.toString().toUpperCase());
+            if (suitablePrograms.size() > 0) {
+                this.put("Leider gab es für dich keine passenden Förderprogramme :(");
+                this.put("Tut mir echt leid");
+            } else if (suitablePrograms.size() == 1) {
+                AssistancePrograms p = suitablePrograms.get(0);
+                this.put("Das Förderprogramm " + p.toString() + " wäre für dich interessant.");
+                this.put("Hier eine kleine Beschreibung & Link");
                 this.put(p.description());
                 this.put(p.url());
+
+                this.put("Ich hoffe, ich konnte dir bei der Suche nach passenden Förderprogrammen helfen.");
+            } else {
+                this.put("Ich konnte folgende für dich passende Förderprogramme finden:");
+                for (AssistancePrograms p : suitablePrograms) {
+                    this.put(p.toString().toUpperCase());
+                    this.put(p.description());
+                    this.put(p.url());
+                }
+
+                this.put("Ich hoffe, ich konnte dir bei der Suche nach passenden Förderprogrammen helfen.");
             }
 
-            this.put("Ich hoffe, ich konnte dir bei der Suche nach passenden Förderprogrammen helfen.");
             this.leave();
 
         } else {

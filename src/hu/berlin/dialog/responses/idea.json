@@ -1,21 +1,13 @@
 {
-"data" : {
-	"GENERAL" : [
-	"Dazu müsstest du mir erstmal deine Idee genauer vorstellen: Worum geht es, wie sieht es mit dem Markt und den Mitbewerbern aus?",
-	"Dazu erläutere doch erst einmal deine Gründungsidee: Was ist der Kerngedanke und wie unterscheidet ihr euch von Mitbewerbern, falls es welche gibt?"
-	],
-	"INNOVATIVE" : [
-	"Das klingt doch sehr vielversprechend! Innovative Ideen sind sehr gefragt."
-	],
-	"INNORISKY" : [
-	"Wow, das Projekt klingt ganz schön spannend! Da drücke ich euch die Daumen, dass es gelingt."
-	],
-	"NOT_INNOVATIVE" : [
-	"Ok, vielen Dank für die Erklärung"
-	],
-	"UNSPECIFIED" : [
-	"Ich bin mir nicht sicher, ob ich dich richtig verstanden habe. Könntest du das nochmal wiederholen und genauer auf den Innovationsgehalt eingehen?",
-	"Leider habe ich dich nicht verstanden. Kannst du das noch einmal wiederholen?"
-	]
+	"data" : {
+		"START": [
+			"Dann lass uns jetzt über deine Gründungsidee reden. Worum geht es bei deiner Idee?"
+		],
+		"ISINNO": [
+			"Von einer Skala von 1 bis 10, wobei 1 für noch ein weiteres Facebook und 10 für ein Heilmittel gegen Krebs steht, wie innovativ schätzt du deine Idee?"
+		],
+		"ISRISKY": [
+			"Weiß du, ob die Idee überhaupt realisierbar ist? Das ist keinesfalls negativ gemeint, es gibt vom Staat hochfinanzierte Projekte für die Durchführbarkeitsrealisierung von Prototypen!"
+		]
 	}
 }

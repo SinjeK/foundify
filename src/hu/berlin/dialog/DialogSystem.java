@@ -123,6 +123,11 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
                     this.enterState(assistanceProgram);
                     break;
                 }
+                case END: {
+                    EvaluationState evaluationState = new EvaluationState(this, "eva", this.profile);
+                    this.enterState(evaluationState);
+                    break;
+                }
                 case UNDEFINIED: {
                     break;
                 }
@@ -131,7 +136,9 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
                 }
             }
         } else if (state.getIdentifier().equals(kAssistanceProgramsIdentifier)) {
-            String out = Console.ANSI_BOLD + Console.ANSI_RED + "Foundify: " + Console.ANSI_RESET + "Tschüss!";
+            Guide guideState = new Guide(this, kGuideIdentifier, this.profile, false);
+            this.enterState(guideState);
+        } else if (state.getIdentifier().equals("eva")) {
             this.quit();
         }
     }

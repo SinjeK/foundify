@@ -131,8 +131,14 @@ public class CompanyClause extends Clause {
         FASTGROWING {
             @Override
             public String[] getFeedbackStrings(Category category) {
-                // no feed back string
-                return null;
+                switch ((YesNoCategory)category) {
+                    case UNSPECIFIED:
+                        return new String[]{
+                                "Ist nicht tragisch, falls du es nicht aus dem Kopf weiß"
+                        };
+                    default:
+                        return null;
+                }
             }
 
             @Override
@@ -145,7 +151,8 @@ public class CompanyClause extends Clause {
             @Override
             public String[] getQuestions() {
                 return new String[]{
-                        "seid ihr ein schnell wachsendes unternehmen?"
+                        "Ist das Unternehmen in den letzten Jahren um 20% oder mehr gewachsen hinsichtlich der Mitarbeiteranzahl" +
+                                "oder des Umsatzes?"
                 };
             }
 
@@ -164,8 +171,8 @@ public class CompanyClause extends Clause {
                         nextState = MONEYFORSCIENCE;
                         break;
                     case UNSPECIFIED:
-                        nextState = REPEAT;
-                        break;
+                        profile.setValueForPredicate(false, PredicateConstants.fastGrowth);
+                        nextState = MONEYFORSCIENCE;
                 }
 
                 return nextState;
@@ -174,8 +181,14 @@ public class CompanyClause extends Clause {
         MONEYFORSCIENCE {
             @Override
             public String[] getFeedbackStrings(Category category) {
-                // no feed back string
-                return null;
+                switch ((YesNoCategory)category) {
+                    case UNSPECIFIED:
+                        return new String[]{
+                                "Wenn du es nicht weiß, ist es auch nicht so schlimm"
+                        };
+                    default:
+                        return null;
+                }
             }
 
             @Override
@@ -188,7 +201,8 @@ public class CompanyClause extends Clause {
             @Override
             public String[] getQuestions() {
                 return new String[]{
-                        "Habt ihr in den letzten drei Jahren wenigstens einmal mehr als 5% für Forschung und Entwicklung ausgegeben?"
+                        "Habt ihr in den letzten drei Jahren wenigstens einmal mehr als 5% eures Unternehmenumsatzes" +
+                                " für Forschung und Entwicklung ausgegeben?"
                 };
             }
 
@@ -206,8 +220,9 @@ public class CompanyClause extends Clause {
                         profile.setValueForPredicate(false, PredicateConstants.costsAtLeast5PercentOnceInLast3Years);
                         nextState = LOOKINGFOR;
                         break;
-                    case UNSPECIFIED:
-                        nextState = REPEAT;
+                    case UNSPECIFIED: // user doesnt know
+                        profile.setValueForPredicate(false, PredicateConstants.costsAtLeast5PercentOnceInLast3Years);
+                        nextState = LOOKINGFOR;
                         break;
                 }
 

@@ -23,11 +23,11 @@ public class AssistanceProgramsEvaluator {
           }
 
           public String description() {
-              return "Das EXIST Gründerstipendium ist eines der größten und bekanntesten Förderprogramme in Deutschland." +
-                      "Es unterstützt Studierende, Absolventinnen und Absolventen sowie Wissenschaftlerinnen und Wissenschaftler" +
-                      "aus Hochschulen und außeruniversitären Forschungseinrichtungen, die ihre Gründungsidee realisieren und" +
-                      "in einen Businessplan umsetzen möchten. Bei den Gründungsvorhaben sollte es sich um innovative" +
-                      "technologieorientierte oder wissensbasierte Projekte mit signifikanten Alleinstellungsmerkmalen" +
+              return "Das EXIST Gründerstipendium ist eines der größten und bekanntesten Förderprogramme in Deutschland. " +
+                      "Es unterstützt Studierende, Absolventinnen und Absolventen sowie Wissenschaftlerinnen und Wissenschaftler " +
+                      "aus Hochschulen und außeruniversitären Forschungseinrichtungen, die ihre Gründungsidee realisieren und " +
+                      "in einen Businessplan umsetzen möchten. Bei den Gründungsvorhaben sollte es sich um innovative " +
+                      "technologieorientierte oder wissensbasierte Projekte mit signifikanten Alleinstellungsmerkmalen " +
                       "und guten wirtschaftlichen Erfolgsaussichten handeln.";
           }
 
@@ -41,11 +41,11 @@ public class AssistanceProgramsEvaluator {
             }
 
             public String description() {
-                return "Das EXIST Forschungstransfer eignet sich besonders innovative Ideen, die mit einem sehr hohen Risikofaktor\n" +
-                        "verbunden sind. Es besteht aus zwei Phasen. In der ersten Phase geht es um Entwicklungsarbeiten, die die Realisierbarkeit\n" +
-                        "des Projekts untersuchen. Anschließend geht es um die Entwicklung eines Prototypen und am Ende um die eigentliche Gründung\n" +
-                        "des Startups. Ihr könnt mit bis zu 250000€ gefördert werden!\n\n" +
-                        "Gegenstand der Förderung sind weitere Entwicklungsarbeiten, Maßnahmen zur Aufnahme der Geschäftstätigkeit im neu gegründeten \n" +
+                return "Das EXIST Forschungstransfer eignet sich besonders innovative Ideen, die mit einem sehr hohen Risikofaktor " +
+                        "verbunden sind. Es besteht aus zwei Phasen. In der ersten Phase geht es um Entwicklungsarbeiten, die die Realisierbarkeit " +
+                        "des Projekts untersuchen. Anschließend geht es um die Entwicklung eines Prototypen und am Ende um die eigentliche Gründung " +
+                        "des Startups. Ihr könnt mit bis zu 250000€ gefördert werden! " +
+                        "Gegenstand der Förderung sind weitere Entwicklungsarbeiten, Maßnahmen zur Aufnahme der Geschäftstätigkeit im neu gegründeten " +
                         "Technologieunternehmen sowie die Schaffung der Voraussetzungen für eine externe Unternehmensfinanzierung.";
             }
 
@@ -59,8 +59,8 @@ public class AssistanceProgramsEvaluator {
             }
 
             public String description() {
-                return "Arbeitslose, die eine selbstständige Tätigkeit aufnehmen wollen, können einen sogenannten Gründungszuschuss erhalten,\n" +
-                        "um ihr Unternehmen erfolgreich gründen zu können.";
+                return "Arbeitslose, die eine selbstständige Tätigkeit aufnehmen wollen, können einen sogenannten Gründungszuschuss erhalten," +
+                        "um ihr Unternehmen erfolgreich gründen zu können. Ziel der Förderung ist es, Menschen aus der Arbeitslosigkeit zu führen.";
             }
 
             public String url() {
@@ -73,14 +73,11 @@ public class AssistanceProgramsEvaluator {
             }
 
             public String description() {
-                return "Berlin Innovativ ermöglicht innovativen mittelständischen Unternehmen, Freiberuflern und Startups eine \n" +
-"zinsgünstige Finanzierung von Investitionen und Betriebsmitteln. Die Kredite aus Mitteln der Investitionsbank \n" +
-"Berlin (IBB) werden im Hausbankverfahren mit einer Haftungsfreistellung für die durchleitende Bank \n" +
-"in Höhe von 70 % vergeben. Die Finanzierung wird von der InnovFin KMU-Kreditgarantiefazilität des Horizon \n" +
-"2020-Programms der Europäischen Union (Rahmenprogramm für Forschung und Innovation) und \n" +
-"dem unter der Investitionsoffensive für Europa errichteten Europäischen Fonds für strategische Investitionen \n" +
-"(„EFSI“) ermöglicht. Zweck des EFSI ist es, die Finanzierung und Durchführung produktiver Investitionen \n" +
-"in der Europäischen Union zu fördern sowie einen verbesserten Zugang zu Finanzierungen sicherzustellen.";
+                return "Sie benötigen ein Finanzierungsangebot für Ihr Vorhaben und erfüllen eines unserer Innovationskriterien?" +
+                        " Mit Berlin Innovativ können Darlehen für Investitionen und Betriebsmittel bis 2 Mio. EUR im Hausbankenverfahren " +
+                        "vergeben werden. Ihr Vorteil: Eine Haftungsfreistellung der Hausbank in Höhe von 70 Prozent durch die IBB. " +
+                        "Mit diesem Förderprogramm sollen besonders innovative Berliner Unternehmen und Startups angesprochen und bei" +
+                        " der Stärkung Ihrer Wettbewerbsfähigkeit sowie Erschließung neuer Märkte unterstützt werden.";
             }
 
             public String url() {
@@ -136,7 +133,7 @@ public class AssistanceProgramsEvaluator {
 
         List <AssistancePrograms> suitablePrograms = new ArrayList<>();
 
-        if ((isRecentGraduate) &&
+        if ((isRecentGraduate) ||
                 (isStudent) &&
                 (isInno /* && (isKnowledgeBased || isTechno)*/ ) &&
                 (teamSizeExists && teamsize <= 3) &&

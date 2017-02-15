@@ -1,7 +1,9 @@
 package hu.berlin.dialog.languageProcessing;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.NaturalLanguageClassifier;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.ClassifiedClass;
 
+import java.util.List;
 
 
 public class SmalltalkClassifier implements Classifier {
@@ -11,11 +13,12 @@ public class SmalltalkClassifier implements Classifier {
         GREETING,
         HOWAREYOU,
         INSULT,
+        BYE,
         CONFUSED
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5b432x172-nlc-3260";
+    final private static String IDENTIFIER = "f5b42fx173-nlc-4015";
     private NaturalLanguageClassifier classifier;
 
     public SmalltalkClassifier() {
@@ -29,6 +32,18 @@ public class SmalltalkClassifier implements Classifier {
         SmalltalkCategory category;
         Classification result = this.classifier.classify(IDENTIFIER, input).execute();
 
+        List<ClassifiedClass> classes = result.getClasses();
+        double topConfidence = 0.0;
+        for (ClassifiedClass c : classes) {
+            if (c.getConfidence() > topConfidence) {
+                topConfidence = c.getConfidence();
+            }
+        }
+
+        if (topConfidence < 0.85) {
+            return SmalltalkCategory.NOSMALLTALK;
+        }
+
         switch (result.getTopClass()) {
             case "Confused":
                 category = SmalltalkCategory.CONFUSED;
@@ -41,6 +56,9 @@ public class SmalltalkClassifier implements Classifier {
                 break;
             case "Insult":
                 category = SmalltalkCategory.INSULT;
+                break;
+            case "Bye":
+                category = SmalltalkCategory.BYE;
                 break;
             default:
                 assert false : "Returned unknown category in classifier: SmalltalkClassifier - category: " + result.getTopClass();

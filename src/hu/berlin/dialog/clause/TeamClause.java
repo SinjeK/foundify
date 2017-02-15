@@ -74,6 +74,7 @@ public class TeamClause extends Clause implements DialogStateController {
     public void enter() {
         super.enter();
 
+		this.put(this.getWelcomeResponse());
 		TeamSizeClause teamSizeClause = new TeamSizeClause(this, "teamSize", this.getProfile(), this.coreNLP);
 
 		this.currentState = teamSizeClause;
@@ -156,8 +157,7 @@ public class TeamClause extends Clause implements DialogStateController {
     }
 
     private String getWelcomeResponse() {
-        return "Super, dann machen wir mit dem nächsten Schritt weiter!\nKannst du kurz dein Team vorstellen "
-        		+ "und dabei besonders relevante Erfahrungen in Wirtschaft und Wissenschaft beschreiben?";
+        return "Super, dann machen wir mit dem nächsten Schritt weiter!";
     }
 
     private String getResponse(ResponseType type) {
@@ -175,7 +175,7 @@ public class TeamClause extends Clause implements DialogStateController {
 	public void dialogStateDidLeave(DialogState state) {
     	if (state.getIdentifier().equals("teamSize")) {
     		this.currentState = this;
-    		this.put(this.getWelcomeResponse());
+    		this.put(this.getResponse(ResponseType.GENERAL));
 		}
 	}
 
