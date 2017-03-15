@@ -106,7 +106,7 @@ public class Guide extends DialogState {
             case PERSONS:
                 this.put("Zurzeit kenne ich keinen. Aber hier paar Tipps: Jede Uni hat einen Gründungsservice. Da bist du" +
                         " für den Anfang gut aufgehoben. Ansonsten, sprich die Professoren an! Die freuen sich über jede frische Idee" +
-                        " , du musst dich nur trauen");
+                        " ,du musst dich nur trauen");
                 this.put("Gibt es sonst noch etwas, was ich für dich tun kann?");
                 break;
             case STEPS:
@@ -115,6 +115,9 @@ public class Guide extends DialogState {
                 this.put("und andere Sachen");
                 this.put("hm mehr kann ich dazu auch nicht sagen, weil ich mir darüber noch keine Gedanken gemacht habe");
                 this.put("Aber bei anderen Themen kann ich dir mit Sicherheit weiterhelfen");
+                break;
+            case STARTUP:
+                this.put("Okay und wie kann ich dich dabei unterstützen?");
                 break;
             case UNSPECIFIED:
                 this.put("Tut mir leid ich habe dich nicht verstehen können.");

@@ -17,11 +17,12 @@ public class GuideClassifier implements Classifier {
         EVENTS,
         FUNCTIONS,
         BYE,
+        STARTUP,
         UNSPECIFIED
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5bbbcx175-nlc-3668";
+    final private static String IDENTIFIER = "f5b42ex171-nlc-4047";
     private NaturalLanguageClassifier classifier;
 
     public GuideClassifier() {
@@ -73,6 +74,9 @@ public class GuideClassifier implements Classifier {
                 break;
             case "Bye":
                 category = GuideCategory.BYE;
+                break;
+            case "StartUp":
+                category = GuideCategory.STARTUP;
                 break;
             default:
                 category = GuideCategory.UNSPECIFIED;
