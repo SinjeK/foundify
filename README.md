@@ -32,10 +32,8 @@ Foundify is a chat bot for those interested in founding their own company. It wo
 
 ### API of used libraries
 [IBM Watson Developer Cloud API](http://watson-developer-cloud.github.io/java-sdk/docs/master/)
-
 [GermaNet 9.0 API](http://www.sfs.uni-tuebingen.de/lsd/documents/api/javadoc9.0/index.html)
-
-[Stanford CoreNLP](http://stanfordnlp.github.io/CoreNLP/)
+[Stanford CoreNLP](http://nlp.stanford.edu/software/)
 
 ### Guide
 Follow these instructions to setup, execute, modify or extend the project.
@@ -73,7 +71,7 @@ This project include several assertions which makes the hard life of debugging e
 ----------
 
 
-#### `DialogState` and `DialogStateController`
+#### `DialogState`
 
 A `DialogState` represents a state which the chat bot can reach. Every state should be designed in a way that it is responsible **for only one task**.
 
@@ -112,4 +110,35 @@ This is one example dialog state:
 > The method `void put(String input)` should not be overridden. If you do, **do not forget to call** `super()`.
 >
 >If you override `void leave()` **make sure to call** `super()`in the implementation although the current version does nothing but this might change in future.
+ 
+ 
+####`DialogStateController`
+
+A DialogStateController is responsible for handling the output of the states and for forwarding the user's input to the correct state. Additionally, it determines the correct states after a state has finished doing its job.
+
+    package hu.berlin.dialog;
+    
+    public class Controller implements DialogStateController {
+
+		// implement setter and getter
+		private State currentState;
+
+		 @Overridden
+		 public void dialogStateWantsToOutput(DialogState state, String output) {
+			 System.out.println(output);
+		 }
+
+		@Overridden
+		public void dialogStateDidLeave(DialogState state) {
+			switch(state.getIdentifier()) {
+				case "NAME": {
+					// state "NAME" has finished getting the user's name
+					// transition to next state "AGE"
+					DialogState Age = new AgeState();
+					Age.enter();
+					this.setCurrentState(Age);
+				}
+			}
+		}
+	}
  
