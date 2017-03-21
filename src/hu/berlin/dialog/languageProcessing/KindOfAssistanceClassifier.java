@@ -23,7 +23,7 @@ public class KindOfAssistanceClassifier implements Classifier {
     /**
      * Identifier of used classifier
      */
-    final private static String IDENTIFIER = "f5b432x172-nlc-3493";
+    final private static String IDENTIFIER = "4d5c10x177-nlc-4509";
 
     /**
      * If top confidence is lower than this threshold,
@@ -42,7 +42,7 @@ public class KindOfAssistanceClassifier implements Classifier {
     public KindOfAssistanceClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword("947916e3-b100-49de-9b27-78ff1d7fb2eb", "R1I8UxjxUHgQ");
+        this.classifier.setUsernameAndPassword("c70864f5-8916-44bc-acd3-fc8a0a150be9", "viGiiyAqcrhK");
     }
 
     @Override

@@ -36,13 +36,13 @@ public class IdeaClassifier implements Classifier {
 		UNSPECIFIED
 	}
 	
-	final private static String IDENTIFIER = "cedf17x168-nlc-2759";
+	final private static String IDENTIFIER = "90e7b7x198-nlc-3230";
 	private NaturalLanguageClassifier classifier;
 	
 	public IdeaClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword(WatsonLanguageClassifierConfig2.USERNAME, WatsonLanguageClassifierConfig2.PASSWORD);
+        this.classifier.setUsernameAndPassword("bde1fc64-5ba1-431d-994a-c1744bc3c4eb", "UQIGIzO5gGYD");
     }
 	
 	@Override

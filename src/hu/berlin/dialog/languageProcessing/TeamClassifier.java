@@ -18,13 +18,13 @@ public class TeamClassifier implements Classifier {
 		UNSPECIFIED, 
 	}
 	
-	final private static String IDENTIFIER = "f5bbbbx174-nlc-1358";
+	final private static String IDENTIFIER = "90e7acx197-nlc-3183";
 	private NaturalLanguageClassifier classifier;
 	
 	public TeamClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword(WatsonLanguageClassifierConfig3.USERNAME, WatsonLanguageClassifierConfig3.PASSWORD);
+        this.classifier.setUsernameAndPassword("94953b26-edaf-4788-b4fb-d29153800abf", "BLKyJfy5F6W5");
     }
 	
 	@Override

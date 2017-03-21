@@ -22,13 +22,13 @@ public class GuideClassifier implements Classifier {
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5b42ex171-nlc-4047";
+    final private static String IDENTIFIER = "90e7b7x198-nlc-3484";
     private NaturalLanguageClassifier classifier;
 
     public GuideClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword("b762e2a2-f1f5-4b2a-9f91-e089c81048b5", "BA2vp3JSoRhi");
+        this.classifier.setUsernameAndPassword("cb2d2aab-c25e-40e2-9482-421643dea0bc", "XTsgobIPoRjP");
     }
 
     public GuideCategory classify(String input) {

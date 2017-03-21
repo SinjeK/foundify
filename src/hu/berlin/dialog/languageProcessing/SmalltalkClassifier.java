@@ -18,13 +18,13 @@ public class SmalltalkClassifier implements Classifier {
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5b42fx173-nlc-4015";
+    final private static String IDENTIFIER = "90e7b4x199-nlc-2482";
     private NaturalLanguageClassifier classifier;
 
     public SmalltalkClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword("8076141f-5c2f-4a10-83b0-18c5b74dbef7", "DrDgeUPZ7hV7");
+        this.classifier.setUsernameAndPassword("d806eb6d-6c07-4628-948d-4c2819178cb6", "MlCFo4QG3F3w");
     }
 
     @Override

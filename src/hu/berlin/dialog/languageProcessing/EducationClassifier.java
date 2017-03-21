@@ -25,13 +25,13 @@ public class EducationClassifier implements Classifier {
     }
 
     // change this if a new classifier is used
-    final private static String IDENTIFIER = "f5b42ex171-nlc-3504";
+    final private static String IDENTIFIER = "90e7acx197-nlc-2436";
     private NaturalLanguageClassifier classifier;
 
     public EducationClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword("84c6b852-4d9d-4e3d-9625-ceff7d379dba", "xFu6osAbLYot");
+        this.classifier.setUsernameAndPassword("00be9f25-6b45-4aba-a043-359509f88031", "oIOiWKhNXQSH");
     }
 
     @Override

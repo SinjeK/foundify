@@ -15,13 +15,13 @@ public class EmploymentClassifier implements Classifier {
        UNSPECIFIED
    }
 
-   final private static String IDENTIFIER = "f5b42fx173-nlc-3986";
+   final private static String IDENTIFIER = "90e7b7x198-nlc-2508";
    private NaturalLanguageClassifier classifier;
    
    public EmploymentClassifier() {
         super();
         this.classifier = new NaturalLanguageClassifier();
-        this.classifier.setUsernameAndPassword("f8faa55e-f483-4c0e-9c7a-ac92c1f8908b", "uXF62QHoMR1z");
+        this.classifier.setUsernameAndPassword("c0442b24-13d8-4093-be63-d6339798f2a1", "QhFNwGAcR5Mo");
     }
    
    @Override
