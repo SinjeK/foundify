@@ -4,10 +4,18 @@ Foundify is a chat bot for those interested in founding their own company. It wo
 
  For language processing we use **GermaNet** and semantic relatedness measures between two words (so called synsets) as well as **IBM Watson Language Classifier** to archieve a reasonable understanding of human language.
 
+
+----------
+
+
 ### Features
 
  - Finding appropriate assistance programs for startups in a natural dialog driven environment
  - Reusable and easily extendable with new features 
+
+
+----------
+
 
 ### Project structure
 
@@ -20,7 +28,7 @@ Foundify is a chat bot for those interested in founding their own company. It wo
 		- [ressources/v90XML:](https://github.com/SinjeK/foundify/tree/master/src/gn/ressources/v90XML) *the actual GermaNet data*
 	- [json:](https://github.com/SinjeK/foundify/tree/master/src/json) *This folder contains a library for parsing JSON files* 
 	
-	- `GermaNetSemRelApi9.1.jar`: *This jar contains the GermaNet API as well as the semantic relatedness API*
+	- `GermaNetSemRelApi9.1.jar`: *This jar contains the GermaNet API as well as the semantic relatedness API* (currently not used)
 
 	- `IBM-WatsonApi3.5.3.jar`: *This jar contains the IBM Cloud API used to access the Watson Natural Language Classifier*
 	
@@ -30,10 +38,14 @@ Foundify is a chat bot for those interested in founding their own company. It wo
 
 ----------
 
-### API of used libraries
-[IBM Watson Developer Cloud API](http://watson-developer-cloud.github.io/java-sdk/docs/master/)
-[GermaNet 9.0 API](http://www.sfs.uni-tuebingen.de/lsd/documents/api/javadoc9.0/index.html)
-[Stanford CoreNLP](http://nlp.stanford.edu/software/)
+### External libraries
+
+ - [IBM Watson Developer Cloud API](http://watson-developer-cloud.github.io/java-sdk/docs/master/)
+ - [Stanford CoreNLP](http://nlp.stanford.edu/software/)
+
+
+----------
+
 
 ### Guide
 Follow these instructions to setup, execute, modify or extend the project.
@@ -50,7 +62,16 @@ Follow these instructions to setup, execute, modify or extend the project.
 > A good short git guide can be found [here](https://rogerdudler.github.io/git-guide/index.de.html). For a comprehensive guide take a look [here](https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud).
 
 #### Setup project
-You might want to add these following flags when executing this project.
+
+ 1. Download the project (see Setup Git).
+ 2. Add `IBM-Watson.jar` to your class path which can be found under the
+    src directory.
+ 3. Now you also need to download **StanfordCoreNLP with the German models** which can be found here: http://stanfordnlp.github.io/CoreNLP/.
+    Add these files to the class path.
+ 4. Thats it!
+
+#### Additional flags
+You might need to add these following flags when executing this project.
 
     -Xmx512m -Xms512m
 
@@ -67,6 +88,21 @@ So if you run this chat bot:
 This project include several assertions which makes the hard life of debugging easier. Add the flag below:
 
     -ea
+
+----------
+
+### Production code
+If you are only interested in running the chatbot, take a look at the [Google Drive folder](https://drive.google.com/drive/folders/0B6HxYLUk0dp7M1Q3VnVhcVBkLWM?usp=sharing).
+
+ 1. Download the folder
+ 2. Create a new project with your favourite JAVA IDLE/ Editor
+ 3. Add all downloaded files to the new project
+ 3. Add all three Stanford jar files to the class path found in the src folder
+ 4. Add IBM Watson.jar file to the class path found in the src folder
+ 5. Compile the project
+ 6. Add these java vm flags `-Xmx1g -Xms1g`  when executing this project (otherwise you might run out of memory)
+ 7. Run foundify!
+
 
 ----------
 
@@ -112,7 +148,7 @@ This is one example dialog state:
 >If you override `void leave()` **make sure to call** `super()`in the implementation although the current version does nothing but this might change in future.
  
  
-####`DialogStateController`
+#### `DialogStateController`
 
 A DialogStateController is responsible for handling the output of the states and for forwarding the user's input to the correct state. Additionally, it determines the correct states after a state has finished doing its job.
 
