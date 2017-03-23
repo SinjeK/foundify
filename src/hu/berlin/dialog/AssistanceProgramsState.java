@@ -62,7 +62,7 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
             } else if (suitablePrograms.size() == 1) {
                 AssistancePrograms p = suitablePrograms.get(0);
                 this.put("Das Förderprogramm " + p.toString() + " wäre für dich interessant.");
-                this.put("Hier eine kleine Beschreibung & Link");
+                this.put("Hier eine kleine Beschreibung & Link:");
                 this.put(p.description());
                 this.put(p.url());
 
