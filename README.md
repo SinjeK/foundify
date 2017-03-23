@@ -106,6 +106,8 @@ If you are only interested in running the chatbot, take a look at the [Google Dr
 
 ----------
 
+### Implementation details
+You are interested in the technical details of the project? Feel free to skim over this section.
 
 #### `DialogState`
 
