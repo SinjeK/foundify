@@ -56,7 +56,7 @@ public class AssistanceProgramsState extends DialogState implements DialogStateC
 
             List<AssistancePrograms> suitablePrograms = AssistanceProgramsEvaluator.findSuitableAssistancePrograms(this.getProfile());
 
-            if (suitablePrograms.size() > 0) {
+            if (suitablePrograms.size() /*>*/ == 0) {
                 this.put("Leider gab es für dich keine passenden Förderprogramme :(");
                 this.put("Tut mir echt leid");
             } else if (suitablePrograms.size() == 1) {

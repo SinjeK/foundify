@@ -87,9 +87,9 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
     public void dialogInputReceivedMessage(DialogInput dialogInput, String message) {
         assert currentState != null : "Current state is null which is not good. You might have forgotten to use enterState(State)";
 
-        this.output.putOnSameLine(String.format("\033[%dA",1)); // Move up
-        this.output.putOnSameLine("\033[2K"); // Erase line content
-        this.output.put(Console.ANSI_BOLD + Console.ANSI_BLUE + "Du: " + Console.ANSI_RESET + message);
+       // this.output.putOnSameLine(String.format("\033[%dA",1)); // Move up
+       // this.output.putOnSameLine("\033[2K"); // Erase line content
+       // this.output.put(Console.ANSI_BOLD + Console.ANSI_BLUE + "Du: " + Console.ANSI_RESET + message);
 
         // type ::restart to restart the chat dialog without the need to reload the
         // language processing modules, thus saving a lot of time
@@ -152,7 +152,7 @@ public class DialogSystem implements DialogInputDelegate, DialogStateController 
         } else {
             String[] lines = output.split("\\n");
             for (String s : lines) {
-                String out = Console.ANSI_BOLD + Console.ANSI_RED + "Foundify: " + Console.ANSI_RESET + s;
+                String out = /*Console.ANSI_BOLD + Console.ANSI_RED +*/ "Foundify: " + /*Console.ANSI_RESET +*/ s;
                 this.output.put(out);
             }
         }
